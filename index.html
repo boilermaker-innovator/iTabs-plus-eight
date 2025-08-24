@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTabs-Quoting Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .demo-container {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 600px;
+    }
+
+    .demo-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .demo-subtitle {
+        color: #7f8c8d;
+        margin-bottom: 30px;
+        font-size: 1.1rem;
+    }
+
+    .demo-text {
+        font-size: 1.2rem;
+        color: #34495e;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .itabs-button {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: 8px;
+        vertical-align: middle;
+        transition: all 0.3s ease;
+        border: none;
+        line-height: 24px;
+    }
+
+    .itabs-button:hover {
+        background: #2980b9;
+        transform: scale(1.1);
+    }
+
+    /* Popup Overlay */
+    .itabs-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+    }
+
+    .itabs-overlay.active {
+        display: flex;
+        animation: fadeInOverlay 0.3s ease;
+    }
+
+    @keyframes fadeInOverlay {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .itabs-popup {
+        background: white;
+        width: 90vw;
+        max-width: 650px;
+        max-height: 85vh;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideInPopup 0.4s ease;
+        position: relative;
+    }
+
+    @keyframes slideInPopup {
+        from { 
+            opacity: 0; 
+            transform: scale(0.9) translateY(-20px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: scale(1) translateY(0); 
+        }
+    }
+
+    .popup-header {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        padding: 25px;
+        position: relative;
+    }
+
+    .popup-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 0 40px 0 0;
+        line-height: 1.3;
+    }
+
+    .popup-subtitle {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-top: 8px;
+    }
+
+    .popup-close {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .popup-close:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .popup-content {
+        padding: 0;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .popup-tabs {
+        display: flex;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .popup-tab {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 15px 8px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .popup-tab.active {
+        background: white;
+        color: #2a5298;
+        border-bottom: 3px solid #2a5298;
+    }
+
+    .popup-tab:hover:not(.active) {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 25px;
+        line-height: 1.6;
+        color: #495057;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .tab-content h4 {
+        color: #2a5298;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 15px 0;
+    }
+
+    .feature-list li {
+        padding: 8px 0;
+        padding-left: 25px;
+        position: relative;
+        color: #495057;
+    }
+
+    .feature-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #28a745;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .time-savings {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left: 4px solid #28a745;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .time-savings h5 {
+        color: #155724;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .roi-box {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left: 4px solid #ffc107;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .roi-box h5 {
+        color: #856404;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .itabs-popup {
+            width: 95vw;
+            max-height: 90vh;
+        }
+        
+        .popup-content {
+            max-height: 400px;
+        }
+        
+        .popup-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        
+        .popup-tab {
+            font-size: 11px;
+            padding: 12px 6px;
+            min-width: 60px;
+        }
+        
+        .tab-content {
+            padding: 20px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">iTabs-Quoting Demo</h1>
+        <p class="demo-subtitle">Click the blue "i" button to see how we explain complex systems</p>
+
+```
+    <p class="demo-text">
+        Transform your 45-minute manual quote process into 30-second automation with iTabs-Quoting
+        <button class="itabs-button" onclick="showPopup()">i</button>
+    </p>
+    
+    <p style="margin-top: 30px; color: #7f8c8d; font-style: italic;">
+        This is how we'll use iTabs technology to market and train customers on iTabs-Quoting itself!
+    </p>
+</div>
+
+<!-- Popup Overlay -->
+<div class="itabs-overlay" id="itabsOverlay" onclick="closePopup()">
+    <div class="itabs-popup" onclick="event.stopPropagation()">
+        <div class="popup-header">
+            <h3 class="popup-title">iTabs-Quoting System</h3>
+            <p class="popup-subtitle">97% Time Savings for Automotive Suppliers</p>
+            <button class="popup-close" onclick="closePopup()">×</button>
+        </div>
+        <div class="popup-content">
+            <div class="popup-tabs">
+                <button class="popup-tab active" onclick="showTab(event, 'overview')">Overview</button>
+                <button class="popup-tab" onclick="showTab(event, 'process')">How It Works</button>
+                <button class="popup-tab" onclick="showTab(event, 'benefits')">Benefits</button>
+                <button class="popup-tab" onclick="showTab(event, 'pricing')">Investment</button>
+            </div>
+
+            <div id="overview" class="tab-content active">
+                <h4>Revolutionary Quote Automation</h4>
+                <p>iTabs-Quoting transforms your manual 45-minute quote process into 30-second automation using Make.com workflows and AI processing.</p>
+                
+                <div class="time-savings">
+                    <h5>Proven Results with Alliance AMS</h5>
+                    <p><strong>Before:</strong> 45 minutes per quote (manual supplier calls, waiting, data entry)</p>
+                    <p><strong>After:</strong> 30 seconds automated processing</p>
+                    <p><strong>Result:</strong> 97% time savings, 10x more quotes possible</p>
+                </div>
+
+                <ul class="feature-list">
+                    <li>Email monitoring for customer requests</li>
+                    <li>AI-powered part number extraction</li>
+                    <li>Automated supplier quote generation</li>
+                    <li>Professional quote formatting</li>
+                </ul>
+            </div>
+
+            <div id="process" class="tab-content">
+                <h4>Simple 3-Step Process</h4>
+                
+                <p><strong>Step 1: Email Detection</strong><br>
+                System monitors your email for quote requests and automatically extracts part numbers from customer messages.</p>
+                
+                <p><strong>Step 2: Supplier Integration</strong><br>
+                AI processes part descriptions and generates professional quote requests to your preferred suppliers (Toyota, NAPA, etc.).</p>
+                
+                <p><strong>Step 3: Quote Generation</strong><br>
+                Receives supplier responses and creates professional quotes with your branding and markup automatically.</p>
+
+                <div class="time-savings">
+                    <h5>Stage 1: Toyota Integration (Complete)</h5>
+                    <p>Fully operational Toyota quote automation with Make.com and OpenAI integration.</p>
+                </div>
+
+                <div class="roi-box">
+                    <h5>Stage 2: Multi-Supplier Expansion</h5>
+                    <p>Currently developing automated connections to NAPA, Burson, and other major suppliers.</p>
+                </div>
+            </div>
+
+            <div id="benefits" class="tab-content">
+                <h4>Transform Your Business Operations</h4>
+                
+                <ul class="feature-list">
+                    <li><strong>97% Time Savings:</strong> From 45 minutes to 30 seconds per quote</li>
+                    <li><strong>10x Capacity:</strong> Process dramatically more quotes with same staff</li>
+                    <li><strong>Competitive Edge:</strong> Respond faster than competitors still using manual processes</li>
+                    <li><strong>Professional Quality:</strong> Consistent, branded communications to suppliers</li>
+                    <li><strong>Error Reduction:</strong> Eliminate manual typing errors and missed parts</li>
+                    <li><strong>24/7 Processing:</strong> System works even when you're not in the office</li>
+                </ul>
+
+                <div class="roi-box">
+                    <h5>Business Impact for Alliance AMS</h5>
+                    <p>Gavin can now handle 10x more quote requests, allowing Alliance AMS to serve more customers and grow revenue without adding staff.</p>
+                </div>
+            </div>
+
+            <div id="pricing" class="tab-content">
+                <h4>Investment & ROI</h4>
+                
+                <p><strong>Monthly Investment:</strong> $500-2000 (based on quote volume)</p>
+                <p><strong>Setup:</strong> One-time configuration with your existing systems</p>
+                <p><strong>Training:</strong> Complete onboarding and staff training included</p>
+
+                <div class="roi-box">
+                    <h5>Return on Investment</h5>
+                    <p><strong>Time Value:</strong> Save 44.5 minutes per quote</p>
+                    <p><strong>Daily Savings:</strong> Process 10+ quotes = 7+ hours saved</p>
+                    <p><strong>Monthly Value:</strong> 150+ hours × $50/hour = $7,500+ value</p>
+                    <p><strong>ROI:</strong> 500:1 return on investment</p>
+                </div>
+
+                <div class="time-savings">
+                    <h5>Ready to Get Started?</h5>
+                    <p>Join Alliance AMS and other forward-thinking suppliers who are transforming their quote processes with iTabs-Quoting automation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById('itabsOverlay').classList.add('active');
+    }
+
+    function closePopup() {
+        document.getElementById('itabsOverlay').classList.remove('active');
+    }
+
+    function showTab(event, tabName) {
+        // Hide all tab contents
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));
+        
+        // Remove active class from all tabs
+        const tabs = document.querySelectorAll('.popup-tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        // Show selected tab content
+        document.getElementById(tabName).classList.add('active');
+        
+        // Add active class to clicked tab
+        event.currentTarget.classList.add('active');
+    }
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePopup();
+        }
+    });
+</script>
+```
+
+</body>
+</html>
