@@ -1,1075 +1,1020 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTabs-Quoting Demo</title>
+    <title>iTabs - The Page That Explains Itself</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-```
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        color: #333;
-    }
-
-    .demo-container {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-        text-align: center;
-        max-width: 500px;
-        width: 100%;
-        position: relative;
-    }
-
-    .demo-logo {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #2c3e50;
-        margin-bottom: 15px;
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .demo-subtitle {
-        color: #7f8c8d;
-        margin-bottom: 35px;
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-
-    .demo-text {
-        font-size: 1.3rem;
-        color: #2c3e50;
-        margin-bottom: 35px;
-        line-height: 1.7;
-        font-weight: 500;
-    }
-
-    .itabs-button {
-        display: inline-block;
-        background: linear-gradient(135deg, #3498db, #2980b9);
-        color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        font-weight: bold;
-        font-size: 18px;
-        cursor: pointer;
-        margin-left: 10px;
-        vertical-align: middle;
-        transition: all 0.3s ease;
-        border: none;
-        line-height: 30px;
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-    }
-
-    .itabs-button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 25px rgba(52, 152, 219, 0.6);
-    }
-
-    .itabs-button:active {
-        transform: scale(1.05);
-    }
-
-    .demo-footer {
-        margin-top: 30px;
-        padding-top: 25px;
-        border-top: 1px solid #ecf0f1;
-        color: #95a5a6;
-        font-style: italic;
-        font-size: 0.9rem;
-        line-height: 1.5;
-    }
-
-    /* Popup Overlay */
-    .itabs-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(8px);
-        padding: 10px;
-    }
-
-    .itabs-overlay.active {
-        display: flex;
-        animation: fadeInOverlay 0.3s ease;
-    }
-
-    @keyframes fadeInOverlay {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .itabs-popup {
-        background: white;
-        width: 100%;
-        max-width: 550px;
-        max-height: 90vh;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.4);
-        animation: slideInPopup 0.4s ease;
-        position: relative;
-    }
-
-    @keyframes slideInPopup {
-        from { 
-            opacity: 0; 
-            transform: scale(0.9) translateY(-30px); 
-        }
-        to { 
-            opacity: 1; 
-            transform: scale(1) translateY(0); 
-        }
-    }
-
-    .popup-header {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        color: white;
-        padding: 30px 25px;
-        position: relative;
-    }
-
-    .popup-title {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0 40px 0 0;
-        line-height: 1.3;
-    }
-
-    .popup-subtitle {
-        font-size: 1rem;
-        opacity: 0.9;
-        margin-top: 10px;
-        font-weight: 400;
-    }
-
-    .popup-close {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.15);
-        border: none;
-        color: white;
-        font-size: 32px;
-        cursor: pointer;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-
-    .popup-close:hover {
-        background: rgba(255, 255, 255, 0.25);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .popup-content {
-        padding: 0;
-        max-height: calc(90vh - 120px);
-        overflow-y: auto;
-    }
-
-    .popup-tabs {
-        display: flex;
-        background: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
-    }
-
-    .popup-tab {
-        flex: 1;
-        background: none;
-        border: none;
-        padding: 18px 10px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 700;
-        color: #6c757d;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        min-height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .popup-tab.active {
-        background: white;
-        color: #2a5298;
-        border-bottom: 4px solid #3498db;
-        margin-bottom: -2px;
-    }
-
-    .popup-tab:hover:not(.active) {
-        background: #e9ecef;
-        color: #495057;
-    }
-
-    .tab-content {
-        display: none;
-        padding: 30px 25px;
-        line-height: 1.7;
-        color: #495057;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .tab-content h4 {
-        color: #2a5298;
-        margin-bottom: 18px;
-        font-size: 1.3rem;
-        font-weight: 600;
-    }
-
-    .tab-content p {
-        margin-bottom: 15px;
-        font-size: 1rem;
-    }
-
-    .feature-list {
-        list-style: none;
-        padding: 0;
-        margin: 20px 0;
-    }
-
-    .feature-list li {
-        padding: 12px 0;
-        padding-left: 35px;
-        position: relative;
-        color: #495057;
-        font-size: 1rem;
-    }
-
-    .feature-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: #28a745;
-        font-weight: bold;
-        font-size: 1.3rem;
-        top: 8px;
-    }
-
-    .time-savings {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border-left: 5px solid #28a745;
-        padding: 25px;
-        margin: 25px 0;
-        border-radius: 0 12px 12px 0;
-    }
-
-    .time-savings h5 {
-        color: #155724;
-        margin-bottom: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-
-    .time-savings p {
-        margin-bottom: 8px;
-        font-size: 1rem;
-    }
-
-    .roi-box {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-        border-left: 5px solid #ffc107;
-        padding: 25px;
-        margin: 25px 0;
-        border-radius: 0 12px 12px 0;
-    }
-
-    .roi-box h5 {
-        color: #856404;
-        margin-bottom: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-
-    .roi-box p {
-        margin-bottom: 8px;
-        font-size: 1rem;
-    }
-
-    /* Enhanced Mobile Responsive */
-    @media (max-width: 768px) {
-        .demo-container {
-            padding: 30px 25px;
-            margin: 10px;
-        }
-
-        .demo-logo {
-            font-size: 2.2rem;
-        }
-
-        .demo-text {
-            font-size: 1.2rem;
-        }
-
-        .itabs-popup {
-            width: 95vw;
-            max-height: 95vh;
-            margin: 10px;
-        }
         
-        .popup-header {
-            padding: 25px 20px;
-        }
-
-        .popup-title {
-            font-size: 1.4rem;
-            margin-right: 50px;
-        }
-
-        .popup-subtitle {
-            font-size: 0.9rem;
-        }
-        
-        .popup-content {
-            max-height: calc(95vh - 100px);
-        }
-        
-        .popup-tabs {
-            flex-wrap: nowrap;
-            overflow-x: auto;
-        }
-        
-        .popup-tab {
-            font-size: 11px;
-            padding: 15px 8px;
-            min-width: 70px;
-            letter-spacing: 0.5px;
-        }
-        
-        .tab-content {
-            padding: 25px 20px;
-        }
-
-        .tab-content h4 {
-            font-size: 1.2rem;
-        }
-
-        .feature-list li {
-            padding-left: 30px;
-        }
-
-        .time-savings, .roi-box {
-            padding: 20px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .demo-container {
-            padding: 25px 20px;
-        }
-
-        .demo-logo {
-            font-size: 1.9rem;
-        }
-
-        .demo-text {
-            font-size: 1.1rem;
-        }
-
-        .itabs-button {
-            width: 28px;
-            height: 28px;
-            font-size: 16px;
-            line-height: 28px;
-        }
-
-        .popup-tabs {
-            flex-direction: column;
-            height: auto;
-        }
-
-        .popup-tab {
-            min-width: auto;
-            padding: 12px 15px;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .popup-tab.active {
-            border-bottom: 3px solid #3498db;
-            border-right: none;
-        }
-    }
-</style>
-```
-
-</head>
-<body>
-    <div class="demo-container">
-        <h1 class="demo-logo">iTabs-Quoting</h1>
-        <p class="demo-subtitle">Professional Quote Automation for Automotive Suppliers</p>
-
-```
-    <p class="demo-text">
-        Transform your 45-minute manual quote process into 30-second automation
-        <button class="itabs-button" onclick="showPopup()">i</button>
-    </p>
-    
-    <div class="demo-footer">
-        <p>This demonstrates how we use iTabs technology to market and train customers on iTabs-Quoting automation itself!</p>
-    </div>
-</div>
-
-<!-- Popup Overlay -->
-<div class="itabs-overlay" id="itabsOverlay" onclick="closePopup()">
-    <div class="itabs-popup" onclick="event.stopPropagation()">
-        <div class="popup-header">
-            <h3 class="popup-title">iTabs-Quoting System</h3>
-            <p class="popup-subtitle">97% Time Savings for Automotive Suppliers</p>
-            <button class="popup-close" onclick="closePopup()">×</button>
-        </div>
-        <div class="popup-content">
-            <div class="popup-tabs">
-                <button class="popup-tab active" onclick="showTab(event, 'overview')">Overview</button>
-                <button class="popup-tab" onclick="showTab(event, 'process')">How It Works</button>
-                <button class="popup-tab" onclick="showTab(event, 'benefits')">Benefits</button>
-                <button class="popup-tab" onclick="showTab(event, 'pricing')">Investment</button>
-            </div>
-
-            <div id="overview" class="tab-content active">
-                <h4>Revolutionary Quote Automation</h4>
-                <p>iTabs-Quoting transforms your manual 45-minute quote process into 30-second automation using Make.com workflows and AI processing.</p>
-                
-                <div class="time-savings">
-                    <h5>Proven Results with Alliance AMS</h5>
-                    <p><strong>Before:</strong> 45 minutes per quote (manual supplier calls, waiting, data entry)</p>
-                    <p><strong>After:</strong> 30 seconds automated processing</p>
-                    <p><strong>Result:</strong> 97% time savings, 10x more quotes possible</p>
-                </div>
-
-                <ul class="feature-list">
-                    <li>Email monitoring for customer requests</li>
-                    <li>AI-powered part number extraction</li>
-                    <li>Automated supplier quote generation</li>
-                    <li>Professional quote formatting</li>
-                </ul>
-            </div>
-
-            <div id="process" class="tab-content">
-                <h4>Simple 3-Step Process</h4>
-                
-                <p><strong>Step 1: Email Detection</strong><br>
-                System monitors your email for quote requests and automatically extracts part numbers from customer messages.</p>
-                
-                <p><strong>Step 2: Supplier Integration</strong><br>
-                AI processes part descriptions and generates professional quote requests to your preferred suppliers (Toyota, NAPA, etc.).</p>
-                
-                <p><strong>Step 3: Quote Generation</strong><br>
-                Receives supplier responses and creates professional quotes with your branding and markup automatically.</p>
-
-                <div class="time-savings">
-                    <h5>Stage 1: Toyota Integration (Complete)</h5>
-                    <p>Fully operational Toyota quote automation with Make.com and OpenAI integration.</p>
-                </div>
-
-                <div class="roi-box">
-                    <h5>Stage 2: Multi-Supplier Expansion</h5>
-                    <p>Currently developing automated connections to NAPA, Burson, and other major suppliers.</p>
-                </div>
-            </div>
-
-            <div id="benefits" class="tab-content">
-                <h4>Transform Your Business Operations</h4>
-                
-                <ul class="feature-list">
-                    <li><strong>97% Time Savings:</strong> From 45 minutes to 30 seconds per quote</li>
-                    <li><strong>10x Capacity:</strong> Process dramatically more quotes with same staff</li>
-                    <li><strong>Competitive Edge:</strong> Respond faster than competitors still using manual processes</li>
-                    <li><strong>Professional Quality:</strong> Consistent, branded communications to suppliers</li>
-                    <li><strong>Error Reduction:</strong> Eliminate manual typing errors and missed parts</li>
-                    <li><strong>24/7 Processing:</strong> System works even when you're not in the office</li>
-                </ul>
-
-                <div class="roi-box">
-                    <h5>Business Impact for Alliance AMS</h5>
-                    <p>Gavin can now handle 10x more quote requests, allowing Alliance AMS to serve more customers and grow revenue without adding staff.</p>
-                </div>
-            </div>
-
-            <div id="pricing" class="tab-content">
-                <h4>Investment & ROI</h4>
-                
-                <p><strong>Monthly Investment:</strong> $500-2000 (based on quote volume)</p>
-                <p><strong>Setup:</strong> One-time configuration with your existing systems</p>
-                <p><strong>Training:</strong> Complete onboarding and staff training included</p>
-
-                <div class="roi-box">
-                    <h5>Return on Investment</h5>
-                    <p><strong>Time Value:</strong> Save 44.5 minutes per quote</p>
-                    <p><strong>Daily Savings:</strong> Process 10+ quotes = 7+ hours saved</p>
-                    <p><strong>Monthly Value:</strong> 150+ hours × $50/hour = $7,500+ value</p>
-                    <p><strong>ROI:</strong> 500:1 return on investment</p>
-                </div>
-
-                <div class="time-savings">
-                    <h5>Ready to Get Started?</h5>
-                    <p>Join Alliance AMS and other forward-thinking suppliers who are transforming their quote processes with iTabs-Quoting automation.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function showPopup() {
-        document.getElementById('itabsOverlay').classList.add('active');
-    }
-
-    function closePopup() {
-        document.getElementById('itabsOverlay').classList.remove('active');
-    }
-
-    function showTab(event, tabName) {
-        // Hide all tab contents
-        const tabContents = document.querySelectorAll('.tab-content');
-        tabContents.forEach(content => content.classList.remove('active'));
-        
-        // Remove active class from all tabs
-        const tabs = document.querySelectorAll('.popup-tab');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        
-        // Show selected tab content
-        document.getElementById(tabName).classList.add('active');
-        
-        // Add active class to clicked tab
-        event.currentTarget.classList.add('active');
-    }
-
-    // Close popup with Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closePopup();
-        }
-    });
-
-    // Prevent body scroll when popup is open
-    function showPopup() {
-        document.getElementById('itabsOverlay').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closePopup() {
-        document.getElementById('itabsOverlay').classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-</script>
-
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTabs Quoting Platform - Business Overview & Potential</title>
-    <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f8f9fa;
             line-height: 1.6;
             color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f8f9fa;
         }
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px 80px 20px;
             text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            position: relative;
         }
-        h2 {
-            color: #34495e;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            padding-left: 10px;
-            border-left: 4px solid #3498db;
+        
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.2;
         }
-        h3 {
-            color: #2c3e50;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            padding: 15px;
-            border-left: 4px solid #ffc107;
-            margin: 20px 0;
-        }
-        .success {
-            background-color: #d4edda;
-            padding: 15px;
-            border-left: 4px solid #28a745;
-            margin: 20px 0;
-        }
-        .info {
-            background-color: #d1ecf1;
-            padding: 15px;
-            border-left: 4px solid #17a2b8;
-            margin: 20px 0;
-        }
-        .email-example {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-        }
-        ul, ol {
-            margin-bottom: 20px;
-        }
-        li {
-            margin-bottom: 8px;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        .stat-card {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #e9ecef;
-        }
-        .stat-number {
+        
+        .hero .tagline {
             font-size: 2em;
-            font-weight: bold;
-            color: #3498db;
+            margin-bottom: 20px;
+            opacity: 0.95;
         }
-        .stat-label {
-            font-weight: 500;
-            color: #6c757d;
+        
+        .hero .subtitle {
+            font-size: 1.3em;
+            opacity: 0.85;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
         }
-        .process-flow {
-            background-color: #f8f9fa;
+
+        .meta-note {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 30px auto 0 auto;
+            font-size: 1.1em;
         }
-        .step {
-            margin: 15px 0;
-            padding: 10px;
-            background-color: white;
-            border-radius: 5px;
-            border-left: 3px solid #3498db;
+
+        .meta-note strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
         }
-        .meta-info {
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
+        
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: -40px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        /* iTabs Section Cards */
+        .itabs-section {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
             margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        strong {
-            color: #2c3e50;
+
+        .itabs-section:hover {
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
         }
-        .conclusion {
-            background-color: #e8f5e8;
-            padding: 25px;
-            border-radius: 8px;
+
+        .section-banner {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .section-banner:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        }
+
+        .section-banner h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            padding-right: 60px;
+        }
+
+        .section-banner p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            padding-right: 60px;
+        }
+
+        .section-itabs-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 26px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            z-index: 20;
+            animation: gentlePulse 3s infinite;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 12px rgba(255, 255, 255, 0);
+            }
+        }
+
+        .section-itabs-btn:hover {
+            transform: scale(1.15);
+            animation: none;
+            background: white;
+        }
+
+        /* Problem Grid Colors */
+        .problem-banner { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); }
+        .problem-banner:hover { background: linear-gradient(135deg, #e85555 0%, #d94a5f 100%); }
+        .problem-banner .section-itabs-btn { color: #ff6b6b; }
+
+        /* Vision Grid Colors */
+        .vision-banner { background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%); }
+        .vision-banner:hover { background: linear-gradient(135deg, #41b956 0%, #2f9c42 100%); }
+        .vision-banner .section-itabs-btn { color: #51cf66; }
+
+        /* Demo Grid Colors */
+        .demo-banner { background: linear-gradient(135deg, #ffa94d 0%, #fd7e14 100%); }
+        .demo-banner:hover { background: linear-gradient(135deg, #e99337 0%, #e66e00 100%); }
+        .demo-banner .section-itabs-btn { color: #ffa94d; }
+
+        /* Status Grid Colors */
+        .status-banner { background: linear-gradient(135deg, #339af0 0%, #1c7ed6 100%); }
+        .status-banner:hover { background: linear-gradient(135deg, #2284da 0%, #1668ba 100%); }
+        .status-banner .section-itabs-btn { color: #339af0; }
+
+        /* Founder Grid Colors */
+        .founder-banner { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); }
+        .founder-banner:hover { background: linear-gradient(135deg, #9275e4 0%, #6d28d9 100%); }
+        .founder-banner .section-itabs-btn { color: #a78bfa; }
+
+        /* Demo Examples Grid */
+        .demo-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .example-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .campaign-bg { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); }
+        .product-bg { background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%); }
+        .realestate-bg { background: linear-gradient(135deg, #ffa94d 0%, #fd7e14 100%); }
+        
+        .itabs-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            z-index: 20;
+        }
+        
+        .itabs-button:hover {
+            transform: scale(1.15);
+        }
+        
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-size: 1.2em;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .card-description {
+            color: #718096;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
             margin-top: 40px;
-            border: 2px solid #28a745;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .cta-section p {
+            font-size: 1.3em;
+            margin-bottom: 35px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .cta-button.secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.3s ease;
+            overflow: hidden;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 2em;
+            padding-right: 20px;
+        }
+        
+        .close {
+            color: white;
+            font-size: 45px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 40px;
+            max-height: calc(85vh - 120px);
+            overflow-y: auto;
+        }
+        
+        .modal-body h4 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+        
+        .modal-body h4:first-child {
+            margin-top: 0;
+        }
+        
+        .modal-body p {
+            color: #4a5568;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .modal-body ul {
+            margin: 20px 0 20px 30px;
+        }
+
+        .modal-body li {
+            color: #4a5568;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .highlight-box strong {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .success-box {
+            background: #d4f4dd;
+            border-left: 5px solid #51cf66;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .hero .tagline {
+                font-size: 1.4em;
+            }
+
+            .section-banner {
+                padding: 35px 25px;
+            }
+
+            .section-banner h2 {
+                font-size: 1.8em;
+                padding-right: 70px;
+            }
+
+            .section-banner p {
+                font-size: 1.1em;
+                padding-right: 70px;
+            }
+
+            .section-itabs-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+                top: 20px;
+                right: 20px;
+            }
+
+            .demo-examples {
+                grid-template-columns: 1fr;
+                padding: 25px;
+            }
+
+            .modal-body {
+                padding: 25px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>iTabs Quoting Platform - Business Overview & Potential</h1>
-        
-        <div class="meta-info">
-            <strong>Prepared by:</strong> Jon Gwynne<br>
-            <strong>Date:</strong> September 2025<br>
-            <strong>Purpose:</strong> Investment/Growth Funding Proposal
-        </div>
-
-        <h2>💡 The Discovery: From Product Information to Quote Automation</h2>
-        
-        <div class="highlight">
-            <strong>Original iTabs Vision:</strong> Blue "i" buttons showing product information to confused customers<br><br>
-            <strong>Major Pivot Discovery:</strong> Quote automation is exponentially more valuable than product information
-        </div>
-        
-        <p><strong>Why the Pivot Makes Sense:</strong></p>
-        <ul>
-            <li>Alliance AMS (our pilot customer): 97% of sales come from quotes, not direct purchases</li>
-            <li>Quote processing consumes "majority of Gavin's time" (15-20 minutes per quote)</li>
-            <li>Manual supplier research and data entry creates massive inefficiency</li>
-            <li>Faster quotes = competitive advantage in automotive parts industry</li>
-        </ul>
-
-        <h2>🎯 The iTabs Quoting Solution</h2>
-
-        <h3><strong>Current Manual Process (Every Automotive Parts Supplier)</strong></h3>
-        <div class="process-flow">
-            <div class="step">1. Customer emails requesting part pricing</div>
-            <div class="step">2. Supplier manually searches multiple websites (Toyota, NAPA, Gates, etc.)</div>
-            <div class="step">3. <strong>Manual data entry nightmare:</strong> 15-20 minutes typing into business system</div>
-            <div class="step">4. Apply markup calculations manually</div>
-            <div class="step">5. Generate and send quote</div>
-            <div class="step"><strong>Result:</strong> Slow responses, limited quote capacity, wasted labor</div>
-        </div>
-
-        <h3><strong>iTabs Quoting Automation - Pure Email Processing</strong></h3>
-        <div class="process-flow">
-            <div class="step">1. Customer emails part numbers to <code>quotes@itabsquote.com</code></div>
-            <div class="step">2. <strong>System automatically searches</strong> supplier's existing websites using their credentials</div>
-            <div class="step">3. <strong>System populates supplier's business software</strong> (Peach, etc.) via API - no manual typing</div>
-            <div class="step">4. Business software calculates markups (existing process unchanged)</div>
-            <div class="step">5. <strong>Professional quote emailed directly to customer</strong> with supplier branding</div>
-            <div class="step">6. <strong>2-3 minutes total processing time</strong> vs 15-20 minutes manual</div>
-            <div class="step"><strong>Result:</strong> 85-90% time savings, 5x quote capacity, instant competitive advantage</div>
-        </div>
-
-        <div class="success">
-            <h3><strong>🚀 MVP Advantage: No Website Required</strong></h3>
-            <p><strong>Revolutionary Simplicity:</strong> Pure email-to-email automation means:</p>
-            <ul>
-                <li><strong>Zero customer learning curve</strong> - they email like they always have</li>
-                <li><strong>No website development costs</strong> - email infrastructure only</li>
-                <li><strong>Instant deployment</strong> - suppliers operational in hours, not months</li>
-                <li><strong>Mobile-first by default</strong> - works perfectly on any device</li>
-                <li><strong>Minimal technical barriers</strong> - if you can email, you can use iTabs Quoting</li>
-            </ul>
-        </div>
-
-        <h2>💰 Market Opportunity & Revenue Model</h2>
-
-        <h3><strong>Target Market Size</strong></h3>
-        <ul>
-            <li><strong>Primary:</strong> 10,000+ automotive parts suppliers in Australia/NZ</li>
-            <li><strong>Secondary:</strong> 50,000+ automotive suppliers globally</li>
-            <li><strong>Adjacent:</strong> Industrial parts, plumbing supplies, electrical distributors</li>
-        </ul>
-
-        <h3><strong>Revenue Model Options</strong></h3>
-
-        <h4><strong>Option 1: SaaS Subscription</strong></h4>
-        <ul>
-            <li><strong>Small Suppliers:</strong> $200-500/month (basic automation)</li>
-            <li><strong>Medium Suppliers:</strong> $500-1,500/month (multi-supplier integration)</li>
-            <li><strong>Large Suppliers:</strong> $1,500-5,000/month (enterprise features)</li>
-        </ul>
-
-        <h4><strong>Option 2: Per-Transaction Model</strong></h4>
-        <ul>
-            <li><strong>$3-8 per automated quote</strong> processed</li>
-            <li>Scales with supplier success</li>
-            <li>Lower barrier to entry</li>
-        </ul>
-
-        <h4><strong>Option 3: Association/Group Sales</strong></h4>
-        <ul>
-            <li><strong>Automotive associations</strong> buy for members</li>
-            <li><strong>Higher deal values:</strong> $50,000-200,000 per association</li>
-            <li><strong>Faster market penetration</strong></li>
-        </ul>
-
-        <h3><strong>Conservative Revenue Projections</strong></h3>
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">$300K</div>
-                <div class="stat-label">Year 1 ARR<br>50 suppliers × $500/month</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">$1.8M</div>
-                <div class="stat-label">Year 2 ARR<br>200 suppliers × $750/month</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">$6M</div>
-                <div class="stat-label">Year 3 ARR<br>500 suppliers × $1,000/month</div>
-            </div>
-        </div>
-
-        <h2>📊 MVP Implementation: Alliance AMS Email-Only Demo</h2>
-
-        <h3><strong>Phase 1 MVP: Pure Email Automation (No Website Needed)</strong></h3>
-
-        <p><strong>Customer Experience:</strong></p>
-        <div class="email-example">
-From: customer@johnsmitheauto.com.au
-To: quotes@itabsquote.com
-Subject: Need pricing urgent
-
-Hi Alliance AMS,
-Need pricing on brake job for 2018 Toyota Camry:
-- 04465-33471 (front brake pads)
-- 04466-33070 (rear brake pads) 
-- WZ632NM (oil filter while we're at it)
-
-Delivery to Joondalup workshop.
-Thanks, John Smith Automotive
-        </div>
-
-        <p><strong>Automated Processing (2 minutes):</strong></p>
-        <ol>
-            <li>System recognizes Toyota part numbers</li>
-            <li>Logs into Maddington Toyota using Gavin's credentials</li>
-            <li>Searches NAPA using Gavin's trade account</li>
-            <li>Extracts pricing, applies Gavin's markup rules</li>
-            <li>Populates Peach software automatically</li>
-            <li>Generates professional Alliance AMS quote</li>
-        </ol>
-
-        <p><strong>Customer Receives:</strong></p>
-        <div class="email-example">
-From: quotes@itabsquote.com (branded as Alliance AMS)
-To: customer@johnsmitheauto.com.au  
-Subject: Quote QT-2025-0847 - Toyota Camry Brake Service Parts
-
-Dear John Smith Automotive,
-
-Your requested Toyota Camry parts pricing:
-
-Front Brake Pads (04465-33471): $105.50 ex GST
-Rear Brake Pads (04466-33070): $98.20 ex GST  
-Oil Filter (WZ632NM): $23.80 ex GST
-
-Total Parts: $227.50 ex GST ($250.25 inc GST)
-Delivery: Perth metro $15.00 (next day)
-
-Order Confirmation: Reply "CONFIRM ORDER" 
-Payment: 30 days on account
-
-Alliance Automotive & Marine Services
-Gavin McGavock - Director
-        </div>
-
-        <div class="info">
-            <h3><strong>Why This MVP Is Powerful:</strong></h3>
-            <ul>
-                <li><strong>No website development</strong> required - pure email infrastructure</li>
-                <li><strong>Zero customer training</strong> - customers email exactly like they do now</li>
-                <li><strong>Instant deployment</strong> - operational in days, not months</li>
-                <li><strong>Perfect mobile experience</strong> - email works on every device</li>
-                <li><strong>Minimal technical risk</strong> - email systems are bulletproof</li>
-                <li><strong>Scales infinitely</strong> - handles 10 or 1,000 suppliers identically</li>
-            </ul>
-        </div>
-
-        <h3><strong>Current Status with Alliance AMS</strong></h3>
-        <ul>
-            <li><strong>Email forwarding confirmed</strong> - Gavin ready to test</li>
-            <li><strong>Supplier credentials available</strong> - Toyota and NAPA accounts ready</li>
-            <li><strong>Peach API integration documented</strong> - automatic data population confirmed</li>
-            <li><strong>Quote format approved</strong> - professional Alliance AMS branding</li>
-            <li><strong>Ready for live testing</strong> with real customer quotes</li>
-        </ul>
-
-        <h3><strong>MVP Success Metrics (30-day trial)</strong></h3>
-        <ul>
-            <li><strong>Process 20+ real customer quotes</strong> end-to-end</li>
-            <li><strong>Achieve 85%+ time savings</strong> vs manual processing</li>
-            <li><strong>Zero customer complaints</strong> about quote quality/format</li>
-            <li><strong>Gavin approval</strong> for full implementation</li>
-            <li><strong>Reference case study</strong> completed for investor/customer presentations</li>
-        </ul>
-
-        <h2>🚀 Competitive Advantages & Market Position</h2>
-
-        <h3><strong>First Mover Advantage</strong></h3>
-        <ul>
-            <li><strong>No direct competitors</strong> solving automotive quote automation systematically</li>
-            <li><strong>High switching costs</strong> once integrated with business systems</li>
-            <li><strong>Network effects</strong> as more suppliers join platform</li>
-        </ul>
-
-        <h3><strong>Technical Moat</strong></h3>
-        <ul>
-            <li><strong>Supplier relationship integration</strong> (uses existing accounts/credentials)</li>
-            <li><strong>Business system APIs</strong> (Peach, MYOB, Xero integration)</li>
-            <li><strong>Industry-specific knowledge</strong> (part number recognition, supplier patterns)</li>
-            <li><strong>Learning algorithms</strong> (system learns supplier preferences over time)</li>
-        </ul>
-
-        <h3><strong>Business Model Advantages</strong></h3>
-        <ul>
-            <li><strong>High customer lifetime value</strong> (business-critical automation)</li>
-            <li><strong>Predictable recurring revenue</strong> (SaaS model)</li>
-            <li><strong>Scalable technology</strong> (serve thousands of suppliers with same platform)</li>
-            <li><strong>Expansion opportunities</strong> (adjacent industries, international markets)</li>
-        </ul>
-
-        <h2>🔧 Technical Architecture: Email-First Platform</h2>
-
-        <h3><strong>Core MVP Components (Website-Free)</strong></h3>
-        <ul>
-            <li><strong>Smart email processing</strong> - recognizes part numbers, customer details, urgency</li>
-            <li><strong>Supplier credential management</strong> - secure login to existing supplier portals</li>
-            <li><strong>Multi-supplier search engine</strong> - simultaneous searches across Toyota, NAPA, Gates, etc.</li>
-            <li><strong>Business system API integration</strong> - populates Peach, MYOB, Xero automatically</li>
-            <li><strong>Professional email generation</strong> - branded quotes with supplier identity</li>
-            <li><strong>Order confirmation system</strong> - handles customer responses and order processing</li>
-        </ul>
-
-        <h3><strong>Scalability Without Websites</strong></h3>
-        <ul>
-            <li><strong>Email infrastructure scales infinitely</strong> - handle 1 or 10,000 suppliers</li>
-            <li><strong>Cloud-based processing</strong> (AWS/Azure for unlimited capacity)</li>
-            <li><strong>API-first design</strong> - integrate with any business management system</li>
-            <li><strong>White-label email branding</strong> - customers never see iTabs, only supplier brands</li>
-            <li><strong>Mobile-perfect by default</strong> - email works flawlessly on all devices</li>
-        </ul>
-
-        <h3><strong>MVP Development Speed</strong></h3>
-        <ul>
-            <li><strong>No frontend development</strong> - zero website, app, or interface coding</li>
-            <li><strong>No user onboarding flows</strong> - customers use existing email habits</li>
-            <li><strong>No customer support portal</strong> - everything handled via email</li>
-            <li><strong>Faster development timeline</strong> - 2-3 months vs 6-12 months for website platform</li>
-            <li><strong>Lower development costs</strong> - backend automation only, no UI/UX requirements</li>
-        </ul>
-
-        <h2>💡 Strategic Vision: Beyond Automotive</h2>
-
-        <h3><strong>Phase 1: Automotive Mastery (Year 1-2)</strong></h3>
-        <ul>
-            <li>Perfect quote automation for automotive parts industry</li>
-            <li>Build 500+ supplier customer base</li>
-            <li>Establish market leadership position</li>
-        </ul>
-
-        <h3><strong>Phase 2: Adjacent Industry Expansion (Year 2-3)</strong></h3>
-        <ul>
-            <li><strong>Industrial parts suppliers</strong> (mining, manufacturing)</li>
-            <li><strong>Plumbing suppliers</strong> (trade contractors, retail)</li>
-            <li><strong>Electrical distributors</strong> (commercial, residential)</li>
-        </ul>
-
-        <h3><strong>Phase 3: Global Platform (Year 3-5)</strong></h3>
-        <ul>
-            <li><strong>International expansion</strong> (US, UK, European markets)</li>
-            <li><strong>Acquisition opportunities</strong> (consolidate fragmented market)</li>
-            <li><strong>Platform marketplace</strong> (suppliers, manufacturers, customers)</li>
-        </ul>
-
-        <h3><strong>Ultimate Vision: Industry Infrastructure</strong></h3>
-        <ul>
-            <li>Become essential business infrastructure for parts distribution</li>
-            <li>High switching costs and network effects create sustainable moat</li>
-            <li>Multiple revenue streams: subscriptions, transactions, data, advertising</li>
-        </ul>
-
-        <h2>🎯 Investment Opportunity</h2>
-
-        <h3><strong>Funding Requirements</strong></h3>
-        <ul>
-            <li><strong>$250,000 - $500,000</strong> for initial development and market penetration</li>
-            <li><strong>12-18 month runway</strong> to achieve profitability</li>
-            <li><strong>Team expansion:</strong> 2-3 developers, 1 business development, 1 customer success</li>
-        </ul>
-
-        <h3><strong>Use of Funds</strong></h3>
-        <ul>
-            <li><strong>40% Product Development:</strong> Complete platform build and integration capabilities</li>
-            <li><strong>35% Sales & Marketing:</strong> Customer acquisition, association partnerships</li>
-            <li><strong>15% Operations:</strong> Infrastructure, compliance, quality assurance</li>
-            <li><strong>10% Working Capital:</strong> General business expenses, contingency</li>
-        </ul>
-
-        <h3><strong>Expected ROI for Investors</strong></h3>
-        <ul>
-            <li><strong>Break-even:</strong> Month 15-18</li>
-            <li><strong>3-year revenue target:</strong> $6M+ ARR</li>
-            <li><strong>Exit opportunities:</strong> Strategic acquisition by business software companies, automotive industry players</li>
-            <li><strong>Market comparable valuations:</strong> 8-15x revenue for B2B SaaS companies</li>
-        </ul>
-
-        <h2>✅ Next Steps for Implementation</h2>
-
-        <h3><strong>Immediate Actions (Month 1)</strong></h3>
-        <ul>
-            <li>Complete Alliance AMS integration and testing</li>
-            <li>Document measurable time savings and ROI</li>
-            <li>Begin customer acquisition process with 5-10 similar suppliers</li>
-        </ul>
-
-        <h3><strong>Short-term Goals (Months 2-6)</strong></h3>
-        <ul>
-            <li><strong>50 paying customers</strong> using the platform</li>
-            <li><strong>Proven scalability</strong> across different supplier types</li>
-            <li><strong>Association partnership</strong> signed for group distribution</li>
-        </ul>
-
-        <h3><strong>Medium-term Milestones (Months 6-12)</strong></h3>
-        <ul>
-            <li><strong>200+ suppliers</strong> on platform generating significant recurring revenue</li>
-            <li><strong>Adjacent industry expansion</strong> validated with pilot customers</li>
-            <li><strong>Series A funding round</strong> for accelerated growth</li>
-        </ul>
-
-        <h2>🏆 Why iTabs Quoting Will Succeed</h2>
-
-        <h3><strong>Market Timing</strong></h3>
-        <ul>
-            <li><strong>Digital transformation</strong> accelerating in traditional industries</li>
-            <li><strong>Labor cost pressures</strong> driving automation adoption</li>
-            <li><strong>Competitive advantage</strong> increasingly dependent on speed and efficiency</li>
-        </ul>
-
-        <h3><strong>Proven Demand</strong></h3>
-        <ul>
-            <li><strong>Real customer</strong> (Alliance AMS) with documented pain point</li>
-            <li><strong>Measurable ROI</strong> (85%+ time savings)</li>
-            <li><strong>Scalable solution</strong> applicable across entire industry</li>
-        </ul>
-
-        <h3><strong>Execution Capability</strong></h3>
-        <ul>
-            <li><strong>Technical expertise</strong> demonstrated through Alliance AMS integration</li>
-            <li><strong>Industry knowledge</strong> from working directly with automotive suppliers</li>
-            <li><strong>Business development skills</strong> evidenced by customer relationship building</li>
-        </ul>
-
-        <div class="conclusion">
-            <p><strong>iTabs Quoting represents a rare opportunity to build essential business infrastructure in a large, traditional market that's ready for digital transformation. With proven customer demand, measurable ROI, and significant first-mover advantages, this platform has the potential to become the dominant solution for automotive parts quote automation.</strong></p>
-            
-            <p><strong>Investment in iTabs Quoting is an investment in the future of how traditional industries adopt modern business automation.</strong></p>
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>iTabs</h1>
+        <p class="tagline">The Page That Explains Itself</p>
+        <p class="subtitle">Click any "i" button below to learn more. Notice how the page stays clean while details appear on demand?</p>
+        <div class="meta-note">
+            <strong>🎯 Meta Demonstration</strong>
+            This entire page uses iTabs to explain iTabs. Every section has an "i" button - click them to see how it works in practice.
         </div>
     </div>
-</body>
-</html>
 
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- The Problem Section -->
+        <div class="itabs-section">
+            <div class="section-banner problem-banner" onclick="openModal('problem')">
+                <h2>The Problem</h2>
+                <p>Information overload kills decisions</p>
+                <div class="section-itabs-btn">i</div>
+            </div>
+        </div>
+
+        <!-- The Demo Section -->
+        <div class="itabs-section">
+            <div class="section-banner demo-banner" onclick="openModal('demo')">
+                <h2>See It In Action</h2>
+                <p>Real examples you can click right now</p>
+                <div class="section-itabs-btn">i</div>
+            </div>
+            <div class="demo-examples">
+                <div class="example-card">
+                    <div class="image-container campaign-bg" onclick="openModal('campaign')">
+                        <div class="placeholder-image">Medical Campaign Photo</div>
+                        <div class="itabs-button">i</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Crowdfunding</h3>
+                        <p class="card-description">Clean photo, full story on demand</p>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="image-container product-bg" onclick="openModal('product')">
+                        <div class="placeholder-image">Brake Pads Product</div>
+                        <div class="itabs-button">i</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">E-Commerce</h3>
+                        <p class="card-description">Beautiful product, specs on click</p>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="image-container realestate-bg" onclick="openModal('realestate')">
+                        <div class="placeholder-image">Family Home Photo</div>
+                        <div class="itabs-button">i</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Real Estate</h3>
+                        <p class="card-description">Stunning photo, details revealed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Vision Section -->
+        <div class="itabs-section">
+            <div class="section-banner vision-banner" onclick="openModal('vision')">
+                <h2>The Vision</h2>
+                <p>Hyperlink 2.0 for the AI age</p>
+                <div class="section-itabs-btn">i</div>
+            </div>
+        </div>
+
+        <!-- Current Status Section -->
+        <div class="itabs-section">
+            <div class="section-banner status-banner" onclick="openModal('status')">
+                <h2>Current Status</h2>
+                <p>Working MVP, testing with real users</p>
+                <div class="section-itabs-btn">i</div>
+            </div>
+        </div>
+
+        <!-- Founder Section -->
+        <div class="itabs-section">
+            <div class="section-banner founder-banner" onclick="openModal('founder')">
+                <h2>Built By Jon Gwynne</h2>
+                <p>Boilermaker building at Riff, Spacecubed</p>
+                <div class="section-itabs-btn">i</div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Want To See More?</h2>
+            <p>Try the working generator or get in touch</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-button" onclick="alert('Add your generator URL here'); return false;">Try The Live Demo</a>
+                <a href="mailto:your.email@example.com" class="cta-button secondary">Get In Touch</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Problem Modal -->
+    <div id="problem" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>The Problem iTabs Solves</h3>
+                <span class="close" onclick="closeModal('problem')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>People abandon purchases, donations, and decisions because they can't quickly understand what they're looking at.</strong></p>
+                
+                <h4>🛒 E-Commerce Problem</h4>
+                <p>Customer sees "NWP-B4C brake pads" - no idea if it fits their car. They leave without buying. Lost sale.</p>
+                
+                <h4>❤️ Crowdfunding Problem</h4>
+                <p>Beautiful campaign photo, but donors can't quickly see where money goes or why it's urgent. Campaign fails to reach goal.</p>
+                
+                <h4>🏠 Real Estate Problem</h4>
+                <p>Gorgeous property photos, but buyers need room sizes, renovation details, neighborhood info before booking viewing. Wasted time for everyone.</p>
+                
+                <h4>💼 Portfolio Problem</h4>
+                <p>Creative work looks great, but without context about client brief, approach, and results, it's just pretty pictures. No credibility.</p>
+
+                <div class="warning-box">
+                    <p><strong>The Current Solution Doesn't Work:</strong></p>
+                    <p>Option 1: Put all info on the image → Cluttered, ugly, nobody reads it</p>
+                    <p>Option 2: Put info in description below → People don't scroll, they click away</p>
+                    <p>Option 3: Make people click through to another page → Too many steps, they abandon</p>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>iTabs Solution:</strong> Keep images beautiful. Hide details behind one simple "i" button. Information appears instantly when needed, stays hidden when not.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demo" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Working Examples</h3>
+                <span class="close" onclick="closeModal('demo')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>These aren't mockups - they're real, working iTabs you can click right now.</strong></p>
+                
+                <h4>How To Test Them:</h4>
+                <ol style="margin: 20px 0 20px 30px; color: #4a5568; font-size: 1.05em; line-height: 1.8;">
+                    <li>Click the "i" button on any of the three examples below this section</li>
+                    <li>See how the detailed information appears in a clean popup</li>
+                    <li>Notice the image stays beautiful and uncluttered</li>
+                    <li>Imagine this on YOUR product, campaign, or listing</li>
+                </ol>
+
+                <div class="highlight-box">
+                    <p><strong>Key Insight:</strong> You're experiencing iTabs right now. This entire pitch page uses the same system. Every section you've clicked uses iTabs to reveal more information.</p>
+                    <p style="margin-top: 15px;">Clean headlines → Click "i" → Get details</p>
+                    <p>That's the whole concept.</p>
+                </div>
+
+                <h4>What Makes This Different?</h4>
+                <ul>
+                    <li><strong>No coding required</strong> - Generator creates the code automatically</li>
+                    <li><strong>Works anywhere</strong> - Copy/paste onto any website</li>
+                    <li><strong>Mobile-first</strong> - Designed for phone users</li>
+                    <li><strong>AI-powered</strong> - Reads your page and writes content in 60 seconds</li>
+                </ul>
+
+                <p style="margin-top: 25px; font-size: 1.15em; color: #667eea; font-weight: 600;">Close this popup and click the "i" buttons on the examples below to see different use cases.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campaign Modal -->
+    <div id="campaign" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Medical Emergency Fund</h3>
+                <span class="close" onclick="closeModal('campaign')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h4>💔 What Happened</h4>
+                <p>Sarah, a single mother of two, was diagnosed with a rare heart condition requiring immediate surgery. Without insurance, the medical bills are overwhelming.</p>
+                
+                <h4>💰 Where Your Money Goes</h4>
+                <ul>
+                    <li>Surgery Costs: $45,000</li>
+                    <li>Post-Op Care: $12,000</li>
+                    <li>Medication (6 months): $8,000</li>
+                    <li>Living Expenses During Recovery: $10,000</li>
+                    <li><strong>Total Goal: $75,000</strong></li>
+                </ul>
+                
+                <h4>⏰ Why Now</h4>
+                <p>Surgery is scheduled for next month. Without upfront payment, the hospital cannot proceed. Every day we wait increases the risk of complications.</p>
+                
+                <h4>✅ Verified Campaign</h4>
+                <p>Medical records verified by GoFundMe. Hospital billing department confirmed. Direct payment to St. Mary's Medical Center.</p>
+
+                <div class="success-box">
+                    <strong>How iTabs Helps Crowdfunding:</strong>
+                    <p style="margin-top: 10px;">Campaign photo stays beautiful and emotional. All the details (budget, verification, urgency) appear when donors click "i". This increases donations by making campaigns transparent and trustworthy.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Premium Ceramic Brake Pads</h3>
+                <span class="close" onclick="closeModal('product')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h4>🔧 What It Is</h4>
+                <p>High-performance ceramic brake pads designed for superior stopping power, reduced noise, and extended rotor life. Professional-grade quality at an affordable price.</p>
+                
+                <h4>📋 Technical Specifications</h4>
+                <ul>
+                    <li>Material: Premium ceramic composite</li>
+                    <li>Temperature Range: -40°F to 800°F</li>
+                    <li>Noise Level: Ultra-quiet operation</li>
+                    <li>Lifespan: 50,000-70,000 miles</li>
+                    <li>Warranty: 3 years / 36,000 miles</li>
+                </ul>
+                
+                <h4>🚗 Vehicle Compatibility</h4>
+                <p><strong>Fits:</strong> Toyota Camry (2018-2024), Toyota RAV4 (2019-2024), Toyota Highlander (2020-2024)</p>
+                <p><strong>Part Number:</strong> NWP-B4C-TY</p>
+                <p><strong>OEM Equivalent:</strong> Toyota 04465-06090</p>
+                
+                <h4>🛠️ Installation</h4>
+                <p>Professional installation recommended. DIY installation typically takes 1-2 hours per axle. Break-in period: 200-300 miles of normal driving.</p>
+                
+                <h4>💵 Pricing</h4>
+                <p style="font-size: 1.4em; font-weight: bold; color: #51cf66; margin-top: 15px;">$89.99 per axle set (4 pads)</p>
+                <p>Free shipping on orders over $100</p>
+
+                <div class="success-box">
+                    <strong>How iTabs Helps E-Commerce:</strong>
+                    <p style="margin-top: 10px;">Product photo stays clean and professional. All technical details (specs, compatibility, installation) appear when customers click "i". This reduces cart abandonment and customer service calls.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real Estate Modal -->
+    <div id="realestate" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Beautiful 3-Bedroom Family Home</h3>
+                <span class="close" onclick="closeModal('realestate')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h4>🏠 Property Overview</h4>
+                <p>Stunning single-family home in desirable Oak Ridge neighborhood. Move-in ready with recent upgrades throughout. Perfect for growing families.</p>
+                
+                <h4>📐 Room Dimensions</h4>
+                <ul>
+                    <li>Master Bedroom: 16' x 14' with walk-in closet and ensuite</li>
+                    <li>Bedroom 2: 12' x 11'</li>
+                    <li>Bedroom 3: 11' x 10'</li>
+                    <li>Living Room: 20' x 16' with vaulted ceiling and fireplace</li>
+                    <li>Kitchen: 14' x 12' with island and breakfast nook</li>
+                    <li>Total Square Footage: 2,150 sq ft</li>
+                </ul>
+                
+                <h4>✨ Recent Renovations (2023-2024)</h4>
+                <ul>
+                    <li>New HVAC system (2024) - $8,500</li>
+                    <li>Renovated kitchen with granite countertops and stainless appliances</li>
+                    <li>Updated bathrooms with modern fixtures</li>
+                    <li>New hardwood floors throughout main level</li>
+                    <li>Fresh exterior paint</li>
+                    <li>New roof (2023) - 30-year warranty</li>
+                </ul>
+                
+                <h4>💡 Energy Efficiency</h4>
+                <p>Average monthly energy costs: $120-150</p>
+                <p>Features: LED lighting throughout, Energy Star appliances, excellent insulation, programmable thermostat</p>
+                
+                <h4>🏘️ Neighborhood Highlights</h4>
+                <ul>
+                    <li>Top-rated school district (Oak Ridge Elementary: 9/10 rating)</li>
+                    <li>Walk to parks, shopping, and restaurants (0.3 miles)</li>
+                    <li>Low crime rate - one of safest neighborhoods in city</li>
+                    <li>15-minute commute to downtown</li>
+                    <li>Community pool and playground</li>
+                </ul>
+                
+                <h4>💵 Pricing</h4>
+                <p style="font-size: 1.5em; font-weight: bold; color: #ffa94d; margin-top: 15px;">$425,000</p>
+                <p>Comparable homes in area selling for $440K-$460K</p>
+
+                <div class="success-box">
+                    <strong>How iTabs Helps Real Estate:</strong>
+                    <p style="margin-top: 10px;">Property photo stays stunning and showcase-worthy. All details (room sizes, renovations, neighborhood info) appear when buyers click "i". This increases viewing bookings and reduces back-and-forth questions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vision Modal -->
+    <div id="vision" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>The Vision: Hyperlink 2.0</h3>
+                <span class="close" onclick="closeModal('vision')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>The hyperlink transformed the internet by connecting text to more information.</strong></p>
+                <p><strong>iTabs does the same for images</strong> - connecting visual content to detailed context that travels with the image everywhere it's shared.</p>
+                
+                <h4>🌐 Any Industry</h4>
+                <ul>
+                    <li><strong>E-commerce:</strong> Product catalogs with confusing codes/specs</li>
+                    <li><strong>Crowdfunding:</strong> Campaigns needing transparency and urgency</li>
+                    <li><strong>Real Estate:</strong> Property listings requiring room sizes and details</li>
+                    <li><strong>Education:</strong> Training materials with step-by-step instructions</li>
+                    <li><strong>Healthcare:</strong> Medical procedures explained simply</li>
+                    <li><strong>Portfolios:</strong> Creative work needing context and results</li>
+                    <li><strong>Workplace Safety:</strong> Equipment with operating instructions</li>
+                </ul>
+
+                <h4>🤖 Built For The AI Age</h4>
+                <p>AI systems need structured, verified information to provide accurate answers. iTabs creates machine-readable context that AI can understand and cite.</p>
+                <p style="margin-top: 15px;">Instead of AI hallucinating product details or campaign goals, it can read verified iTabs data and give accurate information to users.</p>
+
+                <div class="highlight-box">
+                    <strong>The Bigger Mission:</strong>
+                    <p style="margin-top: 10px;">Bringing truth and accountability to online content. When information is structured and verifiable, trust increases. When trust increases, transactions happen.</p>
+                    <p style="margin-top: 10px;">This levels the playing field - giving small businesses and everyday people the same communication power as large corporations.</p>
+                </div>
+
+                <h4>⚡ What Makes It Work</h4>
+                <ul>
+                    <li><strong>AI-Powered:</strong> Reads your page, writes content automatically in 60 seconds</li>
+                    <li><strong>No Coding:</strong> Generator creates production-ready code</li>
+                    <li><strong>Works Everywhere:</strong> Any website, any platform, any device</li>
+                    <li><strong>Mobile-First:</strong> Designed for how people actually browse</li>
+                    <li><strong>Instant Setup:</strong> Paste URL → Get code → Deploy in minutes</li>
+                </ul>
+
+                <h4>🚀 The Path Forward</h4>
+                <p>Start with crowdfunding and e-commerce (clear, immediate value). Prove the model works. Then expand to education, healthcare, real estate, and beyond.</p>
+                <p style="margin-top: 15px;">Eventually: iTabs becomes as common as hyperlinks. Every image online has the option to include structured information. The web becomes more transparent, more trustworthy, more accessible.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Modal -->
+    <div id="status" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Current Status & Next Steps</h3>
+                <span class="close" onclick="closeModal('status')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p><strong>This isn't just an idea - it's a working product being tested in the real world.</strong></p>
+                
+                <h4>✅ What's Built (Working MVP)</h4>
+                <ul>
+                    <li><strong>AI Generator:</strong> Paste any URL, get working iTabs code in 60 seconds</li>
+                    <li><strong>Multiple Examples:</strong> Crowdfunding, e-commerce, real estate demonstrated</li>
+                    <li><strong>Production-Ready Code:</strong> Copy/paste deployment to any website</li>
+                    <li><strong>Mobile Responsive:</strong> Works perfectly on phones and tablets</li>
+                    <li><strong>This Pitch Page:</strong> Meta-demonstration of iTabs explaining itself</li>
+                </ul>
+
+                <h4>🎯 Current Testing Focus</h4>
+                <ul>
+                    <li><strong>Crowdfunding Campaigns:</strong> GoFundMe, Kickstarter, Birchal platforms</li>
+                    <li><strong>Perth Market:</strong> Starting local with automotive suppliers and small businesses</li>
+                    <li><strong>User Feedback:</strong> Watching real users create and deploy iTabs</li>
+                    <li><strong>Iteration:</strong> Improving generator based on what people actually need</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Key Learning So Far:</strong>
+                    <p style="margin-top: 10px;">People "get it" instantly when they click an iTabs. The challenge isn't explaining the concept - it's getting in front of the right users who have the problem it solves.</p>
+                </div>
+
+                <h4>🤔 Questions I'm Working Through</h4>
+                <ul>
+                    <li><strong>Best Entry Market:</strong> Crowdfunding vs. e-commerce vs. real estate?</li>
+                    <li><strong>Business Model:</strong> Freemium? SaaS subscription? One-time fee?</li>
+                    <li><strong>Go-to-Market:</strong> Which channels and messaging resonate?</li>
+                    <li><strong>Technical Scaling:</strong> Infrastructure needed for 1000+ users?</li>
+                    <li><strong>Team Building:</strong> What skills do I need in a co-founder?</li>
+                </ul>
+
+                <h4>🚀 What I'm Looking For</h4>
+                <ul>
+                    <li><strong>Testing Partners:</strong> People who will actually use iTabs and give honest feedback</li>
+                    <li><strong>Guidance:</strong> People who've launched SaaS products before</li>
+                    <li><strong>Connections:</strong> Introductions to potential users or partners</li>
+                    <li><strong>Perspective:</strong> Challenge my assumptions, show me blind spots</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Current Reality:</strong>
+                    <p style="margin-top: 10px;">This is a side project built while working full-time as a boilermaker. I'm at Riff (Spacecubed) to connect with people who can help me figure out the next steps. I don't have all the answers - I'm testing, learning, and iterating.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Founder Modal -->
+    <div id="founder" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>About Jon Gwynne</h3>
+                <span class="close" onclick="closeModal('founder')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h4>👷 Background</h4>
+                <p>Boilermaker and workshop worker in Perth, Western Australia. Firsthand experience with confusing information systems in blue-collar work environments.</p>
+                
+                <h4>💡 The Origin Story</h4>
+                <p>Worked in automotive parts supply and saw customers abandon purchases daily because they couldn't understand product codes. Saw crowdfunding campaigns fail because the full story wasn't immediately visible. Realized the problem wasn't lack of information - it was presentation.</p>
+                <p style="margin-top: 15px;">"Beautiful images everywhere. Important details hidden in walls of text. Nobody wins."</p>
+
+                <h4>🛠️ The Build</h4>
+                <p>Taught myself to work with AI tools while working full-time. Used AI to build what I couldn't code myself. Focused on solving one clear problem: make confusing information instantly clear without cluttering the visual.</p>
+                <p style="margin-top: 15px;">Built iTabs generator that uses AI to read any page and create working popups in 60 seconds. No coding required. Works on any website.</p>
+
+                <h4>🎯 The Mission</h4>
+                <p><strong>"Bringing truth and accountability for the blue-collar working class."</strong></p>
+                <p style="margin-top: 15px;">Background in trades gave me perspective that tech founders often miss. Poor communication costs working people time and money. Confusing product codes, unclear campaign goals, hidden fees - these aren't minor annoyances. They're barriers that keep everyday people from making informed decisions.</p>
+                <p style="margin-top: 15px;">iTabs levels the playing field. Gives small businesses and individual fundraisers the same communication power as corporations. Makes information transparent and accessible.</p>
+
+                <div class="highlight-box">
+                    <strong>The "Aha" Moment:</strong>
+                    <p style="margin-top: 10px;">"Everyone who sees iTabs says 'why didn't I think of that?' That's when I knew I was onto something. The best ideas feel obvious in retrospect."</p>
+                </div>
+
+                <h4>📍 Current Status</h4>
+                <p>Building at Riff (Spacecubed coworking space) in Perth. Testing MVP with real users. Working full-time while developing iTabs on nights and weekends.</p>
+                <p style="margin-top: 15px;">Looking for guidance on go-to-market strategy, potential co-founder who can help scale the technical and business side, and connections to users who have the problem iTabs solves.</p>
+
+                <h4>🤝 Why I'm Sharing This</h4>
+                <p>I don't have all the answers. I'm a tradesperson who built a working product and can see the potential, but I need help figuring out the path from MVP to real business.</p>
+                <p style="margin-top: 15px;">If you've been through this journey before, or if you know people who are dealing with the problems iTabs solves, I'd love to connect.</p>
+
+                <div class="success-box">
+                    <strong>Contact:</strong>
+                    <p style="margin-top: 10px;">Email: your.email@example.com</p>
+                    <p>Based: Perth, Western Australia</p>
+                    <p>Working from: Riff, Spacecubed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let modal of modals) {
+                if (event.target == modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+        
+        // Keyboard navigation (ESC to close)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.getElementsByClassName('modal');
+                for (let modal of modals) {
+                    if (modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
