@@ -3,1016 +3,776 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTabs - The Page That Explains Itself</title>
+    <title>iTabs: Making Complex Information Instantly Clear</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: #f8f9fa;
-            line-height: 1.6;
+            line-height: 1.8;
             color: #333;
+            background: #f8f9fa;
         }
-        
-        /* Hero Section */
+
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 100px 20px 80px 20px;
             text-align: center;
-            position: relative;
+            padding: 80px 20px;
         }
         
         .hero h1 {
-            font-size: 4em;
-            margin-bottom: 25px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        
-        .hero .tagline {
-            font-size: 2em;
+            font-size: 3em;
             margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.4em;
             opacity: 0.95;
-        }
-        
-        .hero .subtitle {
-            font-size: 1.3em;
-            opacity: 0.85;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .meta-note {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
-            margin: 30px auto 0 auto;
-            font-size: 1.1em;
-        }
-
-        .meta-note strong {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-        
-        /* Container */
         .container {
-            max-width: 1000px;
-            margin: -40px auto 60px auto;
+            max-width: 900px;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* iTabs Section Cards */
-        .itabs-section {
+        .content-wrapper {
             background: white;
-            border-radius: 20px;
-            padding: 0;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
+            margin: -40px auto 40px;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .itabs-section:hover {
-            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-        }
-
-        .section-banner {
-            position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 40px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .section-banner:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-        }
-
-        .section-banner h2 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            padding-right: 60px;
-        }
-
-        .section-banner p {
-            font-size: 1.3em;
-            opacity: 0.9;
-            padding-right: 60px;
-        }
-
-        .section-itabs-btn {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 26px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            border: 3px solid white;
-            z-index: 20;
-            animation: gentlePulse 3s infinite;
-        }
-
-        @keyframes gentlePulse {
-            0%, 100% {
-                box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 0 rgba(255, 255, 255, 0.7);
-            }
-            50% {
-                box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 12px rgba(255, 255, 255, 0);
-            }
-        }
-
-        .section-itabs-btn:hover {
-            transform: scale(1.15);
-            animation: none;
-            background: white;
-        }
-
-        /* Problem Grid Colors */
-        .problem-banner { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); }
-        .problem-banner:hover { background: linear-gradient(135deg, #e85555 0%, #d94a5f 100%); }
-        .problem-banner .section-itabs-btn { color: #ff6b6b; }
-
-        /* Vision Grid Colors */
-        .vision-banner { background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%); }
-        .vision-banner:hover { background: linear-gradient(135deg, #41b956 0%, #2f9c42 100%); }
-        .vision-banner .section-itabs-btn { color: #51cf66; }
-
-        /* Demo Grid Colors */
-        .demo-banner { background: linear-gradient(135deg, #ffa94d 0%, #fd7e14 100%); }
-        .demo-banner:hover { background: linear-gradient(135deg, #e99337 0%, #e66e00 100%); }
-        .demo-banner .section-itabs-btn { color: #ffa94d; }
-
-        /* Status Grid Colors */
-        .status-banner { background: linear-gradient(135deg, #339af0 0%, #1c7ed6 100%); }
-        .status-banner:hover { background: linear-gradient(135deg, #2284da 0%, #1668ba 100%); }
-        .status-banner .section-itabs-btn { color: #339af0; }
-
-        /* Founder Grid Colors */
-        .founder-banner { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); }
-        .founder-banner:hover { background: linear-gradient(135deg, #9275e4 0%, #6d28d9 100%); }
-        .founder-banner .section-itabs-btn { color: #a78bfa; }
-
-        /* Demo Examples Grid */
-        .demo-examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 40px;
-        }
-
-        .example-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .example-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-        
-        .image-container {
-            position: relative;
-            width: 100%;
-            height: 250px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .placeholder-image {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2em;
-            font-weight: 600;
-            text-align: center;
-            padding: 30px;
-        }
-        
-        .campaign-bg { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); }
-        .product-bg { background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%); }
-        .realestate-bg { background: linear-gradient(135deg, #ffa94d 0%, #fd7e14 100%); }
-        
-        .itabs-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 22px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            border: 3px solid white;
-            z-index: 20;
-        }
-        
-        .itabs-button:hover {
-            transform: scale(1.15);
-        }
-        
-        .card-content {
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .card-title {
-            font-size: 1.2em;
-            color: #2d3748;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .card-description {
-            color: #718096;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 40px;
-            border-radius: 25px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
-            margin-top: 40px;
-        }
-        
-        .cta-section h2 {
-            font-size: 2.5em;
+        h2 {
+            font-size: 2em;
+            color: #333;
+            margin-top: 50px;
             margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .cta-section p {
-            font-size: 1.3em;
-            margin-bottom: 35px;
-            opacity: 0.95;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
         }
 
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+        h2:first-of-type {
+            margin-top: 0;
         }
-        
-        .cta-button {
-            display: inline-block;
-            background: white;
+
+        h3 {
+            font-size: 1.5em;
             color: #667eea;
-            padding: 18px 40px;
-            border-radius: 50px;
-            font-size: 1.2em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #4a5568;
+            font-size: 1.1em;
+        }
+
+        .highlight-box {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .highlight-box p {
+            margin-bottom: 12px;
+        }
+
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* iTabs Button */
+        .itab-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            color: #667eea;
+            border-radius: 50%;
+            font-size: 13px;
             font-weight: bold;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            cursor: pointer;
+            margin: 0 3px;
+            border: 2px solid #667eea;
+            vertical-align: middle;
+            font-family: serif;
+            transition: all 0.3s;
+            opacity: 0.8;
         }
         
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
-        }
-
-        .cta-button.secondary {
-            background: rgba(255, 255, 255, 0.2);
+        .itab-btn:hover {
+            background: #667eea;
             color: white;
-            border: 2px solid white;
+            transform: scale(1.2);
+            opacity: 1;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
         }
 
-        .cta-button.secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Modal Popup */
-        .modal {
+        /* iTabs Popup */
+        .itab-popup {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 10000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .itab-popup.active {
+            display: flex;
         }
         
-        .modal-content {
-            position: relative;
-            background-color: white;
-            border-radius: 20px;
-            width: 90%;
+        .itab-popup-content {
+            background: white;
+            border-radius: 15px;
             max-width: 700px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             max-height: 85vh;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            animation: slideIn 0.3s ease;
-            overflow: hidden;
+            overflow-y: auto;
         }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .modal-header {
+
+        .itab-popup-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px 40px;
+            padding: 25px 35px;
+            border-radius: 15px 15px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .modal-header h3 {
+        .itab-popup-header h3 {
             margin: 0;
-            font-size: 2em;
-            padding-right: 20px;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: white;
         }
         
-        .close {
+        .itab-close {
             color: white;
-            font-size: 45px;
+            font-size: 35px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            line-height: 1;
-            width: 45px;
-            height: 45px;
+            background: none;
+            border: none;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            flex-shrink: 0;
+            transition: all 0.3s;
         }
         
-        .close:hover {
+        .itab-close:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: rotate(90deg);
         }
-        
-        .modal-body {
-            padding: 40px;
-            max-height: calc(85vh - 120px);
-            overflow-y: auto;
+
+        .itab-body {
+            padding: 30px 35px;
         }
-        
-        .modal-body h4 {
+
+        .itab-body h4 {
             color: #667eea;
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            margin-top: 30px;
+            margin-bottom: 12px;
+            margin-top: 25px;
+            font-size: 1.3em;
         }
-        
-        .modal-body h4:first-child {
+
+        .itab-body h4:first-child {
             margin-top: 0;
         }
-        
-        .modal-body p {
+
+        .itab-body p {
             color: #4a5568;
-            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .itab-body ul {
+            margin-left: 25px;
+            color: #4a5568;
             line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .itab-body li {
+            margin-bottom: 10px;
+        }
+
+        .try-it-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .try-it-box h4 {
+            color: white !important;
+            margin: 0 0 15px 0 !important;
+            font-size: 1.4em !important;
+        }
+
+        .try-it-box p {
+            color: white;
+            opacity: 0.95;
             margin-bottom: 20px;
         }
 
-        .modal-body ul {
-            margin: 20px 0 20px 30px;
-        }
-
-        .modal-body li {
-            color: #4a5568;
-            font-size: 1.05em;
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-
-        .highlight-box {
-            background: #f0f4ff;
-            border-left: 5px solid #667eea;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
-        }
-
-        .highlight-box strong {
+        .try-it-btn {
+            display: inline-block;
+            background: white;
             color: #667eea;
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
             font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .success-box {
-            background: #d4f4dd;
-            border-left: 5px solid #51cf66;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
+        .try-it-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
 
-        .warning-box {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 25px 0;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
         }
 
-        /* Mobile Responsive */
+        .stat-box {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #667eea;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5em;
-            }
-            
-            .hero .tagline {
-                font-size: 1.4em;
+                font-size: 2em;
             }
 
-            .section-banner {
-                padding: 35px 25px;
-            }
-
-            .section-banner h2 {
-                font-size: 1.8em;
-                padding-right: 70px;
-            }
-
-            .section-banner p {
+            .hero p {
                 font-size: 1.1em;
-                padding-right: 70px;
             }
 
-            .section-itabs-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 22px;
-                top: 20px;
-                right: 20px;
+            .content-wrapper {
+                padding: 30px 20px;
             }
 
-            .demo-examples {
-                grid-template-columns: 1fr;
-                padding: 25px;
-            }
-
-            .modal-body {
-                padding: 25px;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .cta-button {
-                width: 100%;
+            h2 {
+                font-size: 1.6em;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
     <div class="hero">
-        <h1>iTabs</h1>
-        <p class="tagline">The Page That Explains Itself</p>
-        <p class="subtitle">Click any "i" button below to learn more. Notice how the page stays clean while details appear on demand?</p>
-        <div class="meta-note">
-            <strong>🎯 Meta Demonstration</strong>
-            This entire page uses iTabs to explain iTabs. Every section has an "i" button - click them to see how it works in practice.
-        </div>
+        <h1>iTabs: Information Clarity for Everyone</h1>
+        <p>A working prototype solving real problems - now seeking the right technical partner to scale</p>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        
-        <!-- The Problem Section -->
-        <div class="itabs-section">
-            <div class="section-banner problem-banner" onclick="openModal('problem')">
-                <h2>The Problem</h2>
-                <p>Information overload kills decisions</p>
-                <div class="section-itabs-btn">i</div>
+        <div class="content-wrapper">
+            
+            <h2>The Problem I'm Solving</h2>
+            
+            <p>I'm Jon, a boilermaker from Perth who's spent the last year building something called iTabs. It started with a simple observation: <strong>complex information creates friction everywhere</strong>.</p>
+
+            <p>Whether you're buying automotive parts, reading government reports, or trying to understand technical documentation, confusion slows everything down. People give up, make wrong decisions, or waste hours searching for answers that should be obvious.</p>
+
+            <p>iTabs solves this: add a blue "i" button <button class="itab-btn" onclick="showPopup('what-itabs')">i</button> next to confusing terms. Click it, instantly understand. No searching, no Wikipedia rabbit holes, no giving up.</p>
+
+            <div class="highlight-box">
+                <p><strong>But here's where it gets interesting:</strong> The same system that helps humans understand also helps AI systems automate work. Information clarity benefits both.</p>
             </div>
-        </div>
 
-        <!-- The Demo Section -->
-        <div class="itabs-section">
-            <div class="section-banner demo-banner" onclick="openModal('demo')">
-                <h2>See It In Action</h2>
-                <p>Real examples you can click right now</p>
-                <div class="section-itabs-btn">i</div>
-            </div>
-            <div class="demo-examples">
-                <div class="example-card">
-                    <div class="image-container campaign-bg" onclick="openModal('campaign')">
-                        <div class="placeholder-image">Medical Campaign Photo</div>
-                        <div class="itabs-button">i</div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Crowdfunding</h3>
-                        <p class="card-description">Clean photo, full story on demand</p>
-                    </div>
+            <h2>What I've Built So Far</h2>
+
+            <h3>Working Prototypes</h3>
+
+            <p>I've created functional iTabs generators that prove the concept works:</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">Government Data Generator</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">Makes complex government reports accessible to citizens</p>
+                    <a href="https://boilermaker-innovator.github.io/itabs-Gov-Generator/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try It Live</a>
                 </div>
-
-                <div class="example-card">
-                    <div class="image-container product-bg" onclick="openModal('product')">
-                        <div class="placeholder-image">Brake Pads Product</div>
-                        <div class="itabs-button">i</div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">E-Commerce</h3>
-                        <p class="card-description">Beautiful product, specs on click</p>
-                    </div>
-                </div>
-
-                <div class="example-card">
-                    <div class="image-container realestate-bg" onclick="openModal('realestate')">
-                        <div class="placeholder-image">Family Home Photo</div>
-                        <div class="itabs-button">i</div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Real Estate</h3>
-                        <p class="card-description">Stunning photo, details revealed</p>
-                    </div>
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">General Purpose Generator</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">Create iTabs for any product, service, or content</p>
+                    <a href="https://boilermaker-innovator.github.io/Brothers-idea/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try It Live</a>
                 </div>
             </div>
-        </div>
 
-        <!-- The Vision Section -->
-        <div class="itabs-section">
-            <div class="section-banner vision-banner" onclick="openModal('vision')">
-                <h2>The Vision</h2>
-                <p>Hyperlink 2.0 for the AI age</p>
-                <div class="section-itabs-btn">i</div>
+            <h3>Real Customer Interest: Alliance AMS</h3>
+
+            <p>Gavin McGavock, director of Alliance AMS (automotive parts supplier in Perth), has a problem. His customers call confused about <button class="itab-btn" onclick="showPopup('oem-parts')">i</button> OEM parts versus <button class="itab-btn" onclick="showPopup('aftermarket')">i</button> aftermarket options. His staff spend 45 minutes manually processing each quote.</p>
+
+            <p>I showed him how iTabs could solve both problems:</p>
+
+            <ul style="margin-left: 25px; line-height: 1.8;">
+                <li><strong>Customer confusion:</strong> Blue "i" buttons explain product specifications</li>
+                <li><strong>Quote processing:</strong> Same iTabs data enables automation (45min → 30sec)</li>
+            </ul>
+
+            <p>Gavin sent me his full scope of work - what he wants to build. But he can't afford traditional development, and I'm a boilermaker building this as an AI-first founder, not a full development team.</p>
+
+            <div class="highlight-box">
+                <p><strong>The Gap:</strong> I can see what needs to be built and why it matters. I've created working prototypes. But I need technical execution help to deliver production-ready solutions.</p>
             </div>
-        </div>
 
-        <!-- Current Status Section -->
-        <div class="itabs-section">
-            <div class="section-banner status-banner" onclick="openModal('status')">
-                <h2>Current Status</h2>
-                <p>Working MVP, testing with real users</p>
-                <div class="section-itabs-btn">i</div>
+            <h2>The Civic Tech Opportunity</h2>
+
+            <p>While exploring where iTabs fits, I discovered something significant: <strong>government data accessibility</strong> is a massive problem with potential institutional support.</p>
+
+            <h3>The WA Government Data Problem</h3>
+
+            <p>In November 2024, the WA Auditor General published a report about <button class="itab-btn" onclick="showPopup('ed-data')">i</button> Emergency Department data quality. It's comprehensive, detailed, and completely inaccessible to average citizens.</p>
+
+            <p>Terms like <button class="itab-btn" onclick="showPopup('activity-funding')">i</button> "activity-based funding" and <button class="itab-btn" onclick="showPopup('data-integrity')">i</button> "data integrity issues" create barriers. Citizens never read these reports, never understand healthcare system problems, and can't participate meaningfully in solutions.</p>
+
+            <p>This is where iTabs becomes <button class="itab-btn" onclick="showPopup('civic-tech')">i</button> civic technology - making government information actually accessible to the people it affects.</p>
+
+            <h3>Perth City Council Connection</h3>
+
+            <p>Perth is investing in <a href="https://perth.wa.gov.au/building-and-planning/future-perth/investment/technology-and-innovation" target="_blank" style="color: #667eea; font-weight: 600;">technology and innovation initiatives</a>. Every council website, budget report, policy document, and development application could benefit from information clarity.</p>
+
+            <p>When citizens can actually understand what their local government is doing, engagement increases. When planning applications are clear, community feedback improves. When budget reports make sense, accountability follows.</p>
+
+            <h2>Where I Need Help</h2>
+
+            <h3>The Technical Execution Gap</h3>
+
+            <p>I'm strong at:</p>
+            <ul style="margin-left: 25px; line-height: 1.8;">
+                <li>Seeing the vision and business opportunity</li>
+                <li>Building relationships and understanding customer needs</li>
+                <li>Creating prototypes that demonstrate concepts</li>
+                <li>Using AI tools to build functional demos</li>
+            </ul>
+
+            <p>I need help with:</p>
+            <ul style="margin-left: 25px; line-height: 1.8;">
+                <li>Production-ready development and architecture</li>
+                <li>Scaling systems beyond prototypes</li>
+                <li>Technical partnerships and integrations</li>
+                <li>Building a sustainable technical foundation</li>
+            </ul>
+
+            <h3>What I'm Looking For</h3>
+
+            <p>I'm open to three paths:</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-number" style="font-size: 2em;">1</span>
+                    <span class="stat-label" style="font-size: 1em;"><strong>Technical Cofounder</strong><br>Someone who can execute the vision</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" style="font-size: 2em;">2</span>
+                    <span class="stat-label" style="font-size: 1em;"><strong>Join Existing Team</strong><br>Bring iTabs to established company</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" style="font-size: 2em;">3</span>
+                    <span class="stat-label" style="font-size: 1em;"><strong>Partnership Model</strong><br>Strategic collaboration approach</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Founder Section -->
-        <div class="itabs-section">
-            <div class="section-banner founder-banner" onclick="openModal('founder')">
-                <h2>Built By Jon Gwynne</h2>
-                <p>Boilermaker building at Riff, Spacecubed</p>
-                <div class="section-itabs-btn">i</div>
+            <h2>The Strategic Questions</h2>
+
+            <div class="highlight-box">
+                <p><strong>Market Direction:</strong> Should I focus on small business customers (like Alliance AMS) who see the value but struggle to afford development? Or pivot to civic/government applications where institutional funding exists and social impact is larger?</p>
+                
+                <p style="margin-top: 15px;"><strong>Execution Path:</strong> How do I find the right technical partner or team in Perth's startup ecosystem? What's the best way to validate and scale this without trying to build everything myself?</p>
+
+                <p style="margin-top: 15px;"><strong>Customer Relationship:</strong> Gavin at Alliance AMS trusts me (we're both practical tradespeople) but needs proper development. How do I protect this relationship while exploring partnerships and bringing in technical expertise?</p>
             </div>
-        </div>
 
-        <!-- CTA Section -->
-        <div class="cta-section">
-            <h2>Want To See More?</h2>
-            <p>Try the working generator or get in touch</p>
-            <div class="cta-buttons">
-                <a href="#" class="cta-button" onclick="alert('Add your generator URL here'); return false;">Try The Live Demo</a>
-                <a href="mailto:your.email@example.com" class="cta-button secondary">Get In Touch</a>
+            <h2>Try iTabs Yourself</h2>
+
+            <p>The prototypes work. The concept is proven. The customer interest is real. What's needed now is the right execution partner to make this sustainable and scalable.</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">Government Data</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">See how iTabs transforms complex government reports</p>
+                    <a href="https://boilermaker-innovator.github.io/itabs-Gov-Generator/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try Generator</a>
+                </div>
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">General Purpose</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">Create your own iTabs for any use case</p>
+                    <a href="https://boilermaker-innovator.github.io/Brothers-idea/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try Generator</a>
+                </div>
             </div>
-        </div>
 
+            <div class="highlight-box" style="margin-top: 40px;">
+                <p><strong>About Me:</strong> I'm Jon Gwynne, a boilermaker from Perth building iTabs as an AI-first founder. I'm connected to Spacecubed Riff and exploring Perth's startup ecosystem. If you're a technical founder interested in information clarity, civic tech, or automation - or if you know someone who might be - let's connect.</p>
+            </div>
+
+        </div>
     </div>
 
-    <!-- Modals -->
-
-    <!-- Problem Modal -->
-    <div id="problem" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>The Problem iTabs Solves</h3>
-                <span class="close" onclick="closeModal('problem')">&times;</span>
+    <!-- iTabs Popups -->
+    
+    <!-- What is iTabs -->
+    <div class="itab-popup" id="what-itabs">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>What is iTabs?</h3>
+                <button class="itab-close" onclick="closePopup('what-itabs')">&times;</button>
             </div>
-            <div class="modal-body">
-                <p><strong>People abandon purchases, donations, and decisions because they can't quickly understand what they're looking at.</strong></p>
+            <div class="itab-body">
+                <h4>Information Clarity System</h4>
+                <p>iTabs is a simple but powerful concept: add blue "i" buttons next to confusing terms, and when clicked, show clear explanations in a popup.</p>
                 
-                <h4>🛒 E-Commerce Problem</h4>
-                <p>Customer sees "NWP-B4C brake pads" - no idea if it fits their car. They leave without buying. Lost sale.</p>
-                
-                <h4>❤️ Crowdfunding Problem</h4>
-                <p>Beautiful campaign photo, but donors can't quickly see where money goes or why it's urgent. Campaign fails to reach goal.</p>
-                
-                <h4>🏠 Real Estate Problem</h4>
-                <p>Gorgeous property photos, but buyers need room sizes, renovation details, neighborhood info before booking viewing. Wasted time for everyone.</p>
-                
-                <h4>💼 Portfolio Problem</h4>
-                <p>Creative work looks great, but without context about client brief, approach, and results, it's just pretty pictures. No credibility.</p>
-
-                <div class="warning-box">
-                    <p><strong>The Current Solution Doesn't Work:</strong></p>
-                    <p>Option 1: Put all info on the image → Cluttered, ugly, nobody reads it</p>
-                    <p>Option 2: Put info in description below → People don't scroll, they click away</p>
-                    <p>Option 3: Make people click through to another page → Too many steps, they abandon</p>
-                </div>
-
-                <div class="success-box">
-                    <p><strong>iTabs Solution:</strong> Keep images beautiful. Hide details behind one simple "i" button. Information appears instantly when needed, stays hidden when not.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Demo Modal -->
-    <div id="demo" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Working Examples</h3>
-                <span class="close" onclick="closeModal('demo')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>These aren't mockups - they're real, working iTabs you can click right now.</strong></p>
-                
-                <h4>How To Test Them:</h4>
-                <ol style="margin: 20px 0 20px 30px; color: #4a5568; font-size: 1.05em; line-height: 1.8;">
-                    <li>Click the "i" button on any of the three examples below this section</li>
-                    <li>See how the detailed information appears in a clean popup</li>
-                    <li>Notice the image stays beautiful and uncluttered</li>
-                    <li>Imagine this on YOUR product, campaign, or listing</li>
-                </ol>
-
-                <div class="highlight-box">
-                    <p><strong>Key Insight:</strong> You're experiencing iTabs right now. This entire pitch page uses the same system. Every section you've clicked uses iTabs to reveal more information.</p>
-                    <p style="margin-top: 15px;">Clean headlines → Click "i" → Get details</p>
-                    <p>That's the whole concept.</p>
-                </div>
-
-                <h4>What Makes This Different?</h4>
+                <h4>Why This Matters</h4>
+                <p>Traditional solutions force you to:</p>
                 <ul>
-                    <li><strong>No coding required</strong> - Generator creates the code automatically</li>
-                    <li><strong>Works anywhere</strong> - Copy/paste onto any website</li>
-                    <li><strong>Mobile-first</strong> - Designed for phone users</li>
-                    <li><strong>AI-powered</strong> - Reads your page and writes content in 60 seconds</li>
+                    <li>Leave the page to search elsewhere</li>
+                    <li>Read through long Wikipedia articles</li>
+                    <li>Give up because "it's too technical"</li>
                 </ul>
 
-                <p style="margin-top: 25px; font-size: 1.15em; color: #667eea; font-weight: 600;">Close this popup and click the "i" buttons on the examples below to see different use cases.</p>
-            </div>
-        </div>
-    </div>
+                <p>iTabs keeps you on the page, provides just the context you need, and lets you continue reading with confidence.</p>
 
-    <!-- Campaign Modal -->
-    <div id="campaign" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Medical Emergency Fund</h3>
-                <span class="close" onclick="closeModal('campaign')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <h4>💔 What Happened</h4>
-                <p>Sarah, a single mother of two, was diagnosed with a rare heart condition requiring immediate surgery. Without insurance, the medical bills are overwhelming.</p>
-                
-                <h4>💰 Where Your Money Goes</h4>
-                <ul>
-                    <li>Surgery Costs: $45,000</li>
-                    <li>Post-Op Care: $12,000</li>
-                    <li>Medication (6 months): $8,000</li>
-                    <li>Living Expenses During Recovery: $10,000</li>
-                    <li><strong>Total Goal: $75,000</strong></li>
-                </ul>
-                
-                <h4>⏰ Why Now</h4>
-                <p>Surgery is scheduled for next month. Without upfront payment, the hospital cannot proceed. Every day we wait increases the risk of complications.</p>
-                
-                <h4>✅ Verified Campaign</h4>
-                <p>Medical records verified by GoFundMe. Hospital billing department confirmed. Direct payment to St. Mary's Medical Center.</p>
-
-                <div class="success-box">
-                    <strong>How iTabs Helps Crowdfunding:</strong>
-                    <p style="margin-top: 10px;">Campaign photo stays beautiful and emotional. All the details (budget, verification, urgency) appear when donors click "i". This increases donations by making campaigns transparent and trustworthy.</p>
-                </div>
+                <h4>The Dual Benefit</h4>
+                <p>The breakthrough is that the same structure that helps humans also helps AI systems. When information is clearly defined and structured, automation becomes possible. This is why iTabs can both educate customers AND enable quote automation.</p>
             </div>
         </div>
     </div>
 
-    <!-- Product Modal -->
-    <div id="product" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Premium Ceramic Brake Pads</h3>
-                <span class="close" onclick="closeModal('product')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <h4>🔧 What It Is</h4>
-                <p>High-performance ceramic brake pads designed for superior stopping power, reduced noise, and extended rotor life. Professional-grade quality at an affordable price.</p>
-                
-                <h4>📋 Technical Specifications</h4>
-                <ul>
-                    <li>Material: Premium ceramic composite</li>
-                    <li>Temperature Range: -40°F to 800°F</li>
-                    <li>Noise Level: Ultra-quiet operation</li>
-                    <li>Lifespan: 50,000-70,000 miles</li>
-                    <li>Warranty: 3 years / 36,000 miles</li>
-                </ul>
-                
-                <h4>🚗 Vehicle Compatibility</h4>
-                <p><strong>Fits:</strong> Toyota Camry (2018-2024), Toyota RAV4 (2019-2024), Toyota Highlander (2020-2024)</p>
-                <p><strong>Part Number:</strong> NWP-B4C-TY</p>
-                <p><strong>OEM Equivalent:</strong> Toyota 04465-06090</p>
-                
-                <h4>🛠️ Installation</h4>
-                <p>Professional installation recommended. DIY installation typically takes 1-2 hours per axle. Break-in period: 200-300 miles of normal driving.</p>
-                
-                <h4>💵 Pricing</h4>
-                <p style="font-size: 1.4em; font-weight: bold; color: #51cf66; margin-top: 15px;">$89.99 per axle set (4 pads)</p>
-                <p>Free shipping on orders over $100</p>
+            <h2>Real-World Example 2: Government Data Accessibility</h2>
 
-                <div class="success-box">
-                    <strong>How iTabs Helps E-Commerce:</strong>
-                    <p style="margin-top: 10px;">Product photo stays clean and professional. All technical details (specs, compatibility, installation) appear when customers click "i". This reduces cart abandonment and customer service calls.</p>
+            <p>In November 2024, the WA Auditor General published a report about <button class="itab-btn" onclick="showPopup('ed-data')">i</button> Emergency Department data quality. The report was comprehensive, detailed, and... completely inaccessible to the average citizen.</p>
+
+            <p>The problem wasn't the report itself - it was excellent. The problem was that citizens couldn't understand terms like <button class="itab-btn" onclick="showPopup('activity-funding')">i</button> "activity-based funding" or <button class="itab-btn" onclick="showPopup('data-integrity')">i</button> "data integrity issues." So they never read it, never understood the problems with their healthcare system, and couldn't participate in meaningful discussions about solutions.</p>
+
+            <div class="highlight-box">
+                <p><strong>The Civic Tech Connection:</strong> Government data is useless if citizens can't understand it. iTabs transforms complex reports into accessible information that anyone can engage with.</p>
+            </div>
+
+            <p>This is where iTabs becomes more than a business tool - it becomes <button class="itab-btn" onclick="showPopup('civic-tech')">i</button> civic technology. When government reports, policy documents, and public data are enhanced with iTabs, citizens can finally understand what their government is doing and why it matters.</p>
+
+            <h2>The Vision: Information Clarity Everywhere</h2>
+
+            <h3>The Fundamental Insight</h3>
+
+            <p>Every industry has the same problem: <strong>complex information creates friction</strong>. Whether you're selling automotive parts, publishing government reports, or running a small business, your customers get confused and give up.</p>
+
+            <p>iTabs solves this universally. The same system that helps Alliance AMS customers understand brake pads can help citizens understand government budgets, students understand textbooks, or patients understand medical reports.</p>
+
+            <h3>Why This Works for Both Humans and AI</h3>
+
+            <p>The breakthrough isn't just making websites easier for people - it's creating <strong>structured contextual information</strong> that both humans and AI systems can use:</p>
+
+            <ul style="margin-left: 25px; line-height: 1.8;">
+                <li><strong>Humans:</strong> Click "i" and instantly understand</li>
+                <li><strong>AI Systems:</strong> Reference iTabs data to process quotes, extract information, validate decisions</li>
+            </ul>
+
+            <p>This dual-purpose design is what enabled the 97% time savings at Alliance AMS - the same clarity that helps customers also helps automation systems.</p>
+
+            <h3>From Automotive to Civic Tech</h3>
+
+            <p>Alliance AMS proved the concept works. The question now is: where does it matter most?</p>
+
+            <p>Government and civic applications represent a massive opportunity. Every council website, policy document, budget report, and public service announcement could benefit from iTabs. When information is accessible, citizens can participate meaningfully in democracy.</p>
+
+            <h2>Try iTabs Yourself</h2>
+
+            <p>The best way to understand iTabs is to create one yourself. We've built generators for different use cases:</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">Government Data</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">Transform complex government reports into accessible information</p>
+                    <a href="https://boilermaker-innovator.github.io/itabs-Gov-Generator/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try Generator</a>
                 </div>
+                <div class="stat-box">
+                    <h4 style="color: #667eea; font-size: 1.2em; margin-bottom: 15px;">General Purpose</h4>
+                    <p style="font-size: 0.95em; margin-bottom: 15px;">Create iTabs for any product, service, or content</p>
+                    <a href="https://boilermaker-innovator.github.io/Brothers-idea/" class="try-it-btn" style="padding: 10px 20px; font-size: 0.95em;" target="_blank">Try Generator</a>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 40px;">
+                <p><strong>The Question:</strong> Should iTabs focus on small business customers like Alliance AMS, or pivot to civic technology and government applications where the social impact is larger?</p>
+                <p>Both paths are viable. Both solve real problems. The decision comes down to: where does information clarity matter most?</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- iTabs Popups -->
+    
+    <!-- OEM Parts -->
+    <div class="itab-popup" id="oem-parts">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>OEM Parts</h3>
+                <button class="itab-close" onclick="closePopup('oem-parts')">&times;</button>
+            </div>
+            <div class="itab-body">
+                <h4>What are OEM Parts?</h4>
+                <p>OEM stands for "Original Equipment Manufacturer." These are parts made by the same company that made the original parts in your vehicle when it was new.</p>
+                
+                <h4>Why Choose OEM?</h4>
+                <ul>
+                    <li><strong>Perfect Fit:</strong> Guaranteed to fit your specific vehicle model</li>
+                    <li><strong>Quality Assurance:</strong> Made to the same standards as original parts</li>
+                    <li><strong>Warranty Protection:</strong> Often required to maintain manufacturer warranty</li>
+                    <li><strong>Reliability:</strong> Proven performance and durability</li>
+                </ul>
+
+                <h4>The Tradeoff</h4>
+                <p>OEM parts typically cost more than aftermarket alternatives, but provide peace of mind and guaranteed compatibility. For critical components like brakes or engine parts, many mechanics recommend OEM.</p>
             </div>
         </div>
     </div>
 
-    <!-- Real Estate Modal -->
-    <div id="realestate" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Beautiful 3-Bedroom Family Home</h3>
-                <span class="close" onclick="closeModal('realestate')">&times;</span>
+    <!-- Aftermarket Parts -->
+    <div class="itab-popup" id="aftermarket">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Aftermarket Parts</h3>
+                <button class="itab-close" onclick="closePopup('aftermarket')">&times;</button>
             </div>
-            <div class="modal-body">
-                <h4>🏠 Property Overview</h4>
-                <p>Stunning single-family home in desirable Oak Ridge neighborhood. Move-in ready with recent upgrades throughout. Perfect for growing families.</p>
+            <div class="itab-body">
+                <h4>What are Aftermarket Parts?</h4>
+                <p>Aftermarket parts are made by companies other than your vehicle's original manufacturer. They're designed to function as replacements for OEM parts but are often available at lower prices.</p>
                 
-                <h4>📐 Room Dimensions</h4>
+                <h4>Benefits of Aftermarket</h4>
                 <ul>
-                    <li>Master Bedroom: 16' x 14' with walk-in closet and ensuite</li>
-                    <li>Bedroom 2: 12' x 11'</li>
-                    <li>Bedroom 3: 11' x 10'</li>
-                    <li>Living Room: 20' x 16' with vaulted ceiling and fireplace</li>
-                    <li>Kitchen: 14' x 12' with island and breakfast nook</li>
-                    <li>Total Square Footage: 2,150 sq ft</li>
+                    <li><strong>Cost Savings:</strong> Usually 20-50% cheaper than OEM</li>
+                    <li><strong>More Options:</strong> Multiple brands and quality levels to choose from</li>
+                    <li><strong>Performance Upgrades:</strong> Some aftermarket parts offer improved performance</li>
+                    <li><strong>Availability:</strong> Often easier to find and faster to order</li>
                 </ul>
-                
-                <h4>✨ Recent Renovations (2023-2024)</h4>
-                <ul>
-                    <li>New HVAC system (2024) - $8,500</li>
-                    <li>Renovated kitchen with granite countertops and stainless appliances</li>
-                    <li>Updated bathrooms with modern fixtures</li>
-                    <li>New hardwood floors throughout main level</li>
-                    <li>Fresh exterior paint</li>
-                    <li>New roof (2023) - 30-year warranty</li>
-                </ul>
-                
-                <h4>💡 Energy Efficiency</h4>
-                <p>Average monthly energy costs: $120-150</p>
-                <p>Features: LED lighting throughout, Energy Star appliances, excellent insulation, programmable thermostat</p>
-                
-                <h4>🏘️ Neighborhood Highlights</h4>
-                <ul>
-                    <li>Top-rated school district (Oak Ridge Elementary: 9/10 rating)</li>
-                    <li>Walk to parks, shopping, and restaurants (0.3 miles)</li>
-                    <li>Low crime rate - one of safest neighborhoods in city</li>
-                    <li>15-minute commute to downtown</li>
-                    <li>Community pool and playground</li>
-                </ul>
-                
-                <h4>💵 Pricing</h4>
-                <p style="font-size: 1.5em; font-weight: bold; color: #ffa94d; margin-top: 15px;">$425,000</p>
-                <p>Comparable homes in area selling for $440K-$460K</p>
 
-                <div class="success-box">
-                    <strong>How iTabs Helps Real Estate:</strong>
-                    <p style="margin-top: 10px;">Property photo stays stunning and showcase-worthy. All details (room sizes, renovations, neighborhood info) appear when buyers click "i". This increases viewing bookings and reduces back-and-forth questions.</p>
-                </div>
+                <h4>Quality Considerations</h4>
+                <p>Quality varies significantly between aftermarket manufacturers. Reputable brands like Bosch, Denso, or ACDelco produce excellent aftermarket parts. Budget brands may have quality concerns. Always check reviews and warranties before purchasing.</p>
             </div>
         </div>
     </div>
 
-    <!-- Vision Modal -->
-    <div id="vision" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>The Vision: Hyperlink 2.0</h3>
-                <span class="close" onclick="closeModal('vision')">&times;</span>
+    <!-- Brake Pads -->
+    <div class="itab-popup" id="brake-pads">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Brake Pad Specifications</h3>
+                <button class="itab-close" onclick="closePopup('brake-pads')">&times;</button>
             </div>
-            <div class="modal-body">
-                <p><strong>The hyperlink transformed the internet by connecting text to more information.</strong></p>
-                <p><strong>iTabs does the same for images</strong> - connecting visual content to detailed context that travels with the image everywhere it's shared.</p>
+            <div class="itab-body">
+                <h4>Understanding Brake Pad Specs</h4>
+                <p>Brake pads seem simple, but specifications matter for safety and performance. Here's what you need to know:</p>
                 
-                <h4>🌐 Any Industry</h4>
+                <h4>Key Specifications</h4>
                 <ul>
-                    <li><strong>E-commerce:</strong> Product catalogs with confusing codes/specs</li>
-                    <li><strong>Crowdfunding:</strong> Campaigns needing transparency and urgency</li>
-                    <li><strong>Real Estate:</strong> Property listings requiring room sizes and details</li>
-                    <li><strong>Education:</strong> Training materials with step-by-step instructions</li>
-                    <li><strong>Healthcare:</strong> Medical procedures explained simply</li>
-                    <li><strong>Portfolios:</strong> Creative work needing context and results</li>
-                    <li><strong>Workplace Safety:</strong> Equipment with operating instructions</li>
+                    <li><strong>Material Type:</strong> Ceramic (quiet, clean), Semi-Metallic (performance), Organic (budget-friendly)</li>
+                    <li><strong>Friction Rating:</strong> Higher = better stopping power (look for FF or GG ratings)</li>
+                    <li><strong>Operating Temperature:</strong> Must match your driving style (city vs highway vs performance)</li>
+                    <li><strong>Wear Indicators:</strong> Metal tabs that squeal when pads need replacement</li>
                 </ul>
 
-                <h4>🤖 Built For The AI Age</h4>
-                <p>AI systems need structured, verified information to provide accurate answers. iTabs creates machine-readable context that AI can understand and cite.</p>
-                <p style="margin-top: 15px;">Instead of AI hallucinating product details or campaign goals, it can read verified iTabs data and give accurate information to users.</p>
+                <h4>What Matters Most</h4>
+                <p>For everyday driving, ceramic pads offer the best balance of quiet operation, minimal dust, and reliable stopping. For performance or towing, semi-metallic pads handle higher temperatures better. Always match brake pad specifications to your vehicle's requirements.</p>
 
-                <div class="highlight-box">
-                    <strong>The Bigger Mission:</strong>
-                    <p style="margin-top: 10px;">Bringing truth and accountability to online content. When information is structured and verifiable, trust increases. When trust increases, transactions happen.</p>
-                    <p style="margin-top: 10px;">This levels the playing field - giving small businesses and everyday people the same communication power as large corporations.</p>
-                </div>
-
-                <h4>⚡ What Makes It Work</h4>
-                <ul>
-                    <li><strong>AI-Powered:</strong> Reads your page, writes content automatically in 60 seconds</li>
-                    <li><strong>No Coding:</strong> Generator creates production-ready code</li>
-                    <li><strong>Works Everywhere:</strong> Any website, any platform, any device</li>
-                    <li><strong>Mobile-First:</strong> Designed for how people actually browse</li>
-                    <li><strong>Instant Setup:</strong> Paste URL → Get code → Deploy in minutes</li>
-                </ul>
-
-                <h4>🚀 The Path Forward</h4>
-                <p>Start with crowdfunding and e-commerce (clear, immediate value). Prove the model works. Then expand to education, healthcare, real estate, and beyond.</p>
-                <p style="margin-top: 15px;">Eventually: iTabs becomes as common as hyperlinks. Every image online has the option to include structured information. The web becomes more transparent, more trustworthy, more accessible.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Status Modal -->
-    <div id="status" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Current Status & Next Steps</h3>
-                <span class="close" onclick="closeModal('status')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>This isn't just an idea - it's a working product being tested in the real world.</strong></p>
-                
-                <h4>✅ What's Built (Working MVP)</h4>
-                <ul>
-                    <li><strong>AI Generator:</strong> Paste any URL, get working iTabs code in 60 seconds</li>
-                    <li><strong>Multiple Examples:</strong> Crowdfunding, e-commerce, real estate demonstrated</li>
-                    <li><strong>Production-Ready Code:</strong> Copy/paste deployment to any website</li>
-                    <li><strong>Mobile Responsive:</strong> Works perfectly on phones and tablets</li>
-                    <li><strong>This Pitch Page:</strong> Meta-demonstration of iTabs explaining itself</li>
-                </ul>
-
-                <h4>🎯 Current Testing Focus</h4>
-                <ul>
-                    <li><strong>Crowdfunding Campaigns:</strong> GoFundMe, Kickstarter, Birchal platforms</li>
-                    <li><strong>Perth Market:</strong> Starting local with automotive suppliers and small businesses</li>
-                    <li><strong>User Feedback:</strong> Watching real users create and deploy iTabs</li>
-                    <li><strong>Iteration:</strong> Improving generator based on what people actually need</li>
-                </ul>
-
-                <div class="highlight-box">
-                    <strong>Key Learning So Far:</strong>
-                    <p style="margin-top: 10px;">People "get it" instantly when they click an iTabs. The challenge isn't explaining the concept - it's getting in front of the right users who have the problem it solves.</p>
-                </div>
-
-                <h4>🤔 Questions I'm Working Through</h4>
-                <ul>
-                    <li><strong>Best Entry Market:</strong> Crowdfunding vs. e-commerce vs. real estate?</li>
-                    <li><strong>Business Model:</strong> Freemium? SaaS subscription? One-time fee?</li>
-                    <li><strong>Go-to-Market:</strong> Which channels and messaging resonate?</li>
-                    <li><strong>Technical Scaling:</strong> Infrastructure needed for 1000+ users?</li>
-                    <li><strong>Team Building:</strong> What skills do I need in a co-founder?</li>
-                </ul>
-
-                <h4>🚀 What I'm Looking For</h4>
-                <ul>
-                    <li><strong>Testing Partners:</strong> People who will actually use iTabs and give honest feedback</li>
-                    <li><strong>Guidance:</strong> People who've launched SaaS products before</li>
-                    <li><strong>Connections:</strong> Introductions to potential users or partners</li>
-                    <li><strong>Perspective:</strong> Challenge my assumptions, show me blind spots</li>
-                </ul>
-
-                <div class="warning-box">
-                    <strong>Current Reality:</strong>
-                    <p style="margin-top: 10px;">This is a side project built while working full-time as a boilermaker. I'm at Riff (Spacecubed) to connect with people who can help me figure out the next steps. I don't have all the answers - I'm testing, learning, and iterating.</p>
+                <div class="try-it-box">
+                    <h4>See Alliance AMS Example</h4>
+                    <p>Want to see how iTabs helps automotive customers?</p>
+                    <p style="font-size: 0.9em; opacity: 0.85; margin-bottom: 20px;">Live demo coming soon - this is the system that saved Alliance AMS 97% on quote processing time</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Founder Modal -->
-    <div id="founder" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>About Jon Gwynne</h3>
-                <span class="close" onclick="closeModal('founder')">&times;</span>
+    <!-- ED Data -->
+    <div class="itab-popup" id="ed-data">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Emergency Department Data Quality</h3>
+                <button class="itab-close" onclick="closePopup('ed-data')">&times;</button>
             </div>
-            <div class="modal-body">
-                <h4>👷 Background</h4>
-                <p>Boilermaker and workshop worker in Perth, Western Australia. Firsthand experience with confusing information systems in blue-collar work environments.</p>
+            <div class="itab-body">
+                <h4>What Does This Mean?</h4>
+                <p>Emergency Department (ED) data quality refers to how accurate, complete, and reliable the information hospitals collect about patient visits, wait times, treatments, and outcomes is.</p>
                 
-                <h4>💡 The Origin Story</h4>
-                <p>Worked in automotive parts supply and saw customers abandon purchases daily because they couldn't understand product codes. Saw crowdfunding campaigns fail because the full story wasn't immediately visible. Realized the problem wasn't lack of information - it was presentation.</p>
-                <p style="margin-top: 15px;">"Beautiful images everywhere. Important details hidden in walls of text. Nobody wins."</p>
+                <h4>Why It Matters to You</h4>
+                <ul>
+                    <li><strong>Wait Time Accuracy:</strong> Poor data means you can't trust published ED wait times</li>
+                    <li><strong>Funding Decisions:</strong> Government uses this data to decide which hospitals get more money</li>
+                    <li><strong>Performance Tracking:</strong> Can't improve what you can't measure accurately</li>
+                    <li><strong>Patient Safety:</strong> Incomplete records can affect care quality</li>
+                </ul>
 
-                <h4>🛠️ The Build</h4>
-                <p>Taught myself to work with AI tools while working full-time. Used AI to build what I couldn't code myself. Focused on solving one clear problem: make confusing information instantly clear without cluttering the visual.</p>
-                <p style="margin-top: 15px;">Built iTabs generator that uses AI to read any page and create working popups in 60 seconds. No coding required. Works on any website.</p>
+                <h4>The WA Problem</h4>
+                <p>The Auditor General found that WA hospital data systems have had quality issues for over a decade. Old computer systems, inconsistent data entry, and missing information mean the data can't be fully trusted for making important health system decisions.</p>
 
-                <h4>🎯 The Mission</h4>
-                <p><strong>"Bringing truth and accountability for the blue-collar working class."</strong></p>
-                <p style="margin-top: 15px;">Background in trades gave me perspective that tech founders often miss. Poor communication costs working people time and money. Confusing product codes, unclear campaign goals, hidden fees - these aren't minor annoyances. They're barriers that keep everyday people from making informed decisions.</p>
-                <p style="margin-top: 15px;">iTabs levels the playing field. Gives small businesses and individual fundraisers the same communication power as corporations. Makes information transparent and accessible.</p>
-
-                <div class="highlight-box">
-                    <strong>The "Aha" Moment:</strong>
-                    <p style="margin-top: 10px;">"Everyone who sees iTabs says 'why didn't I think of that?' That's when I knew I was onto something. The best ideas feel obvious in retrospect."</p>
+                <div class="try-it-box">
+                    <h4>Try the Government Data Generator</h4>
+                    <p>See how iTabs makes complex government reports accessible to everyone</p>
+                    <a href="https://boilermaker-innovator.github.io/itabs-Gov-Generator/" class="try-it-btn" target="_blank">Try It Now</a>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <h4>📍 Current Status</h4>
-                <p>Building at Riff (Spacecubed coworking space) in Perth. Testing MVP with real users. Working full-time while developing iTabs on nights and weekends.</p>
-                <p style="margin-top: 15px;">Looking for guidance on go-to-market strategy, potential co-founder who can help scale the technical and business side, and connections to users who have the problem iTabs solves.</p>
+    <!-- Activity-Based Funding -->
+    <div class="itab-popup" id="activity-funding">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Activity-Based Funding</h3>
+                <button class="itab-close" onclick="closePopup('activity-funding')">&times;</button>
+            </div>
+            <div class="itab-body">
+                <h4>Simple Explanation</h4>
+                <p>Activity-based funding means hospitals get paid based on what they actually do - how many patients they treat, what procedures they perform, and how complex the cases are - rather than getting a fixed annual budget.</p>
+                
+                <h4>How It Works</h4>
+                <p>Think of it like paying a tradesperson:</p>
+                <ul>
+                    <li><strong>Old Way (Block Funding):</strong> Pay the plumber $50,000 per year no matter how many jobs they do</li>
+                    <li><strong>New Way (Activity-Based):</strong> Pay the plumber per job - $500 for a simple tap fix, $5,000 for a full bathroom renovation</li>
+                </ul>
 
-                <h4>🤝 Why I'm Sharing This</h4>
-                <p>I don't have all the answers. I'm a tradesperson who built a working product and can see the potential, but I need help figuring out the path from MVP to real business.</p>
-                <p style="margin-top: 15px;">If you've been through this journey before, or if you know people who are dealing with the problems iTabs solves, I'd love to connect.</p>
+                <h4>Why This Requires Good Data</h4>
+                <p>Hospitals must accurately record every service to get paid correctly. Poor data quality means hospitals might not receive the funding they deserve, or the government can't verify if taxpayer money is being spent appropriately.</p>
+            </div>
+        </div>
+    </div>
 
-                <div class="success-box">
-                    <strong>Contact:</strong>
-                    <p style="margin-top: 10px;">Email: your.email@example.com</p>
-                    <p>Based: Perth, Western Australia</p>
-                    <p>Working from: Riff, Spacecubed</p>
-                </div>
+    <!-- Data Integrity -->
+    <div class="itab-popup" id="data-integrity">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Data Integrity Issues</h3>
+                <button class="itab-close" onclick="closePopup('data-integrity')">&times;</button>
+            </div>
+            <div class="itab-body">
+                <h4>What Does This Mean?</h4>
+                <p>Data integrity means the information in computer systems is accurate, complete, and trustworthy. "Integrity issues" means you can't fully trust the data because of errors, missing information, or inconsistencies.</p>
+                
+                <h4>Examples in Healthcare</h4>
+                <ul>
+                    <li>Patient arrival time recorded as 9:00am, but nurse notes say 8:30am</li>
+                    <li>Diagnosis field left blank in computer records</li>
+                    <li>Wait time showing 15 minutes when patient actually waited 2 hours</li>
+                    <li>Same patient data entered differently across multiple systems</li>
+                </ul>
+
+                <h4>The Impact</h4>
+                <p>When data integrity is poor, you can't:</p>
+                <ul>
+                    <li>Trust hospital performance reports</li>
+                    <li>Make informed decisions about where to go for care</li>
+                    <li>Hold healthcare providers accountable</li>
+                    <li>Identify where improvements are most needed</li>
+                </ul>
+
+                <p>This is why the Auditor General's report matters - it's calling for WA Health to fix these fundamental data problems.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Civic Tech -->
+    <div class="itab-popup" id="civic-tech">
+        <div class="itab-popup-content">
+            <div class="itab-popup-header">
+                <h3>Civic Technology</h3>
+                <button class="itab-close" onclick="closePopup('civic-tech')">&times;</button>
+            </div>
+            <div class="itab-body">
+                <h4>What is Civic Tech?</h4>
+                <p>Civic technology uses digital tools to improve how citizens interact with government, understand public policy, and participate in democracy. It's technology that empowers people to engage with their communities and government more effectively.</p>
+                
+                <h4>Real Examples</h4>
+                <ul>
+                    <li><strong>Budget Transparency Tools:</strong> Visualize where tax money goes</li>
+                    <li><strong>Service Request Apps:</strong> Report potholes or broken streetlights to council</li>
+                    <li><strong>Open Data Platforms:</strong> Access government data in usable formats</li>
+                    <li><strong>Digital Participation:</strong> Comment on proposed policies and developments</li>
+                </ul>
+
+                <h4>Why iTabs is Civic Tech</h4>
+                <p>Most government information is technically public but practically inaccessible due to jargon and complexity. iTabs removes this barrier by making government reports, policies, and data understandable to everyone - not just experts.</p>
+
+                <p>When citizens can actually understand what their government is doing, they can participate meaningfully in democratic processes. That's what civic technology is all about.</p>
             </div>
         </div>
     </div>
 
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            document.body.style.overflow = 'hidden';
+        function showPopup(id) {
+            document.getElementById(id).classList.add('active');
         }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-            document.body.style.overflow = 'auto';
+
+        function closePopup(id) {
+            document.getElementById(id).classList.remove('active');
         }
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modals = document.getElementsByClassName('modal');
-            for (let modal of modals) {
-                if (event.target == modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('itab-popup')) {
+                e.target.classList.remove('active');
             }
-        }
-        
-        // Keyboard navigation (ESC to close)
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const modals = document.getElementsByClassName('modal');
-                for (let modal of modals) {
-                    if (modal.classList.contains('active')) {
-                        modal.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                    }
-                }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.itab-popup.active').forEach(popup => {
+                    popup.classList.remove('active');
+                });
             }
         });
     </script>
