@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTabs: Free Platform for Information Clarity</title>
+    <title>iTabs - Coming Soon! 🚀</title>
     <style>
         * {
             margin: 0;
@@ -12,432 +11,369 @@
             box-sizing: border-box;
         }
 
-```
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-        line-height: 1.8;
-        color: #333;
-        background: #f8f9fa;
-    }
-
-    .hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-align: center;
-        padding: 80px 20px;
-    }
-    
-    .hero h1 {
-        font-size: 3em;
-        margin-bottom: 20px;
-        font-weight: 700;
-    }
-    
-    .hero p {
-        font-size: 1.4em;
-        opacity: 0.95;
-        max-width: 800px;
-        margin: 0 auto 15px;
-    }
-
-    .hero-badge {
-        display: inline-block;
-        background: rgba(255,255,255,0.2);
-        padding: 10px 20px;
-        border-radius: 25px;
-        font-size: 1em;
-        font-weight: 600;
-        margin-top: 10px;
-    }
-
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .content-wrapper {
-        background: white;
-        margin: -40px auto 40px;
-        padding: 50px;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-        font-size: 2em;
-        color: #333;
-        margin-top: 50px;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 3px solid #667eea;
-    }
-
-    h2:first-of-type {
-        margin-top: 0;
-    }
-
-    h3 {
-        font-size: 1.5em;
-        color: #667eea;
-        margin-top: 30px;
-        margin-bottom: 15px;
-    }
-
-    p {
-        margin-bottom: 20px;
-        line-height: 1.8;
-        color: #4a5568;
-        font-size: 1.1em;
-    }
-
-    .highlight-box {
-        background: #f0f4ff;
-        padding: 25px;
-        border-radius: 8px;
-        margin: 25px 0;
-        border-left: 4px solid #667eea;
-    }
-
-    .highlight-box p {
-        margin-bottom: 12px;
-    }
-
-    .highlight-box p:last-child {
-        margin-bottom: 0;
-    }
-
-    .open-box {
-        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 10px;
-        margin: 30px 0;
-        text-align: center;
-    }
-
-    .open-box h3 {
-        color: white;
-        margin: 0 0 15px 0;
-        font-size: 1.8em;
-    }
-
-    .open-box p {
-        color: white;
-        opacity: 0.95;
-        margin-bottom: 0;
-        font-size: 1.15em;
-    }
-
-    strong {
-        color: #667eea;
-        font-weight: 600;
-    }
-
-    ul {
-        margin-left: 25px;
-        line-height: 1.8;
-        margin-bottom: 20px;
-    }
-
-    li {
-        margin-bottom: 10px;
-        color: #4a5568;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin: 30px 0;
-    }
-
-    .stat-box {
-        background: #f0f4ff;
-        padding: 25px;
-        border-radius: 8px;
-        text-align: center;
-        border: 2px solid #667eea;
-    }
-
-    .stat-number {
-        font-size: 2.5em;
-        color: #667eea;
-        font-weight: bold;
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .stat-label {
-        color: #4a5568;
-        font-size: 1em;
-        line-height: 1.5;
-    }
-
-    .phase-box {
-        background: white;
-        border: 2px solid #667eea;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-
-    .phase-box h4 {
-        color: #667eea;
-        margin-bottom: 10px;
-        font-size: 1.3em;
-    }
-
-    .phase-number {
-        display: inline-block;
-        background: #667eea;
-        color: white;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 35px;
-        font-weight: bold;
-        margin-right: 10px;
-    }
-
-    .try-button {
-        display: inline-block;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 40px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.2em;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        margin: 10px 10px 10px 0;
-    }
-
-    .try-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-
-    .demo-section {
-        text-align: center;
-        margin: 40px 0;
-        padding: 40px;
-        background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
-        border-radius: 12px;
-    }
-
-    .demo-section h3 {
-        color: #667eea;
-        font-size: 2em;
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .hero h1 {
-            font-size: 2em;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .hero p {
+        .container {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Animated background elements */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: white;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: white;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 5s;
+        }
+
+        .circle-3 {
+            width: 150px;
+            height: 150px;
+            background: white;
+            top: 50%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        .logo {
+            font-size: 6em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            color: white;
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.8em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .preview-text {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Email signup form */
+        .notify-form {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 40px auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .notify-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 50px;
             font-size: 1.1em;
+            outline: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .content-wrapper {
-            padding: 30px 20px;
+        .notify-form button {
+            padding: 18px 40px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        h2 {
-            font-size: 1.6em;
+        .notify-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
-        .stats-grid {
-            grid-template-columns: 1fr;
+        .countdown {
+            color: white;
+            font-size: 1.2em;
+            margin-top: 30px;
+            opacity: 0.9;
         }
-    }
-</style>
-```
 
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .logo {
+                font-size: 4em;
+            }
+
+            .subtitle {
+                font-size: 1.3em;
+            }
+
+            .preview-text {
+                font-size: 1.1em;
+            }
+
+            .notify-form input,
+            .notify-form button {
+                min-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>iTabs: Free Generator Platform</h1>
-        <p>Create information clarity anywhere - You own your data, your content, your code</p>
-        <div class="hero-badge">✨ Open Platform • No Lock-in • Copy Freely</div>
-    </div>
+    <!-- Animated background circles -->
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+    <div class="bg-circle circle-3"></div>
 
-```
-<div class="container">
-    <div class="content-wrapper">
+    <div class="container">
+        <div class="logo">🎯</div>
+        <h1>iTabs</h1>
+        <p class="subtitle">Transform Confusion into Clarity</p>
         
-        <h2>The Problem Everyone Has</h2>
-        
-        <p>I'm Jon, a boilermaker from Perth. I noticed something: <strong>complex information stops people everywhere</strong>.</p>
-
-        <p>When you're reading about government policy, buying technical products, or learning something new - you hit a confusing term and give up. You either waste time searching Google, or you just move on without understanding.</p>
-
-        <p>iTabs solves this simply: a blue "i" button next to confusing terms. Click it, get a clear explanation. That's it.</p>
-
-        <div class="highlight-box">
-            <p><strong>The Breakthrough:</strong> I was trying to build custom solutions for specific customers. Then I realized - why not just create a <strong>free generator</strong> that makes the code, and let anyone use it however they want?</p>
+        <div class="preview-text">
+            🚀 <strong>Launching Soon!</strong> The simple tool that turns boring product pages into interactive experiences. No coding required. Just upload, generate, and watch your conversions soar.
         </div>
 
-        <h2>How It Works (3 Steps)</h2>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-number">1</span>
-                <span class="stat-label"><strong>Fill Form</strong><br>Add your content</span>
+        <!-- Demo iTabs -->
+        <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-width: 500px; margin: 40px auto;">
+            <div style="position: relative; width: 100%; height: 350px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div style="position: relative; width: 100%; height: 100%; overflow: hidden;">
+                    <div id="itabsTrack" style="display: flex; transition: transform 0.4s ease; height: 100%;">
+                        <!-- Slide 1 -->
+                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div style="text-align: center; color: white; padding: 40px;">
+                                <div style="font-size: 5em; margin-bottom: 20px;">🎨</div>
+                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Beautiful</h3>
+                                <p style="font-size: 1.3em; opacity: 0.95;">Make products instantly understandable</p>
+                            </div>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; font-size: 20px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); padding: 15px; z-index: 10; text-align: center; width: 90%; background: rgba(0,0,0,0.3); border-radius: 15px; backdrop-filter: blur(10px);">
+                                👆 Click the "i" to see the magic
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2 -->
+                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                            <div style="text-align: center; color: white; padding: 40px;">
+                                <div style="font-size: 5em; margin-bottom: 20px;">⚡</div>
+                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Fast</h3>
+                                <p style="font-size: 1.3em; opacity: 0.95;">5 minutes from start to live</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 3 -->
+                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);">
+                            <div style="text-align: center; color: white; padding: 40px;">
+                                <div style="font-size: 5em; margin-bottom: 20px;">🤖</div>
+                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Smart</h3>
+                                <p style="font-size: 1.3em; opacity: 0.95;">AI writes everything for you</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Dots -->
+                <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 15;">
+                    <div class="itabs-dot" data-slide="0" style="width: 12px; height: 12px; border-radius: 50%; background: white; cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
+                    <div class="itabs-dot" data-slide="1" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
+                    <div class="itabs-dot" data-slide="2" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
+                </div>
+                
+                <!-- Counter -->
+                <div id="itabsCounter" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 8px 15px; border-radius: 20px; font-size: 16px; font-weight: bold; z-index: 15;">1/3</div>
+                
+                <!-- Info Button -->
+                <div style="position: absolute; top: 20px; right: 20px; width: 55px; height: 55px; background: rgba(255,255,255,0.95); color: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 6px 25px rgba(0,0,0,0.3); border: 4px solid white; z-index: 20; animation: pulse 2s infinite;" onclick="document.getElementById('itabsPopup').style.display='flex'">i</div>
             </div>
-            <div class="stat-box">
-                <span class="stat-number">2</span>
-                <span class="stat-label"><strong>Generate</strong><br>Get complete code</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">3</span>
-                <span class="stat-label"><strong>Use It</strong><br>Paste anywhere</span>
-            </div>
-        </div>
-
-        <p><strong>You own everything:</strong></p>
-        <ul>
-            <li>Your data (we never store it)</li>
-            <li>Your content (you created it)</li>
-            <li>Your code (modify it, sell it, do whatever you want)</li>
-            <li>Your hosting (works on any website)</li>
-        </ul>
-
-        <div class="open-box">
-            <h3>🌍 Deliberately Open</h3>
-            <p>Copy it. Improve it. Build on it. I WANT people to copy iTabs. The goal is information clarity everywhere, not protecting a business model.</p>
-        </div>
-
-        <h2>Why This Makes Sense</h2>
-
-        <h3>Plays to My Strengths</h3>
-
-        <p>I'm a "big picture" guy. I see the vision, build prototypes, make connections. But I don't want to run infrastructure or do custom development for clients.</p>
-
-        <p><strong>Free generator platform works because:</strong></p>
-        <ul>
-            <li>Build once, everyone benefits</li>
-            <li>No support burden (users own their code)</li>
-            <li>No infrastructure costs (users host their own)</li>
-            <li>Focus on improving the generator, not managing accounts</li>
-        </ul>
-
-        <h3>Copying Actually Helps</h3>
-
-        <p>Most businesses fight copycats. For iTabs, more copies means more success:</p>
-        <ul>
-            <li>More websites get clearer information</li>
-            <li>iTabs becomes standard, like QR codes</li>
-            <li>Familiarity creates more adoption</li>
-            <li>Compete on quality, not scarcity</li>
-        </ul>
-
-        <div class="highlight-box">
-            <p><strong>Like QR codes:</strong> They're everywhere because anyone can generate them freely. If they needed accounts and subscriptions, nobody would use them.</p>
-        </div>
-
-        <h2>Where People Can Use This</h2>
-
-        <h3>Online Stores</h3>
-        <p>Add iTabs to product images explaining technical specs. Perfect for automotive parts, electronics, medical supplies - anything complex.</p>
-
-        <h3>Content Creators</h3>
-        <p>YouTube thumbnails with iTabs showing video highlights, sponsor info, chapter links, resources.</p>
-
-        <h3>Government & Education</h3>
-        <p>Make budget reports, policy documents, and learning materials actually understandable. <a href="https://perth.wa.gov.au/building-and-planning/future-perth/investment/technology-and-innovation" target="_blank" style="color: #667eea; font-weight: 600;">Perth City Council is investing in innovation</a> - this fits.</p>
-
-        <h3>Mobile Mini-Websites</h3>
-        <p>Business cards, event flyers, product packaging - QR code leads to iTabs with all the details optimized for phones.</p>
-
-        <h2>Start Simple, Grow Later</h2>
-
-        <div class="phase-box">
-            <h4><span class="phase-number">1</span>Now: Free Generator</h4>
-            <p>Form creates code. Users paste anywhere. Minimal hosting costs. Proves concept.</p>
-        </div>
-
-        <div class="phase-box">
-            <h4><span class="phase-number">2</span>Later: Premium Features</h4>
-            <p>Optional: save/manage iTabs, analytics, templates. Basic generator stays free forever.</p>
-        </div>
-
-        <div class="phase-box">
-            <h4><span class="phase-number">3</span>Future: Platform Ecosystem</h4>
-            <p>WordPress plugin, Shopify app, browser extensions, developer API, community marketplace.</p>
-        </div>
-
-        <h2>What I Need Help With</h2>
-
-        <p>I've built working prototypes. Concept proven. But I'm a boilermaker, not a software company. I need:</p>
-
-        <ul>
-            <li><strong>Technical execution:</strong> Production-quality generators</li>
-            <li><strong>Platform development:</strong> Building phases 2 and 3</li>
-            <li><strong>Growth strategy:</strong> Reaching the right users</li>
-        </ul>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <h4 style="color: #667eea; margin-bottom: 10px;">Technical Cofounder</h4>
-                <p style="font-size: 0.95em;">Execute the vision, keep it simple and open</p>
-            </div>
-            <div class="stat-box">
-                <h4 style="color: #667eea; margin-bottom: 10px;">Join a Team</h4>
-                <p style="font-size: 0.95em;">Bring iTabs to established company</p>
-            </div>
-            <div class="stat-box">
-                <h4 style="color: #667eea; margin-bottom: 10px;">Advisor/Mentor</h4>
-                <p style="font-size: 0.95em;">Strategic guidance on platform and ecosystem</p>
-            </div>
-        </div>
-
-        <h2>Try It Now</h2>
-
-        <p>Working prototypes. Not perfect, but they work. Fill form, generate code, paste anywhere.</p>
-
-        <div class="demo-section">
-            <h3>🔧 Create Your iTabs</h3>
-            <p style="color: #4a5568; margin-bottom: 25px;">No signup. No cost. Just generate and use.</p>
-            <a href="https://boilermaker-innovator.github.io/itabs-Gov-Generator/" class="try-button" target="_blank">Government Data</a>
-            <a href="https://boilermaker-innovator.github.io/Brothers-idea/" class="try-button" target="_blank">General Purpose</a>
-        </div>
-
-        <h2>Key Questions</h2>
-
-        <div class="highlight-box">
-            <p><strong>Is this the right approach?</strong></p>
             
-            <p style="margin-top: 15px;"><strong>Why I think yes:</strong></p>
-            <ul>
-                <li>Matches my strengths (vision) not weaknesses (operations)</li>
-                <li>Low operating costs (no user data hosting)</li>
-                <li>Naturally viral (free, open, copy-friendly)</li>
-                <li>Multiple future revenue paths</li>
-                <li>Real social good (clarity helps everyone)</li>
-            </ul>
-
-            <p style="margin-top: 15px;"><strong>What I'm uncertain about:</strong></p>
-            <ul>
-                <li>Can an open platform differentiate enough to matter?</li>
-                <li>Where do I find the right technical partner?</li>
-                <li>Focus on one use case or stay general?</li>
-                <li>Is Perth the right ecosystem for this?</li>
-            </ul>
+            <div style="padding: 30px; text-align: center; background: white;">
+                <h3 style="font-size: 1.6em; color: #2d3748; margin-bottom: 10px; font-weight: 700;">See How It Works</h3>
+                <p style="color: #718096; font-size: 1.1em; line-height: 1.6;">This IS iTabs! Swipe through, click the "i", experience the future of product displays.</p>
+            </div>
         </div>
 
-        <div class="open-box" style="margin-top: 40px;">
-            <h3>About Me</h3>
-            <p>Jon Gwynne, boilermaker from Perth building iTabs. Connected to Spacecubed Riff, exploring Perth's startup ecosystem. Interested in open platforms and information accessibility.</p>
+        <!-- Popup -->
+        <div id="itabsPopup" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px;">
+            <div style="position: relative; background-color: white; border-radius: 20px; width: 90%; max-width: 650px; max-height: 85vh; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 35px; display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 2em; font-weight: 800;">🎯 Welcome to iTabs!</h3>
+                    <button onclick="document.getElementById('itabsPopup').style.display='none'" style="color: white; font-size: 45px; font-weight: bold; cursor: pointer; background: none; border: none; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: transform 0.2s;">&times;</button>
+                </div>
+                <div style="padding: 40px; max-height: calc(85vh - 140px); overflow-y: auto;">
+                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; font-weight: 700;">What You Just Experienced</h4>
+                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">That smooth image carousel with the clickable blue "i" button? That's iTabs. You just experienced what your customers will experience on YOUR products. No more confusion. No more lost sales. Just instant clarity.</p>
+
+                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">Why This Changes Everything</h4>
+                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">Your product images alone aren't converting. Customers see your products but don't understand them. They have questions. They leave. You lose money. iTabs puts all the answers right where customers need them - inside a beautiful popup that appears with one click. Clear information = confident buyers = more sales.</p>
+
+                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">How Simple It Is</h4>
+                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">Upload your product images. Let AI write the descriptions. Copy the code. Paste it anywhere - Shopify, WooCommerce, WordPress, your own site. Takes 5 minutes. Works forever. That's it. No developer needed. No monthly fees. Just results.</p>
+
+                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">When Can You Get It?</h4>
+                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 10px;"><strong>We're launching VERY soon.</strong> Join the waitlist below and you'll be first to know. First 100 people get special launch pricing. This page you're reading? Built with iTabs. Because the best way to show you what iTabs does... is to let you experience it.</p>
+
+                    <div style="background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); padding: 25px; border-radius: 15px; margin-top: 30px; text-align: center;">
+                        <p style="color: white; font-size: 1.2em; margin: 0; font-weight: 600;">💡 You're literally using the product right now. Cool, right?</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Email Signup -->
+        <form class="notify-form" onsubmit="handleSubmit(event)">
+            <input type="email" id="emailInput" placeholder="your@email.com" required>
+            <button type="submit">Notify Me! 🚀</button>
+        </form>
+
+        <p class="countdown">⏰ First 100 people get launch day pricing</p>
+
+        <div style="margin-top: 50px; color: rgba(255,255,255,0.8); font-size: 1.1em;">
+            <p>Questions? Email <a href="mailto:responses@itabs.ai" style="color: white; font-weight: bold; text-decoration: none;">hello@itabs.ai</a></p>
+        </div>
     </div>
-</div>
-```
+
+    <script>
+        // iTabs Carousel Functionality
+        var itabsCurrentSlide = 0;
+        var itabsTotalSlides = 3;
+        var itabsTouchStartX = 0;
+        var itabsTouchEndX = 0;
+
+        function itabsGoToSlide(index) {
+            itabsCurrentSlide = index;
+            itabsUpdateCarousel();
+        }
+
+        function itabsUpdateCarousel() {
+            var track = document.getElementById('itabsTrack');
+            var counter = document.getElementById('itabsCounter');
+            var dots = document.querySelectorAll('.itabs-dot');
+            
+            track.style.transform = 'translateX(-' + (itabsCurrentSlide * 100) + '%)';
+            if (counter) counter.textContent = (itabsCurrentSlide + 1) + '/' + itabsTotalSlides;
+            
+            dots.forEach(function(dot, index) {
+                dot.style.background = index === itabsCurrentSlide ? 'white' : 'rgba(255,255,255,0.5)';
+            });
+        }
+
+        // Touch swipe navigation
+        var trackElement = document.getElementById('itabsTrack');
+        if (trackElement) {
+            trackElement.addEventListener('touchstart', function(e) {
+                itabsTouchStartX = e.changedTouches[0].screenX;
+            });
+            
+            trackElement.addEventListener('touchend', function(e) {
+                itabsTouchEndX = e.changedTouches[0].screenX;
+                if (itabsTouchEndX < itabsTouchStartX - 50) {
+                    itabsCurrentSlide++;
+                    if (itabsCurrentSlide >= itabsTotalSlides) itabsCurrentSlide = 0;
+                    itabsUpdateCarousel();
+                }
+                if (itabsTouchEndX > itabsTouchStartX + 50) {
+                    itabsCurrentSlide--;
+                    if (itabsCurrentSlide < 0) itabsCurrentSlide = itabsTotalSlides - 1;
+                    itabsUpdateCarousel();
+                }
+            });
+        }
+
+        // Dot click handlers
+        document.querySelectorAll('.itabs-dot').forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                itabsGoToSlide(parseInt(this.getAttribute('data-slide')));
+            });
+        });
+
+        // Close popup on outside click
+        document.getElementById('itabsPopup').addEventListener('click', function(e) {
+            if (e.target.id === 'itabsPopup') {
+                this.style.display = 'none';
+            }
+        });
+
+        // Pulse animation for info button
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); box-shadow: 0 6px 25px rgba(0,0,0,0.3); }
+                50% { transform: scale(1.05); box-shadow: 0 8px 35px rgba(102, 126, 234, 0.6); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Handle form submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            
+            // Show success message
+            const form = document.querySelector('.notify-form');
+            form.innerHTML = '<div style="color: white; font-size: 1.3em; padding: 20px; background: rgba(72, 187, 120, 0.3); border-radius: 15px; backdrop-filter: blur(10px);"><strong>🎉 You\'re on the list!</strong><br>We\'ll email you the moment iTabs launches.<br><small>(Check your spam folder just in case)</small></div>';
+            
+            // Here you would normally send to your email service
+            // For now, just log it
+            console.log('Email signup:', email);
+        }
+    </script>
 
 </body>
 </html>
