@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTabs - Coming Soon! 🚀</title>
+    <title>iTabs - Make Information Simple</title>
     <style>
         * {
             margin: 0;
@@ -11,369 +12,1055 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* Hero */
+    .hero {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+    }
+
+    .hero h1 {
+        font-size: 3.5em;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .hero .subtitle {
+        font-size: 1.4em;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* Slideshow Container */
+    .slideshow-container {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        margin-bottom: 50px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .slideshow-wrapper {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .slideshow-track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.5s ease;
+    }
+
+    .slide {
+        min-width: 100%;
+        height: 100%;
+        padding: 60px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .slide-icon {
+        font-size: 80px;
+        margin-bottom: 30px;
+    }
+
+    .slide h2 {
+        font-size: 2.2em;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .slide p {
+        font-size: 1.2em;
+        color: #555;
+        line-height: 1.8;
+        max-width: 600px;
+    }
+
+    /* Bottom Tabs */
+    .slideshow-tabs {
+        display: flex;
+        border-top: 2px solid #e5e7eb;
+        background: #f9fafb;
+    }
+
+    .slide-tab {
+        flex: 1;
+        padding: 20px 15px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        color: #6b7280;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .slide-tab:hover {
+        background: #f3f4f6;
+    }
+
+    .slide-tab.active {
+        background: white;
+        color: #667eea;
+        font-weight: 700;
+        border-top: 3px solid #667eea;
+    }
+
+    .tab-icon {
+        font-size: 1.8em;
+    }
+
+    /* Examples Section */
+    .examples-header {
+        text-align: center;
+        color: white;
+        margin: 60px 0 40px 0;
+    }
+
+    .examples-header h2 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .examples-header p {
+        font-size: 1.3em;
+        opacity: 0.9;
+    }
+
+    .examples-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    /* Example iTabs Cards */
+    .example-itabs {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .example-itabs:hover {
+        transform: translateY(-5px);
+    }
+
+    .itabs-image-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .itabs-slideshow {
+        display: flex;
+        height: 100%;
+        transition: transform 0.4s ease;
+    }
+
+    .itabs-slide {
+        min-width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .itabs-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .itabs-slide-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        font-size: 3em;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        padding: 10px;
+        z-index: 10;
+        text-align: center;
+        width: 90%;
+    }
+
+    .itabs-dots {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 15;
+    }
+
+    .itabs-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid white;
+    }
+
+    .itabs-dot.active {
+        background: white;
+    }
+
+    .itabs-counter {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 15;
+    }
+
+    .itabs-i-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        background: rgba(255,255,255,0.95);
+        color: #667eea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        border: 3px solid white;
+        z-index: 20;
+        transition: all 0.3s ease;
+    }
+
+    .itabs-i-button:hover {
+        transform: scale(1.1);
+    }
+
+    .itabs-info {
+        padding: 25px;
+        text-align: center;
+        position: relative;
+    }
+
+    .itabs-create-btn {
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        border: 2px solid #667eea;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .itabs-create-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .itabs-create-btn .i-text {
+        color: #667eea;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1;
+        margin-bottom: 1px;
+    }
+
+    .itabs-create-btn .itabs-text {
+        color: #667eea;
+        font-size: 6px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        line-height: 1;
+    }
+
+    .itabs-title {
+        font-size: 1.4em;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .itabs-description {
+        color: #666;
+        font-size: 1em;
+        line-height: 1.6;
+    }
+
+    /* CTA */
+    .cta-section {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .cta-section h2 {
+        font-size: 2.5em;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    .cta-section p {
+        font-size: 1.2em;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 20px 50px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        text-decoration: none;
+        font-size: 1.4em;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+    }
+
+    .cta-note {
+        margin-top: 20px;
+        color: #999;
+        font-size: 0.95em;
+    }
+
+    /* Popup */
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .popup-overlay.active {
+        display: flex;
+    }
+
+    .popup-container {
+        background: white;
+        border-radius: 20px;
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .popup-header {
+        padding: 25px;
+        border-bottom: 2px solid #e5e7eb;
+        position: relative;
+    }
+
+    .popup-title {
+        font-size: 1.7em;
+        color: #2c3e50;
+        padding-right: 40px;
+    }
+
+    .popup-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 35px;
+        height: 35px;
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-close:hover {
+        background: #dc2626;
+        transform: rotate(90deg);
+    }
+
+    .popup-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 25px;
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .tab-content h3 {
+        color: #2c3e50;
+        font-size: 1.4em;
+        margin-bottom: 15px;
+    }
+
+    .tab-content p {
+        color: #555;
+        font-size: 1.05em;
+        line-height: 1.8;
+        margin-bottom: 15px;
+    }
+
+    .tab-content ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .tab-content li {
+        padding: 8px 0;
+        padding-left: 25px;
+        position: relative;
+        color: #555;
+        font-size: 1.05em;
+    }
+
+    .tab-content li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #10b981;
+        font-weight: bold;
+    }
+
+    .popup-tabs {
+        display: flex;
+        border-top: 2px solid #e5e7eb;
+        background: #f9fafb;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .tab-button {
+        flex: 1;
+        padding: 15px 10px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9em;
+        color: #6b7280;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .tab-button:hover {
+        background: #f3f4f6;
+    }
+
+    .tab-button.active {
+        background: white;
+        color: #10b981;
+        font-weight: bold;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.5em;
         }
 
-        .container {
-            max-width: 900px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Animated background elements */
-        .bg-circle {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .circle-1 {
-            width: 300px;
-            height: 300px;
-            background: white;
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-
-        .circle-2 {
-            width: 200px;
-            height: 200px;
-            background: white;
-            bottom: -50px;
-            right: -50px;
-            animation-delay: 5s;
-        }
-
-        .circle-3 {
-            width: 150px;
-            height: 150px;
-            background: white;
-            top: 50%;
-            right: 10%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
-        }
-
-        .logo {
-            font-size: 6em;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        h1 {
-            color: white;
-            font-size: 4em;
-            margin-bottom: 20px;
-            font-weight: 800;
-            text-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .subtitle {
-            color: rgba(255,255,255,0.95);
-            font-size: 1.8em;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        .preview-text {
-            color: white;
-            font-size: 1.3em;
-            margin-bottom: 40px;
-            font-weight: 600;
-            background: rgba(255,255,255,0.2);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Email signup form */
-        .notify-form {
-            display: flex;
-            gap: 10px;
-            max-width: 500px;
-            margin: 40px auto;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .notify-form input {
-            flex: 1;
-            min-width: 250px;
-            padding: 18px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            outline: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .notify-form button {
-            padding: 18px 40px;
-            background: white;
-            color: #667eea;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .notify-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .countdown {
-            color: white;
+        .hero .subtitle {
             font-size: 1.2em;
-            margin-top: 30px;
-            opacity: 0.9;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-
-            .logo {
-                font-size: 4em;
-            }
-
-            .subtitle {
-                font-size: 1.3em;
-            }
-
-            .preview-text {
-                font-size: 1.1em;
-            }
-
-            .notify-form input,
-            .notify-form button {
-                min-width: 100%;
-            }
+        .slideshow-wrapper {
+            height: 500px;
         }
-    </style>
+
+        .slide {
+            padding: 40px 30px;
+        }
+
+        .slide-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .slide h2 {
+            font-size: 1.8em;
+        }
+
+        .slide p {
+            font-size: 1.1em;
+        }
+
+        .slide-tab {
+            font-size: 0.85em;
+            padding: 15px 8px;
+        }
+
+        .tab-icon {
+            font-size: 1.5em;
+        }
+
+        .examples-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .itabs-image-container {
+            height: 250px;
+        }
+
+        .itabs-slide-text {
+            font-size: 2em;
+        }
+
+        .cta-button {
+            padding: 15px 35px;
+            font-size: 1.2em;
+        }
+    }
+</style>
+```
+
 </head>
 <body>
-    <!-- Animated background circles -->
-    <div class="bg-circle circle-1"></div>
-    <div class="bg-circle circle-2"></div>
-    <div class="bg-circle circle-3"></div>
-
     <div class="container">
-        <div class="logo">🎯</div>
-        <h1>iTabs</h1>
-        <p class="subtitle">Transform Confusion into Clarity</p>
-        
-        <div class="preview-text">
-            🚀 <strong>Launching Soon!</strong> The simple tool that turns boring product pages into interactive experiences. No coding required. Just upload, generate, and watch your conversions soar.
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Make Information Simple</h1>
+            <p class="subtitle">People don't want to read everything. iTabs lets them choose what they want to know, when they want to know it.</p>
         </div>
 
-        <!-- Demo iTabs -->
-        <div style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-width: 500px; margin: 40px auto;">
-            <div style="position: relative; width: 100%; height: 350px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <div style="position: relative; width: 100%; height: 100%; overflow: hidden;">
-                    <div id="itabsTrack" style="display: flex; transition: transform 0.4s ease; height: 100%;">
-                        <!-- Slide 1 -->
-                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <div style="text-align: center; color: white; padding: 40px;">
-                                <div style="font-size: 5em; margin-bottom: 20px;">🎨</div>
-                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Beautiful</h3>
-                                <p style="font-size: 1.3em; opacity: 0.95;">Make products instantly understandable</p>
-                            </div>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; font-size: 20px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); padding: 15px; z-index: 10; text-align: center; width: 90%; background: rgba(0,0,0,0.3); border-radius: 15px; backdrop-filter: blur(10px);">
-                                👆 Click the "i" to see the magic
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 2 -->
-                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
-                            <div style="text-align: center; color: white; padding: 40px;">
-                                <div style="font-size: 5em; margin-bottom: 20px;">⚡</div>
-                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Fast</h3>
-                                <p style="font-size: 1.3em; opacity: 0.95;">5 minutes from start to live</p>
-                            </div>
-                        </div>
-                        
-                        <!-- Slide 3 -->
-                        <div style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);">
-                            <div style="text-align: center; color: white; padding: 40px;">
-                                <div style="font-size: 5em; margin-bottom: 20px;">🤖</div>
-                                <h3 style="font-size: 2.2em; margin-bottom: 15px; font-weight: 800;">Smart</h3>
-                                <p style="font-size: 1.3em; opacity: 0.95;">AI writes everything for you</p>
-                            </div>
-                        </div>
-                    </div>
+```
+    <!-- Auto-Rotating Slideshow -->
+    <div class="slideshow-container">
+        <div class="slideshow-wrapper">
+            <div class="slideshow-track" id="slideshowTrack">
+                <div class="slide">
+                    <div class="slide-icon">😵</div>
+                    <h2>The Problem</h2>
+                    <p>Too much information overwhelms people. They see walls of text and leave before understanding anything. Your message never gets through.</p>
                 </div>
-                
-                <!-- Navigation Dots -->
-                <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 15;">
-                    <div class="itabs-dot" data-slide="0" style="width: 12px; height: 12px; border-radius: 50%; background: white; cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
-                    <div class="itabs-dot" data-slide="1" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
-                    <div class="itabs-dot" data-slide="2" style="width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s; border: 2px solid white;"></div>
+
+                <div class="slide">
+                    <div class="slide-icon">💡</div>
+                    <h2>The Solution</h2>
+                    <p>iTabs gives people control. They browse fast, see what matters, and tap "i" for details only when they're curious. No overwhelm, just understanding.</p>
                 </div>
-                
-                <!-- Counter -->
-                <div id="itabsCounter" style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 8px 15px; border-radius: 20px; font-size: 16px; font-weight: bold; z-index: 15;">1/3</div>
-                
-                <!-- Info Button -->
-                <div style="position: absolute; top: 20px; right: 20px; width: 55px; height: 55px; background: rgba(255,255,255,0.95); color: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 6px 25px rgba(0,0,0,0.3); border: 4px solid white; z-index: 20; animation: pulse 2s infinite;" onclick="document.getElementById('itabsPopup').style.display='flex'">i</div>
-            </div>
-            
-            <div style="padding: 30px; text-align: center; background: white;">
-                <h3 style="font-size: 1.6em; color: #2d3748; margin-bottom: 10px; font-weight: 700;">See How It Works</h3>
-                <p style="color: #718096; font-size: 1.1em; line-height: 1.6;">This IS iTabs! Swipe through, click the "i", experience the future of product displays.</p>
-            </div>
-        </div>
 
-        <!-- Popup -->
-        <div id="itabsPopup" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px;">
-            <div style="position: relative; background-color: white; border-radius: 20px; width: 90%; max-width: 650px; max-height: 85vh; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 35px; display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="margin: 0; font-size: 2em; font-weight: 800;">🎯 Welcome to iTabs!</h3>
-                    <button onclick="document.getElementById('itabsPopup').style.display='none'" style="color: white; font-size: 45px; font-weight: bold; cursor: pointer; background: none; border: none; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: transform 0.2s;">&times;</button>
+                <div class="slide">
+                    <div class="slide-icon">⚡</div>
+                    <h2>How It Works</h2>
+                    <p>Fill in a simple form, generate code, paste on your website. No coding skills needed. Takes 5 minutes. Works on any site.</p>
                 </div>
-                <div style="padding: 40px; max-height: calc(85vh - 140px); overflow-y: auto;">
-                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; font-weight: 700;">What You Just Experienced</h4>
-                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">That smooth image carousel with the clickable blue "i" button? That's iTabs. You just experienced what your customers will experience on YOUR products. No more confusion. No more lost sales. Just instant clarity.</p>
 
-                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">Why This Changes Everything</h4>
-                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">Your product images alone aren't converting. Customers see your products but don't understand them. They have questions. They leave. You lose money. iTabs puts all the answers right where customers need them - inside a beautiful popup that appears with one click. Clear information = confident buyers = more sales.</p>
-
-                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">How Simple It Is</h4>
-                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 25px;">Upload your product images. Let AI write the descriptions. Copy the code. Paste it anywhere - Shopify, WooCommerce, WordPress, your own site. Takes 5 minutes. Works forever. That's it. No developer needed. No monthly fees. Just results.</p>
-
-                    <h4 style="color: #667eea; font-size: 1.6em; margin-bottom: 15px; margin-top: 35px; font-weight: 700;">When Can You Get It?</h4>
-                    <p style="color: #4a5568; font-size: 1.15em; line-height: 1.9; margin-bottom: 10px;"><strong>We're launching VERY soon.</strong> Join the waitlist below and you'll be first to know. First 100 people get special launch pricing. This page you're reading? Built with iTabs. Because the best way to show you what iTabs does... is to let you experience it.</p>
-
-                    <div style="background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%); padding: 25px; border-radius: 15px; margin-top: 30px; text-align: center;">
-                        <p style="color: white; font-size: 1.2em; margin: 0; font-weight: 600;">💡 You're literally using the product right now. Cool, right?</p>
-                    </div>
+                <div class="slide">
+                    <div class="slide-icon">🎯</div>
+                    <h2>Who It's For</h2>
+                    <p>Fundraising campaigns, product sites, portfolios, real estate - anywhere people need to understand before they act. If clarity matters, iTabs helps.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Email Signup -->
-        <form class="notify-form" onsubmit="handleSubmit(event)">
-            <input type="email" id="emailInput" placeholder="your@email.com" required>
-            <button type="submit">Notify Me! 🚀</button>
-        </form>
-
-        <p class="countdown">⏰ First 100 people get launch day pricing</p>
-
-        <div style="margin-top: 50px; color: rgba(255,255,255,0.8); font-size: 1.1em;">
-            <p>Questions? Email <a href="mailto:responses@itabs.ai" style="color: white; font-weight: bold; text-decoration: none;">responses@itabs.ai</a></p>
+        <div class="slideshow-tabs">
+            <button class="slide-tab active" onclick="goToSlide(0)">
+                <span class="tab-icon">😵</span>
+                <span>Problem</span>
+            </button>
+            <button class="slide-tab" onclick="goToSlide(1)">
+                <span class="tab-icon">💡</span>
+                <span>Solution</span>
+            </button>
+            <button class="slide-tab" onclick="goToSlide(2)">
+                <span class="tab-icon">⚡</span>
+                <span>How</span>
+            </button>
+            <button class="slide-tab" onclick="goToSlide(3)">
+                <span class="tab-icon">🎯</span>
+                <span>For Who</span>
+            </button>
         </div>
     </div>
 
-    <script>
-        // iTabs Carousel Functionality
-        var itabsCurrentSlide = 0;
-        var itabsTotalSlides = 3;
-        var itabsTouchStartX = 0;
-        var itabsTouchEndX = 0;
+    <!-- Examples -->
+    <div class="examples-header">
+        <h2>See It In Action</h2>
+        <p>Click the "i" buttons to experience iTabs</p>
+    </div>
 
-        function itabsGoToSlide(index) {
-            itabsCurrentSlide = index;
-            itabsUpdateCarousel();
-        }
+    <div class="examples-grid">
+        <!-- iTabs Generator Example -->
+        <div class="example-itabs">
+            <div class="itabs-image-container">
+                <div class="itabs-slideshow" id="itabsSlideshow1">
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">iTabs</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #059669 0%, #047857 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">Simple</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #047857 0%, #065f46 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">Fast</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #065f46 0%, #064e3b 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">Free</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="itabs-dots" id="dots1">
+                    <div class="itabs-dot active" onclick="goToItabsSlide(1, 0)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(1, 1)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(1, 2)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(1, 3)"></div>
+                </div>
+                <div class="itabs-counter" id="counter1">1/4</div>
+                <div class="itabs-i-button" onclick="openPopup('itabs')">i</div>
+            </div>
+            <div class="itabs-info">
+                <a href="https://jonathangwynne.gumroad.com" target="_blank" class="itabs-create-btn" title="Create your own iTabs">
+                    <div class="i-text">i</div>
+                    <div class="itabs-text">iTabs</div>
+                </a>
+                <h3 class="itabs-title">iTabs Generator</h3>
+                <p class="itabs-description">Create interactive displays in minutes</p>
+            </div>
+        </div>
 
-        function itabsUpdateCarousel() {
-            var track = document.getElementById('itabsTrack');
-            var counter = document.getElementById('itabsCounter');
-            var dots = document.querySelectorAll('.itabs-dot');
-            
-            track.style.transform = 'translateX(-' + (itabsCurrentSlide * 100) + '%)';
-            if (counter) counter.textContent = (itabsCurrentSlide + 1) + '/' + itabsTotalSlides;
-            
-            dots.forEach(function(dot, index) {
-                dot.style.background = index === itabsCurrentSlide ? 'white' : 'rgba(255,255,255,0.5)';
-            });
-        }
+        <!-- Campaign Example -->
+        <div class="example-itabs">
+            <div class="itabs-image-container">
+                <div class="itabs-slideshow" id="itabsSlideshow2">
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">💙 Help</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">The Story</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">The Need</div>
+                        </div>
+                    </div>
+                    <div class="itabs-slide">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); display: flex; align-items: center; justify-content: center;">
+                            <div class="itabs-slide-text">Donate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="itabs-dots" id="dots2">
+                    <div class="itabs-dot active" onclick="goToItabsSlide(2, 0)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(2, 1)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(2, 2)"></div>
+                    <div class="itabs-dot" onclick="goToItabsSlide(2, 3)"></div>
+                </div>
+                <div class="itabs-counter" id="counter2">1/4</div>
+                <div class="itabs-i-button" onclick="openPopup('campaign')">i</div>
+            </div>
+            <div class="itabs-info">
+                <a href="https://jonathangwynne.gumroad.com" target="_blank" class="itabs-create-btn" title="Create your own iTabs">
+                    <div class="i-text">i</div>
+                    <div class="itabs-text">iTabs</div>
+                </a>
+                <h3 class="itabs-title">Fundraising Campaigns</h3>
+                <p class="itabs-description">Show donors where money goes</p>
+            </div>
+        </div>
+    </div>
 
-        // Touch swipe navigation
-        var trackElement = document.getElementById('itabsTrack');
-        if (trackElement) {
-            trackElement.addEventListener('touchstart', function(e) {
-                itabsTouchStartX = e.changedTouches[0].screenX;
-            });
-            
-            trackElement.addEventListener('touchend', function(e) {
-                itabsTouchEndX = e.changedTouches[0].screenX;
-                if (itabsTouchEndX < itabsTouchStartX - 50) {
-                    itabsCurrentSlide++;
-                    if (itabsCurrentSlide >= itabsTotalSlides) itabsCurrentSlide = 0;
-                    itabsUpdateCarousel();
-                }
-                if (itabsTouchEndX > itabsTouchStartX + 50) {
-                    itabsCurrentSlide--;
-                    if (itabsCurrentSlide < 0) itabsCurrentSlide = itabsTotalSlides - 1;
-                    itabsUpdateCarousel();
-                }
-            });
-        }
+    <!-- CTA -->
+    <div class="cta-section">
+        <h2>Ready to Try iTabs?</h2>
+        <p>Create your first interactive information display</p>
+        <a href="https://jonathangwynne.gumroad.com" target="_blank" class="cta-button">
+            Get iTabs Generator Free
+        </a>
+        <p class="cta-note">Currently free - help us improve by sharing feedback</p>
+    </div>
+</div>
 
-        // Dot click handlers
-        document.querySelectorAll('.itabs-dot').forEach(function(dot) {
-            dot.addEventListener('click', function() {
-                itabsGoToSlide(parseInt(this.getAttribute('data-slide')));
-            });
-        });
+<!-- Popup -->
+<div class="popup-overlay" id="popup" onclick="closePopupOnOverlay(event)">
+    <div class="popup-container">
+        <div class="popup-header">
+            <h2 class="popup-title" id="popupTitle"></h2>
+            <button class="popup-close" onclick="closePopup()">×</button>
+        </div>
+        <div class="popup-content" id="popupContent"></div>
+        <div class="popup-tabs" id="popupTabs">
+            <button class="tab-button active" onclick="switchTab(1)">
+                <span style="font-size: 1.5em;">❓</span>
+                <span>What</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(2)">
+                <span style="font-size: 1.5em;">💡</span>
+                <span>Why</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(3)">
+                <span style="font-size: 1.5em;">⚙️</span>
+                <span>How</span>
+            </button>
+            <button class="tab-button" onclick="switchTab(4)">
+                <span style="font-size: 1.5em;">⭐</span>
+                <span>Different</span>
+            </button>
+        </div>
+    </div>
+</div>
 
-        // Close popup on outside click
-        document.getElementById('itabsPopup').addEventListener('click', function(e) {
-            if (e.target.id === 'itabsPopup') {
-                this.style.display = 'none';
+<script>
+    // Main slideshow logic
+    let currentSlide = 0;
+    const totalSlides = 4;
+    let autoplayInterval;
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlideshow();
+        resetAutoplay();
+    }
+
+    function updateSlideshow() {
+        const track = document.getElementById('slideshowTrack');
+        const tabs = document.querySelectorAll('.slide-tab');
+        
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        tabs.forEach((tab, index) => {
+            if (index === currentSlide) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
             }
         });
+    }
 
-        // Pulse animation for info button
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0%, 100% { transform: scale(1); box-shadow: 0 6px 25px rgba(0,0,0,0.3); }
-                50% { transform: scale(1.05); box-shadow: 0 8px 35px rgba(102, 126, 234, 0.6); }
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlideshow();
+    }
+
+    function startAutoplay() {
+        autoplayInterval = setInterval(nextSlide, 5000);
+    }
+
+    function resetAutoplay() {
+        clearInterval(autoplayInterval);
+        startAutoplay();
+    }
+
+    startAutoplay();
+
+    // iTabs example slideshows
+    let itabsSlides = {
+        1: { current: 0, total: 4, interval: null },
+        2: { current: 0, total: 4, interval: null }
+    };
+
+    function goToItabsSlide(itabsId, slideIndex) {
+        itabsSlides[itabsId].current = slideIndex;
+        updateItabsSlideshow(itabsId);
+        resetItabsAutoplay(itabsId);
+    }
+
+    function updateItabsSlideshow(itabsId) {
+        const slideshow = document.getElementById('itabsSlideshow' + itabsId);
+        const dots = document.querySelectorAll('#dots' + itabsId + ' .itabs-dot');
+        const counter = document.getElementById('counter' + itabsId);
+        
+        const currentSlide = itabsSlides[itabsId].current;
+        slideshow.style.transform = `translateX(-${currentSlide * 100}%)`;
+        counter.textContent = `${currentSlide + 1}/${itabsSlides[itabsId].total}`;
+        
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
             }
+        });
+    }
+
+    function nextItabsSlide(itabsId) {
+        itabsSlides[itabsId].current = (itabsSlides[itabsId].current + 1) % itabsSlides[itabsId].total;
+        updateItabsSlideshow(itabsId);
+    }
+
+    function startItabsAutoplay(itabsId) {
+        itabsSlides[itabsId].interval = setInterval(() => nextItabsSlide(itabsId), 4000);
+    }
+
+    function resetItabsAutoplay(itabsId) {
+        clearInterval(itabsSlides[itabsId].interval);
+        startItabsAutoplay(itabsId);
+    }
+
+    // Start autoplay for both iTabs examples
+    startItabsAutoplay(1);
+    startItabsAutoplay(2);
+
+    // Touch swipe support for main slideshow
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    const slideshowWrapper = document.querySelector('.slideshow-wrapper');
+
+    slideshowWrapper.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    slideshowWrapper.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlideshow();
+            resetAutoplay();
+        }
+        if (touchEndX > touchStartX + 50) {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlideshow();
+            resetAutoplay();
+        }
+    }
+
+    // Touch swipe for iTabs examples
+    [1, 2].forEach(itabsId => {
+        const container = document.getElementById('itabsSlideshow' + itabsId).parentElement;
+        let touchStart = 0;
+        let touchEnd = 0;
+
+        container.addEventListener('touchstart', e => {
+            touchStart = e.changedTouches[0].screenX;
+        });
+
+        container.addEventListener('touchend', e => {
+            touchEnd = e.changedTouches[0].screenX;
+            if (touchEnd < touchStart - 50) {
+                itabsSlides[itabsId].current = (itabsSlides[itabsId].current + 1) % itabsSlides[itabsId].total;
+                updateItabsSlideshow(itabsId);
+                resetItabsAutoplay(itabsId);
+            }
+            if (touchEnd > touchStart + 50) {
+                itabsSlides[itabsId].current = (itabsSlides[itabsId].current - 1 + itabsSlides[itabsId].total) % itabsSlides[itabsId].total;
+                updateItabsSlideshow(itabsId);
+                resetItabsAutoplay(itabsId);
+            }
+        });
+    });
+
+    // Popup content
+    const exampleContent = {
+        itabs: {
+            title: "iTabs Generator",
+            tabs: {
+                1: `<h3>What is iTabs?</h3>
+                    <p>iTabs is a simple tool that creates interactive information displays.</p>
+                    <p>Instead of forcing people to read everything, you show them key points with small "i" buttons that reveal details when clicked.</p>
+                    <p>Think of it like Instagram for information - browse fast, dive deep when you want.</p>`,
+                2: `<h3>Why Use iTabs?</h3>
+                    <p>Because walls of text don't work anymore, especially on phones.</p>
+                    <ul>
+                        <li>People bounce when overwhelmed</li>
+                        <li>Mobile users want quick information</li>
+                        <li>Understanding leads to action (donations, purchases, sign-ups)</li>
+                        <li>You need to respect people's time and attention</li>
+                    </ul>`,
+                3: `<h3>How Does It Work?</h3>
+                    <p><strong>Simple process:</strong></p>
+                    <ul>
+                        <li>Fill in 4 sections (What, Why, How, Different)</li>
+                        <li>Add your images</li>
+                        <li>Generate code</li>
+                        <li>Paste on your website</li>
+                    </ul>
+                    <p>No technical skills needed. Works on any website.</p>`,
+                4: `<h3>What Makes It Different?</h3>
+                    <ul>
+                        <li>User controls what they read</li>
+                        <li>Mobile-friendly design</li>
+                        <li>No complicated setup</li>
+                        <li>Works for any type of content</li>
+                        <li>Currently free to use</li>
+                    </ul>
+                    <p>Perfect for campaigns, products, portfolios - anything people need to understand.</p>`
+            }
+        },
+        campaign: {
+            title: "Fundraising Campaigns",
+            tabs: {
+                1: `<h3>iTabs for Campaigns</h3>
+                    <p>Help people understand your fundraising campaign with clear, organized information.</p>
+                    <p>Show photos of your situation with "i" buttons that explain: The crisis, who needs help, where money goes, and how to donate.</p>
+                    <p>Donors understand faster = more confident donations.</p>`,
+                2: `<h3>Why Campaigns Need This</h3>
+                    <ul>
+                        <li>Most people scroll past text-heavy campaigns</li>
+                        <li>Donors want to know exactly where money goes</li>
+                        <li>Long stories overwhelm people on mobile</li>
+                        <li>Transparency builds trust</li>
+                        <li>Understanding the need drives donations</li>
+                    </ul>
+                    <p>iTabs makes your story clear without overwhelming people.</p>`,
+                3: `<h3>How It Works for Campaigns</h3>
+                    <ul>
+                        <li>Show photos that tell your story</li>
+                        <li>Add "i" buttons with key information</li>
+                        <li>Organize: The Crisis → The People → The Money → How to Help</li>
+                        <li>Let people explore at their pace</li>
+                        <li>Clear donate button when they're ready</li>
+                    </ul>
+                    <p>Works for medical, emergency, community - any fundraising campaign.</p>`,
+                4: `<h3>What Makes It Different?</h3>
+                    <ul>
+                        <li>Visual storytelling instead of walls of text</li>
+                        <li>Clear transparency about fund usage</li>
+                        <li>Mobile-friendly (where most people browse)</li>
+                        <li>People control their information journey</li>
+                        <li>Builds trust through organized presentation</li>
+                    </ul>
+                    <p>Help more people understand and support your cause.</p>`
+            }
+        }
+    };
+
+    function openPopup(key) {
+        const content = exampleContent[key];
+        document.getElementById('popupTitle').textContent = content.title;
+        
+        const popupContent = document.getElementById('popupContent');
+        popupContent.innerHTML = `
+            <div class="tab-content active" id="tab1">${content.tabs[1]}</div>
+            <div class="tab-content" id="tab2">${content.tabs[2]}</div>
+            <div class="tab-content" id="tab3">${content.tabs[3]}</div>
+            <div class="tab-content" id="tab4">${content.tabs[4]}</div>
         `;
-        document.head.appendChild(style);
+        
+        switchTab(1);
+        document.getElementById('popup').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
-        // Handle form submission
-        function handleSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('emailInput').value;
-            
-            // Show success message
-            const form = document.querySelector('.notify-form');
-            form.innerHTML = '<div style="color: white; font-size: 1.3em; padding: 20px; background: rgba(72, 187, 120, 0.3); border-radius: 15px; backdrop-filter: blur(10px);"><strong>🎉 You\'re on the list!</strong><br>We\'ll email you the moment iTabs launches.<br><small>(Check your spam folder just in case)</small></div>';
-            
-            // Here you would normally send to your email service
-            // For now, just log it
-            console.log('Email signup:', email);
+    function closePopup() {
+        document.getElementById('popup').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function closePopupOnOverlay(event) {
+        if (event.target.id === 'popup') {
+            closePopup();
         }
-    </script>
+    }
+
+    function switchTab(tabNumber) {
+        const allTabs = document.querySelectorAll('.tab-content');
+        allTabs.forEach(tab => tab.classList.remove('active'));
+
+        const allButtons = document.querySelectorAll('.tab-button');
+        allButtons.forEach(button => button.classList.remove('active'));
+
+        const selectedTab = document.getElementById('tab' + tabNumber);
+        if (selectedTab) {
+            selectedTab.classList.add('active');
+        }
+
+        if (allButtons[tabNumber - 1]) {
+            allButtons[tabNumber - 1].classList.add('active');
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePopup();
+        }
+    });
+</script>
+```
 
 </body>
 </html>
