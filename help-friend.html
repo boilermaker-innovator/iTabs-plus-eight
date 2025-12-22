@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Poppins',sans-serif;background:#f7f8fa;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        body{font-family:'Poppins',sans-serif;background:#f7f8fa;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
         .card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.12);max-width:420px;width:100%}
         .slideshow{position:relative;width:100%;height:280px;background:linear-gradient(135deg,#01BC66,#00A659);overflow:hidden}
         .slides-track{display:flex;height:100%;transition:transform 0.4s ease}
@@ -27,9 +27,13 @@
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
         .content{padding:18px;text-align:center}
         .content h2{color:#1a1a1a;font-size:1.1em;font-weight:600;margin-bottom:4px}
-        .content p{color:#718096;font-size:0.8em}
-        .edit-btn{display:inline-block;margin-top:12px;padding:10px 20px;background:#01BC66;color:#fff;text-decoration:none;border-radius:25px;font-size:0.85em;font-weight:600;transition:transform 0.2s}
-        .edit-btn:hover{transform:scale(1.05)}
+        .content p{color:#718096;font-size:0.8em;margin-bottom:14px}
+        .donate-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#01BC66,#00A659);color:#fff;text-align:center;text-decoration:none;border-radius:12px;font-weight:600;font-size:1em;box-shadow:0 4px 15px rgba(2,169,92,0.3)}
+        .card-footer{text-align:center;padding:12px 18px 18px;font-size:0.8em;color:#718096;border-top:1px solid #e2e8f0}
+        .card-footer a{color:#01BC66;text-decoration:none}
+        .edit-link{text-align:center;margin-top:15px}
+        .edit-link a{color:#718096;text-decoration:none;font-size:0.85em}
+        .edit-link a:hover{color:#01BC66}
         .popup-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:15px}
         .popup-overlay.active{display:flex}
         .popup{background:#fff;border-radius:24px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;animation:slideUp 0.3s ease}
@@ -45,8 +49,6 @@
         .section h4{color:#01BC66;font-size:1.05em;font-weight:600;margin-bottom:8px}
         .section p{color:#4a5568;line-height:1.7;font-size:0.95em}
         .popup-btn{display:block;width:100%;padding:16px;background:linear-gradient(135deg,#01BC66,#00A659);color:#fff;text-align:center;text-decoration:none;border-radius:14px;font-weight:600;font-size:1.05em;margin-top:24px;box-shadow:0 4px 15px rgba(2,169,92,0.3)}
-        .footer{text-align:center;padding:15px;font-size:0.8em;color:#718096}
-        .footer a{color:#01BC66;text-decoration:none}
     </style>
 </head>
 <body>
@@ -68,10 +70,11 @@
         <div class="content">
             <h2>Help a Friend Escape Toxic Housing Situation</h2>
             <p>Swipe photos • Tap i for the full story</p>
-            <a href="https://itabs.ai/?data=JTdCJTIyY2FtcGFpZ25JZCUyMiUzQSUyMmhlbHAtYS1mcmllbmQtZXNjYXBlLXRveGljLWhvdXNpbmctc2l0dWF0aW9uJTIyJTJDJTIyY2FtcGFpZ25OYW1lJTIyJTNBJTIySGVscCUyMGElMjBGcmllbmQlMjBFc2NhcGUlMjBUb3hpYyUyMEhvdXNpbmclMjBTaXR1YXRpb24lMjIlMkMlMjJob29rTGluZSUyMiUzQSUyMk15JTIwZnJpZW5kJTIwaXMlMjB0cmFwcGVkJTIwaW4lMjBhJTIwdG94aWMlMjBzaXR1YXRpb24lMjBhbmQlMjBuZWVkcyUyMGhlbHAlMjByZWxvY2F0aW5nJTIwdG8lMjBhJTIwc2FmZSUyMGVudmlyb25tZW50JTIwd2l0aCUyMHN1cHBvcnQuJTIyJTJDJTIyc2VjdGlvbjElMjIlM0ElMjJNeSUyMGZyaWVuZCUyMHN1ZmZlcnMlMjBmcm9tJTIwYSUyMGNocm9uaWMlMjBiYWNrJTIwY29uZGl0aW9uJTJDJTIwaW5jbHVkaW5nJTIwYSUyMGJ1bGdlZCUyMGRpc2slMkMlMjBjYXVzaW5nJTIwc2lnbmlmaWNhbnQlMjBwYWluJTIwYW5kJTIwbGltaXRpbmclMjBoZXIlMjBhYmlsaXR5JTIwdG8lMjB3b3JrLiUyMFNoZSUyMGlzJTIwY3VycmVudGx5JTIwdHJhcHBlZCUyMGluJTIwYSUyMHRveGljJTIwaG91c2luZyUyMHNpdHVhdGlvbiUyQyUyMGxlYWRpbmclMjB0byUyMHNldmVyZSUyMGFueGlldHklMjBhbmQlMjBlbW90aW9uYWwlMjBkaXN0cmVzcy4lMjBTaGUlMjBmZWVscyUyMHVuc2FmZSUyMGFuZCUyMGlzb2xhdGVkLiUyMiUyQyUyMnNlY3Rpb24yJTIyJTNBJTIyU2hlJTIwbGFja3MlMjBhJTIwc3VwcG9ydCUyMHN5c3RlbSUyMHdoZXJlJTIwc2hlJTIwaXMlMjBjdXJyZW50bHklMjBsb2NhdGVkJTIwYW5kJTIwZGVzcGVyYXRlbHklMjBuZWVkcyUyMHRvJTIwcmV0dXJuJTIwdG8lMjBoZXIlMjBob21lJTIwc3RhdGUlMjB3aGVyZSUyMHNoZSUyMGhhcyUyMGZhbWlseSUyMGFuZCUyMGZyaWVuZHMuJTIwTW92aW5nJTIwaGVyJTIwaXMlMjBjcnVjaWFsJTIwZm9yJTIwaGVyJTIwc2FmZXR5JTIwYW5kJTIwd2VsbC1iZWluZy4lMjBTaGUlMjBmZWVscyUyMGFueGlvdXMlMkMlMjBmZWFyZnVsJTIwYW5kJTIwdHJhcHBlZC4lMjIlMkMlMjJzZWN0aW9uMyUyMiUzQSUyMlRoZSUyMGZ1bmRzJTIwd2lsbCUyMGNvdmVyJTIwZW1lcmdlbmN5JTIwYWNjb21tb2RhdGlvbiUyQyUyMGZvb2QlMkMlMjBhbmQlMjBmdWVsJTIwdG8lMjBtb3ZlJTIwaGVyJTIwYWNyb3NzJTIwc3RhdGUlMjBsaW5lcy4lMjBUaGUlMjBmdW5kcmFpc2luZyUyMGdvYWwlMjBpcyUyMDItM2suJTIyJTJDJTIyc2VjdGlvbjQlMjIlM0ElMjJJJ20lMjBUYXlsb3IlMkMlMjBhJTIwY2xvc2UlMjBmcmllbmQlMkMlMjBhbmQlMjBJJ20lMjBydW5uaW5nJTIwdGhpcyUyMGNhbXBhaWduJTIwdG8lMjBoZWxwJTIwaGVyLiUyMFNoZSUyMHdpc2hlcyUyMHRvJTIwcmVtYWluJTIwYW5vbnltb3VzLiUyMiUyQyUyMmJ1dHRvblRleHQlMjIlM0ElMjJEb25hdGUlMjBOb3clMjIlMkMlMjJidXR0b25MaW5rJTIyJTNBJTIyaHR0cHMlM0ElMkYlMkZ3d3cuZ29mdW5kbWUuY29tJTJGZiUyRmhlbHAtYS1mcmllbmQtaW4tY3Jpc3MlMjIlMkMlMjJhdXRvcGxheSUyMiUzQXRydWUlMkMlMjJpbWFnZXMlMjIlM0ElNUIlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGaDF4V0ZocmMlMkZwaG90by5qcGclMjIlMkMlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGWGt6amN3OGolMkZwaG90by5qcGclMjIlMkMlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGZEpReDNYYnolMkZwaG90by5qcGclMjIlNUQlN0Q=" class="edit-btn" target="_blank">✏️ Edit This iTabs</a>
+            <a href="https://www.gofundme.com/f/help-a-friend-in-criss" class="donate-btn" target="_blank">Donate Now</a>
         </div>
-        <div class="footer">Made with <a href="https://itabs.ai" target="_blank">iTabs</a></div>
+        <div class="card-footer">Made with ❤️ by <a href="https://itabs.ai" target="_blank">iTabs</a></div>
     </div>
+    <div class="edit-link"><a href="https://itabs.ai/?data=JTdCJTIyY2FtcGFpZ25JZCUyMiUzQSUyMmhlbHAtYS1mcmllbmQtZXNjYXBlLXRveGljLWhvdXNpbmctc2l0dWF0aW9uJTIyJTJDJTIyY2FtcGFpZ25OYW1lJTIyJTNBJTIySGVscCUyMGElMjBGcmllbmQlMjBFc2NhcGUlMjBUb3hpYyUyMEhvdXNpbmclMjBTaXR1YXRpb24lMjIlMkMlMjJob29rTGluZSUyMiUzQSUyMk15JTIwZnJpZW5kJTIwaXMlMjB0cmFwcGVkJTIwaW4lMjBhJTIwdG94aWMlMjBzaXR1YXRpb24lMjBhbmQlMjBuZWVkcyUyMGhlbHAlMjByZWxvY2F0aW5nJTIwdG8lMjBhJTIwc2FmZSUyMGVudmlyb25tZW50JTIwd2l0aCUyMHN1cHBvcnQuJTIyJTJDJTIyc2VjdGlvbjElMjIlM0ElMjJNeSUyMGZyaWVuZCUyMHN1ZmZlcnMlMjBmcm9tJTIwYSUyMGNocm9uaWMlMjBiYWNrJTIwY29uZGl0aW9uJTJDJTIwaW5jbHVkaW5nJTIwYSUyMGJ1bGdlZCUyMGRpc2slMkMlMjBjYXVzaW5nJTIwc2lnbmlmaWNhbnQlMjBwYWluJTIwYW5kJTIwbGltaXRpbmclMjBoZXIlMjBhYmlsaXR5JTIwdG8lMjB3b3JrLiUyMFNoZSUyMGlzJTIwY3VycmVudGx5JTIwdHJhcHBlZCUyMGluJTIwYSUyMHRveGljJTIwaG91c2luZyUyMHNpdHVhdGlvbiUyQyUyMGxlYWRpbmclMjB0byUyMHNldmVyZSUyMGFueGlldHklMjBhbmQlMjBlbW90aW9uYWwlMjBkaXN0cmVzcy4lMjBTaGUlMjBmZWVscyUyMHVuc2FmZSUyMGFuZCUyMGlzb2xhdGVkLiUyMiUyQyUyMnNlY3Rpb24yJTIyJTNBJTIyU2hlJTIwbGFja3MlMjBhJTIwc3VwcG9ydCUyMHN5c3RlbSUyMHdoZXJlJTIwc2hlJTIwaXMlMjBjdXJyZW50bHklMjBsb2NhdGVkJTIwYW5kJTIwZGVzcGVyYXRlbHklMjBuZWVkcyUyMHRvJTIwcmV0dXJuJTIwdG8lMjBoZXIlMjBob21lJTIwc3RhdGUlMjB3aGVyZSUyMHNoZSUyMGhhcyUyMGZhbWlseSUyMGFuZCUyMGZyaWVuZHMuJTIwTW92aW5nJTIwaGVyJTIwaXMlMjBjcnVjaWFsJTIwZm9yJTIwaGVyJTIwc2FmZXR5JTIwYW5kJTIwd2VsbC1iZWluZy4lMjBTaGUlMjBmZWVscyUyMGFueGlvdXMlMkMlMjBmZWFyZnVsJTIwYW5kJTIwdHJhcHBlZC4lMjIlMkMlMjJzZWN0aW9uMyUyMiUzQSUyMlRoZSUyMGZ1bmRzJTIwd2lsbCUyMGNvdmVyJTIwZW1lcmdlbmN5JTIwYWNjb21tb2RhdGlvbiUyQyUyMGZvb2QlMkMlMjBhbmQlMjBmdWVsJTIwdG8lMjBtb3ZlJTIwaGVyJTIwYWNyb3NzJTIwc3RhdGUlMjBsaW5lcy4lMjBUaGUlMjBmdW5kcmFpc2luZyUyMGdvYWwlMjBpcyUyMDItM2suJTIyJTJDJTIyc2VjdGlvbjQlMjIlM0ElMjJJJ20lMjBUYXlsb3IlMkMlMjBhJTIwY2xvc2UlMjBmcmllbmQlMkMlMjBhbmQlMjBJJ20lMjBydW5uaW5nJTIwdGhpcyUyMGNhbXBhaWduJTIwdG8lMjBoZWxwJTIwaGVyLiUyMFNoZSUyMHdpc2hlcyUyMHRvJTIwcmVtYWluJTIwYW5vbnltb3VzLiUyMiUyQyUyMmJ1dHRvblRleHQlMjIlM0ElMjJEb25hdGUlMjBOb3clMjIlMkMlMjJidXR0b25MaW5rJTIyJTNBJTIyaHR0cHMlM0ElMkYlMkZ3d3cuZ29mdW5kbWUuY29tJTJGZiUyRmhlbHAtYS1mcmllbmQtaW4tY3Jpc3MlMjIlMkMlMjJhdXRvcGxheSUyMiUzQXRydWUlMkMlMjJpbWFnZXMlMjIlM0ElNUIlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGaDF4V0ZocmMlMkZwaG90by5qcGclMjIlMkMlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGWGt6amN3OGolMkZwaG90by5qcGclMjIlMkMlMjJodHRwcyUzQSUyRiUyRmkuaWJiLmNvJTJGZEpReDNYYnolMkZwaG90by5qcGclMjIlNUQlN0Q=" target="_blank">✏️ Edit This iTabs</a></div>
 
     <div class="popup-overlay" id="popup" onclick="closePopup(event)">
         <div class="popup" onclick="event.stopPropagation()">
