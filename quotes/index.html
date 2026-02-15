@@ -381,13 +381,6 @@ const WIDGET_CONFIG = {
     toEmail: "responses@itabs.ai",
   },
 
-  // Suggested fencers for customers to contact
-  suggestedFencers: [
-    { name: "Fosters Fencing", area: "Perth Metro", phone: "", link: "https://www.facebook.com/fostersfencing", type: "facebook" },
-    { name: "SureFence WA", area: "Perth Metro", phone: "", link: "https://www.facebook.com/surefencewa", type: "facebook" },
-    { name: "Ausway Fencing", area: "Perth Metro", phone: "", link: "https://www.facebook.com/auswayfencing", type: "facebook" },
-  ],
-
   footer: {
     showPoweredBy: true,
     poweredByUrl: "https://itabs.ai",
@@ -1494,9 +1487,8 @@ function buildQuoteSummaryText(includeHtml) {
     const priceText = formatPrice(est.low, est.high, '', true);
     if (includeHtml) {
       lines.push(`💰 Estimate: <strong>${priceText}</strong>`);
-    } else {
-      lines.push(`Estimate: ${priceText}`);
     }
+    // Price excluded from clipboard/email text — fencer should quote their own price
   }
   return lines;
 }
@@ -1531,7 +1523,6 @@ function getPlainTextQuote() {
 
   text += '\n\n════════════════════════════\n';
   text += 'Generated at itabs.ai/quotes\n';
-  text += 'Prices are ballpark estimates for Perth metro (2026).\n';
   text += 'Please provide an accurate quote based on these specs.';
 
   return text;
@@ -1660,4 +1651,3 @@ init();
 
 </body>
 </html>
-
