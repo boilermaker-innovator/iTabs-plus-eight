@@ -63,7 +63,7 @@ const WIDGET_CONFIG = {
     icon: "🏗️",
     headline: "How much will my fence cost?",
     subtitle: "Answer a few questions and get a ballpark price in 60 seconds. No login. No spam. Just numbers.",
-    badge: "Free estimator · Perth metro · Updated 2025",
+    badge: "Free estimator · Perth metro · Updated 2026",
   },
 
   steps: [
@@ -124,6 +124,49 @@ const WIDGET_CONFIG = {
     },
 
     {
+      id: "colorbond_colour",
+      title: "What colour?",
+      preview: "Tap to choose",
+      showIf: { step: "fence_type", value: "colorbond" },
+      input: {
+        type: "select",
+        options: [
+          { value: "surfmist", label: "Surfmist", icon: "⬜", description: "Light off-white — bright, clean, popular for front fences" },
+          { value: "paperbark", label: "Paperbark", icon: "🟡", description: "Warm cream — classic Perth favourite" },
+          { value: "evening_haze", label: "Evening Haze", icon: "🩶", description: "Warm light grey — modern neutral" },
+          { value: "shale_grey", label: "Shale Grey", icon: "🩶", description: "Cool mid-grey — very popular" },
+          { value: "woodland_grey", label: "Woodland Grey", icon: "🟤", description: "Dark warm grey — contemporary look" },
+          { value: "basalt", label: "Basalt", icon: "⬛", description: "Dark charcoal — bold, modern" },
+          { value: "monument", label: "Monument", icon: "⬛", description: "Near-black — sleek, premium feel" },
+          { value: "night_sky", label: "Night Sky", icon: "⬛", description: "Deepest dark — dramatic statement" },
+          { value: "pale_eucalypt", label: "Pale Eucalypt", icon: "🟢", description: "Muted green — blends with gardens" },
+          { value: "jasper", label: "Jasper", icon: "🟤", description: "Warm brown — earthy, natural tone" },
+          { value: "domain", label: "Domain", icon: "🟤", description: "Sandy beige — suits limestone homes" },
+          { value: "not_sure", label: "Not sure yet", icon: "🤷", description: "No worries — your fencer can show you samples" },
+        ]
+      },
+      hints: [
+        {
+          tabLabel: "Popular in Perth",
+          type: "mixed",
+          content: [
+            {
+              type: "tip",
+              icon: "💡",
+              title: "Most popular colours",
+              text: "In Perth, the top picks are Monument, Woodland Grey, and Basalt for modern homes. Paperbark and Surfmist are classics that go with everything."
+            },
+            {
+              type: "key_point",
+              label: "🎨 Can't decide?",
+              text: "Pick 'Not sure yet' and your fencer can bring colour samples to show you on site. Colours can look different in person vs on a screen."
+            }
+          ]
+        }
+      ]
+    },
+
+    {
       id: "size",
       title: "How much fencing?",
       preview: "Length & height",
@@ -161,6 +204,12 @@ const WIDGET_CONFIG = {
               icon: "📏",
               title: "Don't stress about exact measurements",
               text: "A rough idea is fine for a ballpark price. Walk along the fence line and count your steps — each step is roughly 0.7m. Your fencer will do an exact measure on site."
+            },
+            {
+              type: "tip",
+              icon: "💡",
+              title: "Different heights for front and sides?",
+              text: "Most homes have a shorter front fence and taller side/rear fences. Just run this estimator once for each section and add the totals together."
             },
             {
               type: "key_point",
@@ -247,12 +296,12 @@ const WIDGET_CONFIG = {
   estimate: {
     title: "Your ballpark price",
     preview: "Based on your selections",
-    note: "Supply & install • incl. GST • Perth metro • Prices based on 2025 averages",
+    note: "Supply & install • incl. GST • Perth metro • Prices based on 2026 averages",
     hints: [
       {
         type: "key_point",
         label: "How accurate is this?",
-        text: "This is a rough guide based on average Perth pricing in 2025. Your actual quote depends on soil type, access, specific materials, and the installer. Always get at least 2-3 quotes from local fencers."
+        text: "This is a rough guide based on average Perth pricing in 2026. Your actual quote depends on soil type, access, specific materials, and the installer. Always get at least 2-3 quotes from local fencers."
       },
       {
         type: "tip",
@@ -309,6 +358,7 @@ const WIDGET_CONFIG = {
     fields: [
       { id: "name", label: "Your name (optional)", type: "text", placeholder: "e.g. Dave", required: false },
       { id: "suburb", label: "Suburb (helps with pricing)", type: "text", placeholder: "e.g. Joondalup, Kingsley, Scarborough", required: false },
+      { id: "notes", label: "Anything else? (optional)", type: "textarea", placeholder: "e.g. Access from back lane, need to match neighbour's fence, old fence is asbestos...", required: false },
     ],
     submitText: "📋 Copy My Quote to Clipboard",
     submitNote: "",
@@ -717,6 +767,7 @@ function init() {
   applyBranding();
   initSliderDefaults();
   render();
+  updateConditionalSteps();
   setTimeout(() => toggleSection(0), 300);
 }
 
@@ -1141,7 +1192,68 @@ function selectOption(stepId, value, stepIndex, autoAdvance) {
   updateQuoteSummary();
   updateProgress();
   checkWarnings();
-  if (autoAdvance) setTimeout(() => toggleSection(stepIndex + 1), 400);
+  updateConditionalSteps();
+  if (autoAdvance) {
+    let nextIndex = stepIndex + 1;
+    while (nextIndex < C.steps.length) {
+      const nextSection = document.getElementById(`section-${nextIndex}`);
+      if (nextSection && nextSection.style.display !== 'none') break;
+      nextIndex++;
+    }
+    setTimeout(() => toggleSection(nextIndex), 400);
+  }
+}
+
+// ── CONDITIONAL STEPS ──────────────────────────────────────────
+function updateConditionalSteps() {
+  C.steps.forEach((step, i) => {
+    if (!step.showIf) return;
+    const section = document.getElementById(`section-${i}`);
+    if (!section) return;
+    const visible = state.answers[step.showIf.step] === step.showIf.value;
+    section.style.display = visible ? '' : 'none';
+    if (!visible) {
+      // Clear answer and completion when hidden
+      delete state.answers[step.id];
+      state.completedSections.delete(`section-${i}`);
+      const content = document.getElementById(`section-${i}-content`);
+      if (content) content.classList.remove('show');
+      section.classList.remove('completed');
+      const preview = document.getElementById(`section-${i}-preview`);
+      if (preview) preview.textContent = step.preview;
+      // Deselect cards
+      section.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    }
+  });
+  renumberVisibleSteps();
+  updateProgress();
+  updateEstimate();
+  updateQuoteSummary();
+}
+
+function renumberVisibleSteps() {
+  let visNum = 1;
+  C.steps.forEach((step, i) => {
+    const section = document.getElementById(`section-${i}`);
+    if (!section || section.style.display === 'none') return;
+    const numEl = section.querySelector('.itab-number');
+    if (numEl) numEl.textContent = visNum;
+    visNum++;
+  });
+  // Renumber estimate and lead sections
+  const estIdx = C.steps.length;
+  const estSection = document.getElementById(`section-${estIdx}`);
+  if (estSection) {
+    const numEl = estSection.querySelector('.itab-number');
+    if (numEl) numEl.textContent = visNum;
+    visNum++;
+  }
+  const leadIdx = C.steps.length + (C.estimate ? 1 : 0);
+  const leadSection = document.getElementById(`section-${leadIdx}`);
+  if (leadSection) {
+    const numEl = leadSection.querySelector('.itab-number');
+    if (numEl) numEl.textContent = visNum;
+  }
 }
 
 function toggleMultiOption(stepId, value, el) {
@@ -1326,7 +1438,12 @@ function updateEstimate() {
 // ── QUOTE SUMMARY ───────────────────────────────────────────────
 function buildQuoteSummaryText(includeHtml) {
   let lines = [];
-  C.steps.forEach(step => {
+  C.steps.forEach((step, i) => {
+    // Skip hidden conditional steps
+    if (step.showIf) {
+      const section = document.getElementById(`section-${i}`);
+      if (section && section.style.display === 'none') return;
+    }
     if (step.input.type === 'select' && state.answers[step.id]) {
       const opt = findOption(step.id, state.answers[step.id]);
       if (includeHtml) {
@@ -1380,8 +1497,10 @@ function updateQuoteSummary() {
 function getPlainTextQuote() {
   const nameEl = document.getElementById('form-name');
   const suburbEl = document.getElementById('form-suburb');
+  const notesEl = document.getElementById('form-notes');
   const name = nameEl ? nameEl.value.trim() : '';
   const suburb = suburbEl ? suburbEl.value.trim() : '';
+  const notes = notesEl ? notesEl.value.trim() : '';
 
   let text = '🏗️ FENCE QUOTE — READY FOR PRICING\n';
   text += '════════════════════════════\n\n';
@@ -1393,9 +1512,11 @@ function getPlainTextQuote() {
   const lines = buildQuoteSummaryText(false);
   text += lines.join('\n');
 
+  if (notes) text += `\n\nNotes: ${notes}`;
+
   text += '\n\n════════════════════════════\n';
   text += 'Generated at itabs.ai/quotes\n';
-  text += 'Prices are ballpark estimates for Perth metro (2025).\n';
+  text += 'Prices are ballpark estimates for Perth metro (2026).\n';
   text += 'Please provide an accurate quote based on these specs.';
 
   return text;
@@ -1457,7 +1578,14 @@ function checkWarnings() {
 
 // ── PROGRESS ────────────────────────────────────────────────────
 function updateProgress() {
-  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0);
+  let hiddenSteps = 0;
+  C.steps.forEach((step, i) => {
+    if (step.showIf) {
+      const section = document.getElementById(`section-${i}`);
+      if (section && section.style.display === 'none') hiddenSteps++;
+    }
+  });
+  const totalSections = C.steps.length - hiddenSteps + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0);
   const completed = state.completedSections.size;
   const pct = (completed / totalSections) * 100;
   const fillEl = document.getElementById('progressFill');
