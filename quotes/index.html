@@ -373,6 +373,21 @@ const WIDGET_CONFIG = {
     enabled: false,
   },
 
+  // Notification — sends a copy to you when someone copies/emails a quote
+  // Get your free access key at https://web3forms.com (enter responses@itabs.ai)
+  notification: {
+    enabled: true,
+    web3formsKey: "YOUR_KEY_HERE",  // Replace with your Web3Forms access key
+    toEmail: "responses@itabs.ai",
+  },
+
+  // Suggested fencers for customers to contact
+  suggestedFencers: [
+    { name: "Fosters Fencing", area: "Perth Metro", phone: "", link: "https://www.facebook.com/fostersfencing", type: "facebook" },
+    { name: "SureFence WA", area: "Perth Metro", phone: "", link: "https://www.facebook.com/surefencewa", type: "facebook" },
+    { name: "Ausway Fencing", area: "Perth Metro", phone: "", link: "https://www.facebook.com/auswayfencing", type: "facebook" },
+  ],
+
   footer: {
     showPoweredBy: true,
     poweredByUrl: "https://itabs.ai",
@@ -768,7 +783,6 @@ function init() {
   initSliderDefaults();
   render();
   updateConditionalSteps();
-  setTimeout(() => toggleSection(0), 300);
 }
 
 function initSliderDefaults() {
@@ -997,6 +1011,7 @@ function renderLeadSection(index) {
           <p id="successText">${lc.successSubtext}</p>
           <button class="submit-btn" style="margin-top:16px;" onclick="copyQuote()">📋 Copy Again</button>
           <button class="email-btn" onclick="emailQuote()">📧 Email This Quote to Myself</button>
+          <div id="fencerSuggestions"></div>
         </div>
       </div>
     </div>`;
@@ -1529,6 +1544,8 @@ function copyQuote() {
     document.getElementById('successMsg').style.display = 'block';
     document.getElementById('successTitle').textContent = 'Copied to clipboard! ✅';
     document.getElementById('successText').textContent = 'Paste it into a text, email, or DM to any local fencer. They\'ll have everything they need to give you an accurate quote.';
+    showFencerSuggestions();
+    sendNotification(text);
 
     const leadSectionIndex = C.steps.length + (C.estimate ? 1 : 0);
     const sectionId = `section-${leadSectionIndex}`;
@@ -1549,7 +1566,23 @@ function copyQuote() {
 
     document.getElementById('leadFormContainer').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
+    showFencerSuggestions();
+    sendNotification(text);
   });
+}
+
+function showFencerSuggestions() {
+  if (!C.suggestedFencers || !C.suggestedFencers.length) return;
+  const container = document.getElementById('fencerSuggestions');
+  if (!container) return;
+  let html = '<div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">';
+  html += '<p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">💬 Know a fencer? Or try one of these Perth companies:</p>';
+  C.suggestedFencers.forEach(f => {
+    const icon = f.type === 'facebook' ? '📘' : '🌐';
+    html += `<a href="${f.link}" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:8px;background:var(--bg-hover);border-radius:10px;text-decoration:none;color:var(--text-main);transition:background 0.2s;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--bg-hover)'">${icon} <span><strong>${f.name}</strong>${f.area ? '<br><span style="font-size:0.8rem;color:var(--text-muted);">' + f.area + '</span>' : ''}</span></a>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
 }
 
 function emailQuote() {
@@ -1557,6 +1590,24 @@ function emailQuote() {
   const subject = encodeURIComponent('My Fence Quote — Ready for Pricing');
   const body = encodeURIComponent(text);
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  sendNotification(text);
+}
+
+// ── NOTIFICATION ────────────────────────────────────────────────
+function sendNotification(quoteText) {
+  if (!C.notification || !C.notification.enabled || C.notification.web3formsKey === 'YOUR_KEY_HERE') return;
+  try {
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: C.notification.web3formsKey,
+        subject: '🏗️ New fence quote from iTabs',
+        from_name: 'iTabs Quotes',
+        message: quoteText,
+      })
+    }).catch(() => {});
+  } catch(e) {}
 }
 
 // ── WARNINGS ────────────────────────────────────────────────────
@@ -1609,3 +1660,4 @@ init();
 
 </body>
 </html>
+
