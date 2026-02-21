@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cape2Cape Trek for zero2hero — Support David Flett</title>
+    <meta name="description" content="David Flett is trekking 135km from Cape Naturaliste to Cape Leeuwin to raise $10,000 for zero2hero — a WA youth mental health charity.">
+    <meta property="og:title" content="Cape2Cape Trek for zero2hero">
+    <meta property="og:description" content="135km trek raising $10,000 for youth mental health in Western Australia. Support David Flett's Cape2Cape challenge.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itabs.ai/donate/cape2cape">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #0c0a09;
+            --bg-secondary: #1c1917;
+            --bg-tertiary: #292524;
+            --text-primary: #fafaf9;
+            --text-secondary: #a8a29e;
+            --accent: #ea580c;
+            --accent-warm: #f97316;
+            --accent-glow: #fb923c;
+            --hero-teal: #0d9488;
+            --hero-teal-light: #14b8a6;
+            --i-button: #f59e0b;
+            --i-button-hover: #d97706;
+            --card-radius: 20px;
+            --transition: 0.25s ease;
+            --donate-red: #dc2626;
+            --donate-red-hover: #b91c1c;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(12,10,9,0.9) 0%, transparent 100%);
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+
+        .progress-segment.active {
+            background: var(--accent-warm);
+            box-shadow: 0 0 6px rgba(249,115,22,0.5);
+        }
+
+        .progress-segment.viewed {
+            background: var(--text-primary);
+        }
+
+        /* Header */
+        .header {
+            padding: 48px 16px 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(234,88,12,0.3);
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .channel-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .video-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .itabs-badge {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--hero-teal-light);
+            background: rgba(13,148,136,0.12);
+            border: 1px solid rgba(13,148,136,0.25);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* Cards Container */
+        .cards-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card {
+            position: absolute;
+            inset: 0;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .card.prev {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Hero visuals per card */
+        .card-hero {
+            width: 100%;
+            aspect-ratio: 16/9;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-hero .hero-icon {
+            font-size: 64px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+
+        .card-hero .hero-overlay-text {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 2;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 800;
+            font-size: 28px;
+            line-height: 1.1;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+        }
+
+        .card-hero .hero-stat {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .card-hero .hero-stat .stat-number {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 900;
+            font-size: 72px;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+        }
+
+        .card-hero .hero-stat .stat-unit {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* Hero backgrounds */
+        .hero-trek {
+            background: linear-gradient(135deg, #1a472a 0%, #2d5016 30%, #854d0e 70%, #78350f 100%);
+        }
+
+        .hero-cause {
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 40%, #14b8a6 100%);
+        }
+
+        .hero-distance {
+            background: linear-gradient(160deg, #7c2d12 0%, #ea580c 50%, #f97316 100%);
+        }
+
+        .hero-impact {
+            background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%);
+        }
+
+        .hero-donate {
+            background: linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #ef4444 100%);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        .hero-warrikal {
+            background: linear-gradient(135deg, #78350f 0%, #b45309 40%, #f59e0b 100%);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.1); }
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card-label {
+            font-size: 11px;
+            color: var(--accent-warm);
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .card-headline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .card-summary {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .card-summary strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* i-Buttons */
+        .i-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .i-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+
+        .i-button:hover, .i-button:active {
+            background: var(--i-button);
+            color: #000;
+            border-color: var(--i-button);
+            transform: scale(1.02);
+        }
+
+        .i-button .i-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--i-button);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            font-style: italic;
+            font-family: Georgia, serif;
+            flex-shrink: 0;
+        }
+
+        .i-button:hover .i-icon, .i-button:active .i-icon {
+            background: #000;
+            color: var(--i-button);
+        }
+
+        /* Navigation Zones */
+        .nav-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 28%;
+            z-index: 50;
+            cursor: pointer;
+        }
+
+        .nav-zone.left { left: 0; }
+        .nav-zone.right { right: 0; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 430px;
+            max-height: 70vh;
+            border-radius: 24px 24px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title .type-badge {
+            font-size: 10px;
+            padding: 4px 8px;
+            background: var(--i-button);
+            color: #000;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-primary);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(70vh - 80px);
+        }
+
+        .modal-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 14px 16px;
+            text-align: center;
+            background: linear-gradient(to top, var(--bg-primary) 60%, transparent);
+        }
+
+        .donate-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--donate-red) 0%, #ef4444 100%);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 4px 20px rgba(220,38,38,0.3);
+        }
+
+        .donate-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(220,38,38,0.5);
+        }
+
+        .donate-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Swipe hint */
+        @keyframes swipeHint {
+            0%, 100% { transform: translateX(0); opacity: 0.4; }
+            50% { transform: translateX(-8px); opacity: 1; }
+        }
+
+        .swipe-hint {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            animation: swipeHint 2.5s ease infinite;
+            pointer-events: none;
+        }
+
+        .swipe-hint.hidden {
+            display: none;
+        }
+
+        /* Fundraise progress bar */
+        .fundraise-bar {
+            margin-top: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fundraise-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.5s ease;
+            box-shadow: 0 0 10px rgba(249,115,22,0.4);
+        }
+
+        .fundraise-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+        .fundraise-labels .raised {
+            color: var(--accent-warm);
+            font-weight: 700;
+        }
+
+        .fundraise-labels .target {
+            color: var(--text-secondary);
+        }
+
+        /* Inline CTA on last card */
+        .inline-cta {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--donate-red), #ef4444);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 16px rgba(220,38,38,0.3);
+        }
+
+        .inline-cta:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 24px rgba(220,38,38,0.5);
+        }
+
+        /* Powered by line */
+        .powered-by {
+            text-align: center;
+            padding: 4px 16px 10px;
+            font-size: 10px;
+            color: rgba(168,162,158,0.4);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container" id="progress"></div>
+        
+        <div class="header">
+            <div class="channel-avatar" id="channelAvatar">W</div>
+            <div class="header-info">
+                <div class="channel-name">Warrikal &bull; Let's Help</div>
+                <div class="video-title">Cape2Cape Trek for zero2hero &mdash; May 2026</div>
+            </div>
+            <span class="itabs-badge">cape2cape</span>
+        </div>
+
+        <div class="cards-wrapper" id="cardsWrapper">
+            <div class="nav-zone left" id="navLeft"></div>
+            <div class="nav-zone right" id="navRight"></div>
+            <div class="swipe-hint" id="swipeHint">
+                <span>Tap to continue</span>
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M7 15l5-5-5-5"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="https://www.mycause.com.au/page/346498/support-me-in-cape2cape-trek-may-2026-for-zero2hero" 
+               class="donate-button" id="donateButton" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                Donate Now
+            </a>
+        </div>
+        <div class="powered-by">POWERED BY iTABS</div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span id="modalTerm"></span>
+                    <span class="type-badge" id="modalType"></span>
+                </div>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content" id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // 💰 CAMPAIGN CONFIG
+        // =============================================
+        const FUNDS_TARGET = 10000;
+        // =============================================
+
+        const targetFormatted = '$' + FUNDS_TARGET.toLocaleString();
+
+        const CAMPAIGN_DATA = {
+            donateUrl: "https://www.mycause.com.au/page/346498/support-me-in-cape2cape-trek-may-2026-for-zero2hero",
+            cards: [
+                {
+                    heroType: "trek",
+                    heroIcon: "🥾",
+                    overlayText: "135km Through WA's Wilderness",
+                    label: "THE CHALLENGE",
+                    headline: "Boardroom to Bushland",
+                    summary: "This May, Warrikal Executive Director <strong>David Flett</strong> is swapping his suit for hiking boots to tackle the gruelling 135km Cape2Cape trek — from Cape Naturaliste to Cape Leeuwin in Western Australia's stunning South West.",
+                    iButtons: [
+                        {type: "context", term: "Cape2Cape Track", content: "The Cape to Cape Track stretches 135km along the Leeuwin-Naturaliste Ridge in WA's Margaret River region. It passes through coastal cliffs, karri forests, pristine beaches, and limestone caves. It typically takes 5-7 days to complete and is one of Australia's great walks."},
+                        {type: "context", term: "David Flett", content: "David Flett is the Executive Director at Warrikal Pty Ltd, a leading West Perth-based industrial services company. This is the second time he's taken on the Cape2Cape challenge to raise funds for youth mental health."},
+                        {type: "why-it-matters", content: "This isn't a corporate PR stunt — it's a deeply personal commitment. David is putting himself through a physically demanding multi-day trek to raise awareness and funds for young people struggling with mental health challenges in Western Australia."}
+                    ]
+                },
+                {
+                    heroType: "cause",
+                    heroIcon: "💚",
+                    overlayText: "Standing Up for Young Minds",
+                    label: "THE CAUSE",
+                    headline: "zero2hero: Youth Mental Health",
+                    summary: "All funds go directly to <strong>zero2hero</strong> — a WA charity dedicated to educating, engaging, and empowering young people to become mental health leaders and help prevent suicide in Western Australia.",
+                    iButtons: [
+                        {type: "context", term: "zero2hero", content: "zero2hero is a Western Australian charity with a vision that every child and young person is educated and empowered to effectively deal with mental health issues. They work in schools and communities to build mental health literacy and resilience in young Australians."},
+                        {type: "why-it-matters", content: "Youth mental health is one of the most critical issues facing Australia. Suicide is the leading cause of death for young Australians aged 15-24. Organisations like zero2hero play a vital role in early intervention and education, giving young people the tools to recognise and respond to mental health challenges in themselves and their peers."}
+                    ]
+                },
+                {
+                    heroType: "warrikal",
+                    heroIcon: "🦘",
+                    overlayText: "",
+                    heroStat: {number: "WARRIKAL", unit: "Let's Help Initiative"},
+                    label: "THE COMPANY",
+                    headline: "Industry Leading the Way",
+                    summary: "Warrikal's <strong>\"Let's Help\"</strong> initiative demonstrates what corporate social responsibility looks like in action. Managing Director Roy Messer and the whole team are behind David's trek, encouraging everyone to get involved.",
+                    iButtons: [
+                        {type: "context", term: "Warrikal", content: "Warrikal is a West Perth-based industrial services company operating across Western Australia's mining and resources sector. They provide specialist maintenance, shutdowns, and project services. Their 'Let's Help' campaign channels corporate energy into youth mental health support."},
+                        {type: "why-it-matters", content: "When companies in WA's mining sector — one of Australia's toughest industries — champion mental health, it sends a powerful message. Warrikal is showing that looking after our young people is everyone's responsibility, from the boardroom to the job site."}
+                    ]
+                },
+                {
+                    heroType: "distance",
+                    heroIcon: "",
+                    overlayText: "",
+                    heroStat: {number: "DYNAMIC", unit: "DYNAMIC"},
+                    label: "THE TARGET",
+                    headline: "Every Dollar Counts",
+                    summary: "DYNAMIC",
+                    showProgressBar: false,
+                    iButtons: [
+                        {type: "context", term: "Donation Impact", content: "$50 helps deliver a mental health workshop to school students. $100 can provide resources for a peer support program. $250 can fund a full school engagement session. Every contribution, no matter the size, directly supports zero2hero's programs for young Western Australians."},
+                        {type: "related", term: "Donate Here", content: "Visit David's fundraising page at mycause.com.au to donate directly. You can sponsor David and leave a message of support. Donations of $2 or more are tax deductible. Share the page to help spread the word!"}
+                    ]
+                },
+                {
+                    heroType: "donate",
+                    heroIcon: "❤️",
+                    overlayText: "Help David Reach His Goal",
+                    label: "TAKE ACTION",
+                    headline: "You Can Help Right Now",
+                    summary: "Whether it's <strong>$20, $50, or $250</strong> — your donation goes directly to helping young West Australians deal with mental health challenges. Donate, share this page, or simply spread the word. Every bit helps.",
+                    showCTA: true,
+                    iButtons: [
+                        {type: "related", term: "3 Ways to Help", content: "1. DONATE — Even $10 makes a difference. All funds go directly to zero2hero.\n\n2. SHARE — Send this page to a friend, post it on socials, or share the mycause link with your network.\n\n3. FOLLOW — Follow David's journey as he prepares for the May 2026 trek and cheer him on!"}
+                    ]
+                }
+            ]
+        };
+
+        // Inject dynamic fundraising data into the target card
+        const progressCard = CAMPAIGN_DATA.cards[3];
+        progressCard.heroStat = {number: targetFormatted, unit: "fundraising target"};
+        progressCard.summary = `David is aiming to raise <strong>${targetFormatted}</strong> for zero2hero through the Cape2Cape trek in May 2026. Every donation — no matter the size — goes directly to helping young West Australians deal with mental health challenges.`;
+
+        // App State
+        let currentCard = 0;
+        const totalCards = CAMPAIGN_DATA.cards.length;
+
+        // DOM Elements
+        const progress = document.getElementById('progress');
+        const cardsWrapper = document.getElementById('cardsWrapper');
+        const navLeft = document.getElementById('navLeft');
+        const navRight = document.getElementById('navRight');
+        const donateButton = document.getElementById('donateButton');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTerm = document.getElementById('modalTerm');
+        const modalType = document.getElementById('modalType');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+        const swipeHint = document.getElementById('swipeHint');
+
+        function init() {
+            // Create progress segments
+            for (let i = 0; i < totalCards; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'progress-segment';
+                progress.appendChild(segment);
+            }
+
+            // Create cards
+            CAMPAIGN_DATA.cards.forEach((card, index) => {
+                const cardEl = createCard(card, index);
+                cardsWrapper.insertBefore(cardEl, navLeft);
+            });
+
+            updateCard(0);
+
+            // Navigation
+            navLeft.addEventListener('click', () => navigate(-1));
+            navRight.addEventListener('click', () => navigate(1));
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // Touch swipe
+            let touchStartX = 0;
+            let touchStartY = 0;
+            cardsWrapper.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+            cardsWrapper.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const diffX = touchStartX - touchEndX;
+                const diffY = Math.abs(touchStartY - touchEndY);
+                if (Math.abs(diffX) > 50 && diffY < 100) {
+                    navigate(diffX > 0 ? 1 : -1);
+                }
+            });
+
+            [navLeft, navRight].forEach(el => {
+                el.addEventListener('click', () => {
+                    swipeHint.classList.add('hidden');
+                }, { once: true });
+            });
+        }
+
+        function createCard(card, index) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.dataset.index = index;
+
+            // Build hero content
+            let heroInner = '';
+            if (card.heroStat && card.heroStat.number) {
+                const isText = isNaN(card.heroStat.number.replace(/[$,]/g, ''));
+                if (isText) {
+                    heroInner = `
+                        <div class="hero-stat">
+                            <div class="stat-number" style="font-size:42px;letter-spacing:2px">${card.heroStat.number}</div>
+                            <div class="stat-unit">${card.heroStat.unit}</div>
+                        </div>`;
+                } else {
+                    heroInner = `
+                        <div class="hero-stat">
+                            <div class="stat-number">${card.heroStat.number}</div>
+                            <div class="stat-unit">${card.heroStat.unit}</div>
+                        </div>`;
+                }
+            } else {
+                heroInner = `<span class="hero-icon">${card.heroIcon}</span>`;
+                if (card.overlayText) {
+                    heroInner += `<span class="hero-overlay-text">${card.overlayText}</span>`;
+                }
+            }
+
+            // Build i-buttons
+            let iButtonsHTML = '';
+            if (card.iButtons && card.iButtons.length > 0) {
+                const buttons = card.iButtons.map(btn => {
+                    const label = btn.term || (btn.type === 'why-it-matters' ? 'Why it matters' : btn.type);
+                    return `<button class="i-button" data-type="${btn.type}" data-term="${btn.term || ''}" data-content="${encodeURIComponent(btn.content)}">
+                        <span class="i-icon">i</span>
+                        ${label}
+                    </button>`;
+                }).join('');
+                iButtonsHTML = `<div class="i-buttons">${buttons}</div>`;
+            }
+
+            // Progress bar for fundraising card
+            let progressBarHTML = '';
+            if (card.showProgressBar) {
+                progressBarHTML = `
+                    <div class="fundraise-bar"><div class="fundraise-bar-fill"></div></div>
+                    <div class="fundraise-labels">
+                        <span class="raised">${raisedFormatted} raised</span>
+                        <span class="target">${targetFormatted} target</span>
+                    </div>`;
+            }
+
+            // Inline CTA
+            let ctaHTML = '';
+            if (card.showCTA) {
+                ctaHTML = `<a href="${CAMPAIGN_DATA.donateUrl}" target="_blank" rel="noopener" class="inline-cta">❤️ Donate to David's Trek</a>`;
+            }
+
+            cardEl.innerHTML = `
+                <div class="card-content">
+                    <div class="card-hero hero-${card.heroType}">
+                        ${heroInner}
+                    </div>
+                    <div class="card-body">
+                        <div class="card-label">${card.label} &bull; ${index + 1} of ${totalCards}</div>
+                        <h2 class="card-headline">${card.headline}</h2>
+                        <p class="card-summary">${card.summary}</p>
+                        ${progressBarHTML}
+                        ${iButtonsHTML}
+                        ${ctaHTML}
+                    </div>
+                </div>
+            `;
+
+            // i-button handlers
+            cardEl.querySelectorAll('.i-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(
+                        btn.dataset.term || getTypeLabel(btn.dataset.type),
+                        btn.dataset.type,
+                        decodeURIComponent(btn.dataset.content)
+                    );
+                });
+            });
+
+            return cardEl;
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'definition': 'Definition',
+                'context': 'Context',
+                'why-it-matters': 'Why It Matters',
+                'related': 'Related'
+            };
+            return labels[type] || type;
+        }
+
+        function navigate(direction) {
+            const newIndex = currentCard + direction;
+            if (newIndex >= 0 && newIndex < totalCards) {
+                updateCard(newIndex);
+            }
+        }
+
+        function updateCard(index) {
+            const cards = document.querySelectorAll('.card');
+            const segments = document.querySelectorAll('.progress-segment');
+
+            cards.forEach((card, i) => {
+                card.classList.remove('active', 'prev');
+                if (i === index) card.classList.add('active');
+                else if (i < index) card.classList.add('prev');
+            });
+
+            segments.forEach((seg, i) => {
+                seg.classList.remove('active', 'viewed');
+                if (i === index) seg.classList.add('active');
+                else if (i < index) seg.classList.add('viewed');
+            });
+
+            currentCard = index;
+        }
+
+        function openModal(term, type, content) {
+            modalTerm.textContent = term;
+            modalType.textContent = getTypeLabel(type);
+            modalContent.innerHTML = content.replace(/\n/g, '<br>');
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        init();
+    </script>
+</body>
+</html>
