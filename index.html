@@ -3,489 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iTabs — Free Trade Estimators for Perth</title>
+<title>iTabs Quotes — Ballpark Estimates for Perth Trades</title>
+<meta name="description" content="Get ballpark price estimates for fencing, paving, landscaping, electrical, plumbing and painting in Perth. Free, no sign-up.">
+<meta property="og:title" content="iTabs Quotes — Ballpark Estimates for Perth Trades">
+<meta property="og:description" content="Tap through to get a ballpark price for common trades jobs in Perth. Free, no sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://itabs.ai">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0c1117;
+  --bg-main: #0c1117;
   --bg-card: #151c25;
   --bg-hover: #1a2332;
   --border: #222d3a;
-  --text: #e8ecf1;
-  --text-muted: #8896a7;
-  --text-dim: #5a6a7d;
-  --brand: #06b6d4;
-  --brand-glow: rgba(6, 182, 212, 0.15);
-  --green: #22c55e;
-  --radius: 16px;
-  --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --text-primary: #e8ecf1;
+  --text-secondary: #8896a7;
+  --text-muted: #5a6a7d;
+  --accent-green: #22c55e;
+  --radius: 14px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 24px 20px 60px;
+  padding: 20px 16px 40px;
 }
 
-/* ═══ HEADER ═══ */
-.hero {
+.header {
   text-align: center;
-  padding: 40px 0 36px;
+  padding: 40px 0 30px;
 }
 
-.hero-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  background: linear-gradient(135deg, var(--brand), #22d3ee);
-  border-radius: 18px;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 32px var(--brand-glow);
-}
-
-.hero h1 {
+.header-logo {
   font-size: 1.8rem;
   font-weight: 800;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, var(--brand), #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
 }
 
-.hero p {
-  font-size: 1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 460px;
-  margin: 0 auto;
+.header-logo .logo-i {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 8px; color: #000; font-weight: 700; font-size: 1rem;
+  font-family: serif; font-style: italic; margin-right: 2px; vertical-align: middle;
 }
 
-.hero-badge {
+.header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.header .badge {
   display: inline-block;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.8rem;
-  color: var(--text-dim);
+  color: var(--text-muted);
   margin-top: 14px;
 }
 
-/* ═══ HOW IT WORKS ═══ */
-.how-it-works {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 32px;
-}
-
-.how-step {
-  flex: 1;
-  text-align: center;
-  padding: 16px 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.how-step-num {
-  display: inline-flex;
-  width: 28px;
-  height: 28px;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--brand), #0891b2);
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #000;
-  margin-bottom: 8px;
-}
-
-.how-step-text {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.how-step-text strong {
-  display: block;
-  color: var(--text);
-  font-size: 0.85rem;
-  margin-bottom: 2px;
-}
-
-/* ═══ SECTION LABEL ═══ */
 .section-label {
   font-size: 0.75rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-dim);
+  letter-spacing: 1px;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
-/* ═══ TRADE GRID ═══ */
+/* ═══ TRADE CARDS ═══ */
 .trade-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 40px;
+  gap: 12px;
+  margin-bottom: 30px;
 }
 
-.trade-btn {
+.trade-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 24px 12px;
+  gap: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  padding: 18px 16px;
   text-decoration: none;
-  color: var(--text);
-  transition: all 0.25s ease;
-  cursor: pointer;
-  position: relative;
+  color: var(--text-primary);
+  transition: all 0.2s;
 }
-
-.trade-btn:hover {
-  border-color: rgba(6, 182, 212, 0.4);
+.trade-card:hover {
+  border-color: var(--accent-green);
   background: var(--bg-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-}
-
-.trade-btn.active:hover {
-  border-color: var(--brand);
-  box-shadow: 0 8px 24px var(--brand-glow);
+  transform: translateY(-1px);
 }
 
 .trade-icon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 1.6rem;
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 12px;
   flex-shrink: 0;
 }
 
-.trade-btn.active .trade-icon {
-  background: linear-gradient(135deg, var(--brand), #0891b2);
-  box-shadow: 0 4px 16px var(--brand-glow);
-}
+.trade-info { flex: 1; }
+.trade-name { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+.trade-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; }
 
-.trade-btn.coming-soon .trade-icon {
-  background: var(--bg-hover);
-  border: 1px solid var(--border);
-  opacity: 0.6;
+.trade-arrow {
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  transition: transform 0.2s;
 }
+.trade-card:hover .trade-arrow { transform: translateX(3px); color: var(--accent-green); }
 
-.trade-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.3;
-}
-
-.trade-btn.coming-soon .trade-name {
-  color: var(--text-dim);
-}
-
-.trade-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.trade-tag {
+  display: inline-block;
   font-size: 0.65rem;
-  padding: 2px 8px;
-  border-radius: 6px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-green);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.3px;
+  margin-left: 6px;
+  vertical-align: middle;
 }
 
-.trade-badge.live {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--green);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+/* ═══ COMING SOON ═══ */
+.coming-soon {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.coming-soon .trade-tag {
+  background: rgba(136, 150, 167, 0.15);
+  color: var(--text-muted);
 }
 
-.trade-badge.soon {
-  background: rgba(90, 106, 125, 0.15);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-}
-
-/* ═══ INFO SECTION ═══ */
-.info-card {
+/* ═══ BOTTOM INFO ═══ */
+.info-box {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.info-card h3 {
-  font-size: 1rem;
+.info-box h3 {
+  font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
-.info-card p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
+.info-box p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
-.info-card a {
-  color: var(--brand);
-  text-decoration: none;
-}
-
-.info-card a:hover {
-  text-decoration: underline;
-}
-
-/* ═══ FOOTER ═══ */
 .footer {
   text-align: center;
-  padding: 32px 0 16px;
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-
-.footer-brand {
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.footer-brand span {
-  background: linear-gradient(135deg, var(--brand), #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.footer-text {
+  padding: 20px 0 10px;
   font-size: 0.75rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
-
-.footer-text a {
-  color: var(--brand);
-  text-decoration: none;
-}
-
-.footer-text a:hover {
-  text-decoration: underline;
-}
-
-/* ═══ OVERLAY ═══ */
-.estimator-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--bg);
-  z-index: 1000;
-  overflow-y: auto;
-}
-
-.estimator-overlay.show {
-  display: block;
-  animation: fadeIn 0.2s ease;
-}
-
-.overlay-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-}
-
-.overlay-back {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 600;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.overlay-back:hover {
-  color: var(--text);
-  border-color: var(--brand);
-}
-
-.overlay-title {
-  font-size: 0.9rem;
-  font-weight: 600;
   color: var(--text-muted);
 }
-
-.overlay-iframe {
-  width: 100%;
-  height: calc(100vh - 52px);
-  border: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 420px) {
-  .trade-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .how-it-works { flex-direction: column; }
-  .hero h1 { font-size: 1.5rem; }
-}
+.footer a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-logo">⚡</div>
-    <h1>Get a quick trade estimate</h1>
-    <p>Free interactive estimators for common home jobs in Perth. Pick your trade, answer a few questions, get a ballpark price.</p>
-    <div class="hero-badge">📍 Perth, WA — No sign-up needed</div>
+
+  <div class="header">
+    <div class="header-logo">
+      <span class="logo-i">i</span>Tabs Quotes
+    </div>
+    <p>Get a ballpark price for common trades jobs in Perth. Tap a trade to start — takes about 60 seconds.</p>
+    <span class="badge">📍 Perth, WA — 2025/26 pricing</span>
   </div>
 
-  <!-- How it works -->
-  <div class="how-it-works">
-    <div class="how-step">
-      <div class="how-step-num">1</div>
-      <div class="how-step-text"><strong>Pick a trade</strong>Choose your job type</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step-num">2</div>
-      <div class="how-step-text"><strong>Answer questions</strong>Size, style, extras</div>
-    </div>
-    <div class="how-step">
-      <div class="how-step-num">3</div>
-      <div class="how-step-text"><strong>Get your estimate</strong>Share it with any tradie</div>
-    </div>
-  </div>
-
-  <!-- Trade buttons -->
   <div class="section-label">Choose a trade</div>
-  <div class="trade-grid" id="tradeGrid">
-    <a class="trade-btn active" onclick="openEstimator('fencing.html', 'Fencing')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">🏗️</div>
-      <div class="trade-name">Fencing</div>
+
+  <div class="trade-grid">
+
+    <a href="fencing.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(245,158,11,0.12);">🏗️</div>
+      <div class="trade-info">
+        <div class="trade-name">Fencing <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Colorbond, timber, aluminium & pool fencing. Per-metre pricing with extras.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
-    <a class="trade-btn active" onclick="openEstimator('painting.html', 'Painting')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">🎨</div>
-      <div class="trade-name">Painting</div>
+
+    <a href="paving.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(234,88,12,0.12);">🧱</div>
+      <div class="trade-info">
+        <div class="trade-name">Paving <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Brick, concrete, natural stone & exposed aggregate. Per-m² with area slider.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
-    <a class="trade-btn active" onclick="openEstimator('paving.html', 'Paving')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">🧱</div>
-      <div class="trade-name">Paving</div>
+
+    <a href="landscaping.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(34,197,94,0.12);">🌿</div>
+      <div class="trade-info">
+        <div class="trade-name">Landscaping <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Turf, reticulation, retaining walls & garden lighting. Whole-job pricing.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
-    <a class="trade-btn active" onclick="openEstimator('landscaping.html', 'Landscaping')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">🌿</div>
-      <div class="trade-name">Landscaping</div>
+
+    <a href="electrical.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(234,179,8,0.12);">⚡</div>
+      <div class="trade-info">
+        <div class="trade-name">Electrical <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Lighting, power points, fans, switchboards & rewiring. Per-item pricing.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
-    <a class="trade-btn active" onclick="openEstimator('electrical.html', 'Electrical')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">⚡</div>
-      <div class="trade-name">Electrical</div>
+
+    <a href="plumbing.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(59,130,246,0.12);">🔧</div>
+      <div class="trade-info">
+        <div class="trade-name">Plumbing <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Taps, toilets, hot water, drains & gas fitting. Includes emergency urgency pricing.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
-    <a class="trade-btn active" onclick="openEstimator('plumbing.html', 'Plumbing')" role="button">
-      <span class="trade-badge live">Live</span>
-      <div class="trade-icon">🔧</div>
-      <div class="trade-name">Plumbing</div>
+
+    <a href="painting.html" class="trade-card">
+      <div class="trade-icon" style="background:rgba(168,85,247,0.12);">🎨</div>
+      <div class="trade-info">
+        <div class="trade-name">Painting <span class="trade-tag">Live</span></div>
+        <div class="trade-desc">Interior & exterior, per-room pricing with paint quality and prep options.</div>
+      </div>
+      <div class="trade-arrow">›</div>
     </a>
+
   </div>
 
-  <!-- Info -->
-  <div class="section-label">About these estimators</div>
-  <div class="info-card">
-    <h3>💡 What is this?</h3>
-    <p>These are ballpark estimators — not exact quotes. They help you understand rough costs and build a detailed spec for the job. When you're ready, share your estimate directly with any local tradie to get actual quotes faster.</p>
-  </div>
-  <div class="info-card">
-    <h3>🔒 No sign-up, no selling your data</h3>
-    <p>We don't collect your info unless you choose to share it. No account needed. No ads. Just useful tools.</p>
-  </div>
-  <div class="info-card">
-    <h3>🛠️ Are you a tradie?</h3>
-    <p>Want a branded version of these estimators for your business? The engine is open source and free. Check out the <a href="https://github.com/boilermaker-innovator/itabs-quotes" target="_blank">GitHub repo</a> or get in touch.</p>
+  <div class="info-box">
+    <h3>💡 How these estimates work</h3>
+    <p>These are ballpark ranges based on average Perth pricing from multiple sources. Your actual quote will depend on site conditions, materials, and the installer. Use these to understand roughly what things cost, then get 2–3 proper quotes to compare. Tap the <strong style="color:#22c55e;">ⓘ</strong> buttons inside each estimator for tips and local info.</p>
   </div>
 
-  <!-- Footer -->
+  <div class="info-box">
+    <h3>🔧 For tradies & developers</h3>
+    <p>iTabs is open source. One universal engine powers every estimator — you just write a config. Want one for your business? Check the <a href="quotes/builder.html" style="color:var(--accent-green);">Config Builder</a> or visit <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight" style="color:var(--accent-green);">GitHub</a>.</p>
+  </div>
+
   <div class="footer">
-    <div class="footer-brand"><span>iTabs</span></div>
-    <div class="footer-text">
-      Open source trade estimators for Perth, WA<br>
-      <a href="https://github.com/boilermaker-innovator/itabs-quotes" target="_blank">GitHub</a>
-    </div>
+    Powered by <a href="https://itabs.ai">iTabs</a> · Built in Perth 🇦🇺 · <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">Open Source</a>
   </div>
+
 </div>
-
-<!-- Estimator Overlay -->
-<div class="estimator-overlay" id="estimatorOverlay">
-  <div class="overlay-header">
-    <button class="overlay-back" onclick="closeEstimator()">← Back to trades</button>
-    <div class="overlay-title" id="overlayTitle"></div>
-  </div>
-  <iframe class="overlay-iframe" id="estimatorFrame" src="about:blank"></iframe>
-</div>
-
-<script>
-function openEstimator(url, title) {
-  document.getElementById('overlayTitle').textContent = title + ' Estimator';
-  document.getElementById('estimatorFrame').src = url;
-  document.getElementById('estimatorOverlay').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeEstimator() {
-  document.getElementById('estimatorOverlay').classList.remove('show');
-  document.getElementById('estimatorFrame').src = 'about:blank';
-  document.body.style.overflow = '';
-}
-
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeEstimator();
-});
-</script>
 
 </body>
 </html>
