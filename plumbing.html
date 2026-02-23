@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How much will plumbing cost? | Perth Plumbing Estimator</title>
+
+<!-- ============================================================
+     iTabs Quotes Engine v1.2
+     Perth Plumbing Estimator — Generic (not branded to any plumber)
+     ============================================================ -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// WIDGET CONFIG — Perth Plumbing Estimator
+// ═══════════════════════════════════════════════════════════════
+//
+// Pricing sources (researched Feb 2026):
+// - Dicksons Plumbing Perth (Sep 2025): $90–$100/hr, call-out $60–$180, tap/toilet fix $200–$500
+// - Yellow Pages (Nov 2025): $80–$150 leaking tap, $80–$350 new taps, $250–$550+ toilet install
+// - HIREtrades: $80–$135/hr avg, blocked drain $80–$120, toilet $600–$2,000
+// - Fantastic Services (Jan 2025): Perth $90–$100/hr
+// - AS Estimation (Dec 2025): $80–$200/hr nationally, call-out $60–$250
+// - Dollar Wise Plumbing Perth: $60–$200 range, avg ~$100/hr
+//
+const WIDGET_CONFIG = {
+
+  business: {
+    name: "Perth Plumbing Estimator",
+    tagline: "Repairs, Hot Water, Drains, Bathrooms & Gas",
+    phone: "",
+    email: "",
+    logo: "",
+    website: "",
+    location: "Perth, WA",
+    socials: { facebook: "", instagram: "", google: "" }
+  },
+
+  branding: {
+    mode: "dark",
+    primaryColor: "#3b82f6",
+    secondaryColor: "#2563eb",
+    backgroundColor: "#0c1117",
+    cardBackground: "#151c25",
+    hoverBackground: "#1e2535",
+    darkBackground: "#0b0e14",
+    borderColor: "#222d3a",
+    textColor: "#eaeef3",
+    mutedText: "#8a95a8",
+    dimText: "#576275",
+    successColor: "#22c55e",
+    errorColor: "#ef4444",
+    infoColor: "#3b82f6",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    monoFont: "'JetBrains Mono', monospace",
+    borderRadius: "14px",
+    googleFontsUrl: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap",
+  },
+
+  header: {
+    icon: "🔧",
+    headline: "How much will plumbing cost?",
+    subtitle: "Get a ballpark estimate for common plumbing jobs in Perth. Takes about 60 seconds.",
+    badge: "📍 Prices based on Perth, WA — 2025/26",
+    disclaimer: "Estimates are approximate. All plumbing work must be done by a licensed plumber.",
+  },
+
+  steps: [
+    // ── STEP 1: Job Type ──
+    {
+      id: "job_type",
+      title: "What do you need done?",
+      preview: "Tap to choose",
+      input: {
+        type: "select",
+        columns: 2,
+        autoAdvance: true,
+        options: [
+          {
+            value: "repair",
+            label: "Repairs & Fixes",
+            icon: "🔧",
+            description: "Leaking taps, running toilets, dripping pipes, washer replacements. The everyday stuff.",
+            priceHint: "From $120",
+            tags: [{ text: "Most Common", highlight: true }]
+          },
+          {
+            value: "blocked_drain",
+            label: "Blocked Drain",
+            icon: "🚿",
+            description: "Slow draining sink, blocked toilet, or backed-up stormwater drain.",
+            priceHint: "From $150",
+            tags: [{ text: "Urgent" }]
+          },
+          {
+            value: "hot_water",
+            label: "Hot Water System",
+            icon: "🔥",
+            description: "Replace or install gas, electric, solar, or heat pump hot water system.",
+            priceHint: "From $1,200",
+            tags: [{ text: "Big ticket item" }]
+          },
+          {
+            value: "bathroom_reno",
+            label: "Bathroom Renovation",
+            icon: "🛁",
+            description: "New fixtures — toilet, vanity, shower, bath. Rough-in and fit-off plumbing.",
+            priceHint: "From $2,000",
+            tags: [{ text: "Reno plumbing only" }]
+          },
+          {
+            value: "gas",
+            label: "Gas Fitting",
+            icon: "🔥",
+            description: "Gas bayonet for heater, gas cooktop connection, gas hot water. Must be licensed gas fitter.",
+            priceHint: "From $200",
+            tags: [{ text: "Licensed gas fitter" }]
+          },
+          {
+            value: "general_install",
+            label: "New Fixtures / Install",
+            icon: "🚰",
+            description: "New tap, toilet, dishwasher connection, washing machine tap, garden tap.",
+            priceHint: "From $150",
+            tags: [{ text: "Installs" }]
+          },
+        ],
+      },
+      hints: [
+        {
+          tabLabel: "Perth Tips",
+          type: "tips",
+          tips: [
+            {
+              icon: "⚠️",
+              title: "DIY plumbing is illegal",
+              text: "In WA, all plumbing and gas work must be done by a licensed plumber/gas fitter. The only exception is changing a shower head or tap aerator. Unlicensed work voids insurance."
+            },
+            {
+              icon: "🏠",
+              title: "Older Perth homes",
+              text: "Pre-1970s homes may have galvanised steel pipes that are corroding from the inside. If you have low water pressure or rusty water, you may need pipe replacement — not just a repair."
+            },
+            {
+              icon: "💡",
+              title: "Batch your jobs",
+              text: "Plumbers charge a call-out fee ($60–$180) per visit. If you've got a dripping tap AND a running toilet, book them together — one call-out fee, two jobs done."
+            },
+          ]
+        }
+      ]
+    },
+
+    // ── STEP 2: How Many Items? ──
+    {
+      id: "quantity",
+      title: "How many items or fixtures?",
+      preview: "Number of items",
+      input: {
+        type: "slider_group",
+        sliders: [
+          {
+            id: "item_count",
+            label: "Number of items / fixtures",
+            min: 1,
+            max: 10,
+            default: 2,
+            step: 1,
+            unit: "",
+            markers: ["1", "2–3 items", "5+", "Full job 10"],
+          }
+        ]
+      },
+      hints: [
+        {
+          tabLabel: "Quantity Guide",
+          type: "tips",
+          tips: [
+            {
+              icon: "🔧",
+              title: "Repairs",
+              text: "Count each leaking tap, running toilet, or dripping pipe as 1 item. A typical call-out fixes 1–3 issues."
+            },
+            {
+              icon: "🛁",
+              title: "Bathroom reno",
+              text: "Standard bathroom: toilet (1) + vanity (1) + shower (1) = 3 fixtures. Add bath = 4. Laundry: 1–2 fixtures."
+            },
+            {
+              icon: "🔥",
+              title: "Hot water / gas",
+              text: "Hot water system is typically 1 unit. Gas bayonet: count each point (heater, cooktop, BBQ)."
+            },
+          ]
+        }
+      ]
+    },
+
+    // ── STEP 3: Urgency ──
+    {
+      id: "urgency",
+      title: "How urgent is it?",
+      preview: "Tap to choose",
+      input: {
+        type: "select",
+        columns: 1,
+        autoAdvance: true,
+        options: [
+          {
+            value: "standard",
+            label: "Can wait — book during business hours",
+            icon: "📅",
+            description: "Not urgent. Happy to wait for a weekday appointment. Cheapest option.",
+            tags: [{ text: "Best rates" }, { text: "Mon–Fri", highlight: true }]
+          },
+          {
+            value: "soon",
+            label: "Need it this week",
+            icon: "⏰",
+            description: "Annoying but not an emergency. Most plumbers can fit you in within a few days.",
+            tags: [{ text: "Standard rates" }]
+          },
+          {
+            value: "emergency",
+            label: "Emergency — need help now",
+            icon: "🚨",
+            description: "Burst pipe, major leak, flooding, no hot water in winter. After-hours rates apply.",
+            tags: [{ text: "Higher rates" }]
+          },
+        ],
+      },
+      hints: [
+        {
+          tabLabel: "Perth Tips",
+          type: "tips",
+          tips: [
+            {
+              icon: "💰",
+              title: "After-hours costs more",
+              text: "Emergency/after-hours call-out fees can be $150–$300+ just to show up, plus $150–$350/hr. If it's not a true emergency (flooding, burst pipe), wait for business hours."
+            },
+            {
+              icon: "🔧",
+              title: "Is it really urgent?",
+              text: "Dripping tap? Turn off the isolation valve under the sink and book a weekday appointment. Running toilet? Turn off the cistern tap behind the toilet. Save hundreds in emergency fees."
+            },
+          ]
+        }
+      ]
+    },
+
+    // ── STEP 4: Extras ──
+    {
+      id: "extras",
+      title: "Any extras?",
+      preview: "Additional work",
+      input: {
+        type: "toggle_group",
+        toggles: [
+          {
+            id: "parts_premium",
+            label: "Quality / branded fixtures",
+            description: "Upgrade from basic to quality brand taps, mixers, or fixtures (e.g. Caroma, Dorf).",
+            priceHint: "+$100–$500",
+          },
+          {
+            id: "access_difficult",
+            label: "Difficult access",
+            description: "Under-slab pipes, tight crawl spaces, high walls, or pipes behind tiled areas.",
+            priceHint: "+20–40% more",
+          },
+          {
+            id: "compliance_cert",
+            label: "Compliance certificate",
+            description: "Required for some jobs (gas, hot water, new installations). Plumber arranges with council.",
+            priceHint: "+$100–$300",
+          },
+          {
+            id: "camera_inspect",
+            label: "CCTV drain inspection",
+            description: "Camera down the drain to find the blockage or check pipe condition. Common for recurring blocks.",
+            priceHint: "+$250–$600",
+          },
+        ]
+      },
+      hints: [
+        {
+          tabLabel: "What's Included?",
+          type: "mixed",
+          content: [
+            {
+              type: "paragraph",
+              text: "A standard plumbing quote includes the call-out fee, labour, and basic materials (washers, seals, small fittings). Larger parts like taps, toilets, and hot water systems are usually charged separately."
+            },
+            {
+              type: "key_point",
+              label: "💰 Call-out fees",
+              text: "Most Perth plumbers charge $60–$180 just to come to your door. This usually covers the first 30–60 minutes. Ask upfront what's included."
+            },
+            {
+              type: "key_point",
+              label: "🔥 Gas work needs a gas fitter",
+              text: "Not all plumbers are licensed gas fitters. If you need gas work (cooktop, heater, hot water), make sure they hold a GF (Gas Fitter) licence — ask before booking."
+            }
+          ]
+        }
+      ]
+    },
+  ],
+
+  estimate: {
+    title: "Your Plumbing Estimate",
+    preview: "Based on your selections",
+    icon: "💰",
+    note: "Labour + basic materials • incl. GST • Perth metro",
+    hints: [
+      {
+        type: "key_point",
+        label: "How accurate is this?",
+        text: "This is a rough guide based on typical Perth plumber rates in 2025/26. Actual cost depends on access, pipe condition, parts needed, and job complexity. Get 2–3 quotes for any job over $500."
+      },
+      {
+        type: "tip",
+        icon: "💡",
+        title: "How to save on plumbing",
+        text: "Book during weekday business hours. Bundle multiple small jobs in one visit. Use basic fixtures unless you want designer brands. Turn off water to prevent damage while you wait for a weekday appointment."
+      },
+    ]
+  },
+
+  pricing: {
+    unit: "job",
+    unitLabel: "for the job",
+    basePriceStep: "job_type",
+    basePrices: {
+      repair:          { low: 120, high: 250 },
+      blocked_drain:   { low: 150, high: 350 },
+      hot_water:       { low: 1200, high: 3500 },
+      bathroom_reno:   { low: 2000, high: 4500 },
+      gas:             { low: 200, high: 450 },
+      general_install: { low: 150, high: 350 },
+    },
+
+    quantitySource: "item_count",
+
+    preAdjustments: [],
+
+    multipliers: [
+      {
+        source: "urgency",
+        type: "select_map",
+        values: { standard: 1.0, soon: 1.0, emergency: 1.6 }
+      },
+    ],
+
+    postAdjustments: [],
+
+    extras: [
+      { id: "parts_premium", type: "fixed", low: 100, high: 500, breakdownLabel: "Quality / branded fixtures" },
+      { id: "access_difficult", type: "percentage", lowPercent: 20, highPercent: 40, breakdownLabel: "Difficult access" },
+      { id: "compliance_cert", type: "fixed", low: 100, high: 300, breakdownLabel: "Compliance certificate" },
+      { id: "camera_inspect", type: "fixed", low: 250, high: 600, breakdownLabel: "CCTV drain inspection" },
+    ],
+
+    showBreakdown: true,
+    roundTo: 50,
+    minimumPrice: 150,
+  },
+
+  share: {
+    enabled: true,
+    tradeEmoji: "🔧",
+    tradeLabel: "PLUMBING ESTIMATE",
+    hubUrl: "https://boilermaker-innovator.github.io/itabs-quotes/",
+    tagline: "Built with iTabs — free interactive estimators for trades",
+  },
+
+  leadCapture: {
+    enabled: true,
+    title: "Want plumbers to contact you?",
+    preview: "Free quotes, no obligation",
+    heading: "We've got your plumbing specs.",
+    subheading: "Leave your details and local plumbers can get back to you with an actual quote.",
+    showSummary: true,
+    fields: [
+      { id: "name", label: "Your name", type: "text", placeholder: "e.g. Dave Smith", required: true },
+      { id: "contact", label: "Phone or email", type: "text", placeholder: "0412 345 678", required: true },
+      { id: "suburb", label: "Suburb", type: "text", placeholder: "e.g. Joondalup", required: false },
+      { id: "notes", label: "Anything else?", type: "textarea", placeholder: "e.g. Burst pipe under slab, house built 1960s...", required: false },
+    ],
+    submitText: "📩 Send My Quote Request",
+    submitNote: "No spam. Your details go to local plumbers only.",
+    successMessage: "Quote request sent! 🎉",
+    successSubtext: "A local plumber will be in touch soon.",
+    delivery: {
+      method: "web3forms",
+      web3formsKey: "YOUR-KEY-HERE",
+      notifyEmail: "responses@itabs.ai",
+      emailSubject: "New Plumbing Enquiry — Perth",
+    }
+  },
+
+  socialProof: { enabled: false },
+
+  footer: {
+    showPoweredBy: true,
+    poweredByUrl: "https://boilermaker-innovator.github.io/itabs-quotes/",
+  }
+};
+</script>
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ENGINE — Everything below here is generic. Do not edit per client.
+     ═══════════════════════════════════════════════════════════════ -->
+
+<script>
+// Load Google Fonts
+if (WIDGET_CONFIG.branding.googleFontsUrl) {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = WIDGET_CONFIG.branding.googleFontsUrl;
+  document.head.appendChild(link);
+  const preconnect = document.createElement('link');
+  preconnect.rel = 'preconnect';
+  preconnect.href = 'https://fonts.googleapis.com';
+  document.head.prepend(preconnect);
+}
+document.title = WIDGET_CONFIG.header.headline + ' | ' + WIDGET_CONFIG.business.name;
+</script>
+
+<style>
+/* ═══ CSS VARIABLES — Set from config via JS ═══ */
+:root {
+  --bg-main: #0c1117;
+  --bg-card: #151c25;
+  --bg-hover: #1a2332;
+  --bg-dark: #0a0e14;
+  --border: #222d3a;
+  --brand-primary: #06b6d4;
+  --brand-secondary: #0891b2;
+  --brand-glow: rgba(6, 182, 212, 0.15);
+  --accent-green: #22c55e;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --text-primary: #e8ecf1;
+  --text-secondary: #8896a7;
+  --text-muted: #5a6a7d;
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 14px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* ═══ HEADER ═══ */
+.header { text-align: center; padding: 30px 0 25px; }
+.header-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.header h1 {
+  font-size: 1.6rem; font-weight: 800; margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--brand-primary), #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+.header .badge-line {
+  display: inline-block; background: var(--bg-card); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;
+}
+
+/* ═══ PROGRESS ═══ */
+.progress-label {
+  display: flex; justify-content: space-between; margin-bottom: 8px;
+  font-size: 0.75rem; color: var(--text-muted);
+}
+.progress-bar {
+  background: var(--bg-card); border-radius: 10px; height: 6px; margin-bottom: 25px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+  border-radius: 10px; width: 0%; transition: width 0.5s ease;
+}
+
+/* ═══ ACCORDION SECTIONS ═══ */
+.itab-section {
+  background: var(--bg-card); border-radius: var(--radius); margin-bottom: 14px;
+  overflow: hidden; border: 1px solid var(--border); transition: all 0.3s ease; scroll-margin-top: 16px;
+}
+.itab-section:hover { border-color: rgba(6, 182, 212, 0.3); }
+.itab-section.completed { border-color: var(--accent-green); }
+.itab-section.completed .itab-number { background: var(--accent-green); }
+
+.itab-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 16px; cursor: pointer; transition: background 0.2s;
+}
+.itab-header:hover { background: var(--bg-hover); }
+
+.itab-title { display: flex; align-items: center; gap: 12px; }
+.itab-number {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; color: #000; flex-shrink: 0;
+}
+.itab-name { font-size: 1rem; font-weight: 600; }
+.itab-preview { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+.itab-preview .selected { color: var(--accent-green); font-weight: 500; }
+
+.i-button {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border: none; border-radius: 8px; color: #000; font-weight: 700; font-size: 1rem;
+  cursor: pointer; transition: all 0.2s; font-family: serif; font-style: italic; flex-shrink: 0;
+}
+.i-button:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--brand-glow); }
+.i-button.active { background: var(--accent-green); color: white; }
+
+.itab-content { display: none; padding: 0 16px 18px; border-top: 1px solid var(--border); }
+.itab-content.show { display: block; animation: fadeInUp 0.3s ease; }
+
+/* ═══ TABS ═══ */
+.tabs {
+  display: flex; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--border);
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.tab {
+  padding: 7px 14px; background: var(--bg-hover); border: none; border-radius: 8px;
+  color: var(--text-secondary); cursor: pointer; font-family: var(--font-main);
+  font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+}
+.tab:hover { color: var(--text-primary); }
+.tab.active { background: var(--brand-primary); color: #000; font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.show { display: block; }
+
+/* ═══ OPTIONS ═══ */
+.option-grid { display: flex; flex-direction: column; gap: 10px; }
+.option-grid.cols-2 { display: grid; grid-template-columns: 1fr 1fr; }
+.option-card {
+  background: var(--bg-hover); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; cursor: pointer; transition: all 0.2s; position: relative;
+}
+.option-card:hover { border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.05); }
+.option-card.selected { border-color: var(--accent-green); background: rgba(34, 197, 94, 0.08); }
+.option-card.selected .option-check { display: block; }
+.option-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.option-name { font-weight: 600; font-size: 0.95rem; }
+.option-price { font-family: var(--font-mono); font-size: 0.8rem; color: var(--brand-primary); font-weight: 500; }
+.option-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+.option-check {
+  display: none; position: absolute; top: 10px; right: 12px;
+  font-size: 0.75rem; color: var(--accent-green); font-weight: 600;
+}
+.option-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.option-tag {
+  display: inline-block; padding: 3px 10px; background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 6px;
+  font-size: 0.75rem; color: var(--brand-primary); font-weight: 500;
+}
+.option-tag.highlight { background: rgba(6, 182, 212, 0.2); border-color: var(--brand-primary); }
+
+/* ═══ TOGGLES ═══ */
+.toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-info { flex: 1; }
+.toggle-name { font-weight: 600; font-size: 0.9rem; }
+.toggle-cost { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+.toggle-switch {
+  width: 48px; height: 28px; background: var(--border); border-radius: 14px;
+  cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; margin-left: 12px;
+}
+.toggle-switch.on { background: var(--accent-green); }
+.toggle-knob {
+  width: 22px; height: 22px; background: white; border-radius: 50%;
+  position: absolute; top: 3px; left: 3px; transition: transform 0.2s;
+}
+.toggle-switch.on .toggle-knob { transform: translateX(20px); }
+
+/* ═══ SLIDERS ═══ */
+.slider-group { margin-bottom: 20px; }
+.slider-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; }
+.slider-value { font-family: var(--font-mono); color: var(--brand-primary); font-weight: 500; }
+input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 6px;
+  background: var(--border); border-radius: 3px; outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px;
+  background: var(--brand-primary); border-radius: 50%; cursor: pointer;
+}
+.slider-markers { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: var(--text-muted); }
+
+/* ═══ ESTIMATE ═══ */
+.estimate-box {
+  background: var(--bg-dark); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px; text-align: center; margin-bottom: 16px;
+}
+.est-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.est-range { font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--brand-primary); margin-bottom: 8px; }
+.est-note { font-size: 0.8rem; color: var(--text-muted); }
+.estimate-breakdown { margin-top: 16px; }
+.breakdown-row {
+  display: flex; justify-content: space-between; padding: 8px 0;
+  border-top: 1px solid var(--border); font-size: 0.85rem;
+}
+.br-label { color: var(--text-secondary); }
+.br-value { font-family: var(--font-mono); color: var(--text-primary); font-weight: 500; }
+
+/* ═══ SHARE BUTTON ═══ */
+.share-btn {
+  width: 100%; padding: 16px 20px; margin-top: 16px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  color: #000; border: none; border-radius: var(--radius);
+  font-size: 1rem; font-weight: 700; font-family: var(--font-main);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.share-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.share-btn:active { transform: translateY(0); }
+
+/* ═══ SHARE MODAL ═══ */
+.share-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.share-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+
+.share-modal {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
+  padding: 24px;
+}
+.share-modal-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.share-modal-header h3 { font-size: 1.1rem; font-weight: 700; }
+.share-modal-close {
+  width: 32px; height: 32px; background: var(--bg-hover); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center; font-family: var(--font-main);
+}
+.share-modal-close:hover { color: var(--text-primary); background: var(--border); }
+
+.share-text-box {
+  background: var(--bg-dark); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px; font-family: var(--font-main); font-size: 0.85rem;
+  color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap;
+  margin-bottom: 16px; max-height: 300px; overflow-y: auto;
+}
+
+.share-actions { display: flex; flex-direction: column; gap: 10px; }
+.share-action-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 20px; border-radius: var(--radius); font-size: 0.95rem;
+  font-weight: 600; font-family: var(--font-main); cursor: pointer;
+  border: none; transition: all 0.2s; text-decoration: none; text-align: center;
+}
+.share-action-btn:hover { filter: brightness(1.1); }
+
+.share-action-btn.copy { background: var(--brand-primary); color: #000; }
+.share-action-btn.copy.copied { background: var(--accent-green); color: #fff; }
+.share-action-btn.email { background: var(--accent-blue); color: #fff; }
+.share-action-btn.whatsapp { background: #25d366; color: #fff; }
+.share-action-btn.sms { background: #8b5cf6; color: #fff; }
+
+.share-itabs-footer {
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border);
+  text-align: center; font-size: 0.75rem; color: var(--text-muted);
+}
+.share-itabs-footer a { color: var(--brand-primary); text-decoration: none; }
+.share-itabs-footer a:hover { text-decoration: underline; }
+
+/* ═══ COMPARISON TABLE ═══ */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 8px 0; }
+.compare-table th {
+  background: var(--bg-dark); padding: 10px 8px; text-align: left;
+  font-weight: 600; border-bottom: 2px solid var(--border); font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+}
+.compare-table td {
+  padding: 10px 8px; border-bottom: 1px solid var(--border); color: var(--text-secondary);
+}
+.compare-table td.positive { color: var(--accent-green); font-weight: 500; }
+.compare-table td.negative { color: var(--accent-red); font-weight: 500; }
+
+/* ═══ TIPS / HINTS ═══ */
+.tip-card {
+  background: var(--bg-dark); border-radius: 10px; padding: 14px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.tip-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+.tip-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+.key-point {
+  background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 10px; padding: 14px; margin-bottom: 10px;
+}
+.kp-label { font-weight: 700; font-size: 0.85rem; color: var(--brand-primary); margin-bottom: 4px; }
+.key-point p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ═══ LEAD FORM ═══ */
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary); }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 12px 14px; background: var(--bg-dark); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text-primary); font-family: var(--font-main);
+  font-size: 0.9rem; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--brand-primary); }
+.form-group textarea { min-height: 80px; resize: vertical; }
+
+.summary-box {
+  background: var(--bg-dark); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-bottom: 16px;
+}
+.summary-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.summary-content { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; }
+
+.submit-btn {
+  width: 100%; padding: 16px 20px; background: var(--accent-green); color: #000;
+  border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 700;
+  font-family: var(--font-main); cursor: pointer; transition: all 0.2s;
+}
+.submit-btn:hover { filter: brightness(1.1); }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.success-message { text-align: center; padding: 30px 0; }
+.check-icon { font-size: 3rem; margin-bottom: 12px; }
+.success-message h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+.success-message p { color: var(--text-secondary); font-size: 0.9rem; }
+
+/* ═══ WARNING ═══ */
+.warning-card {
+  background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px; padding: 14px; margin-top: 12px;
+}
+.warning-title { font-weight: 700; font-size: 0.9rem; color: var(--accent-red); margin-bottom: 4px; }
+.warning-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ═══ FOOTER ═══ */
+.powered-by {
+  text-align: center; padding: 24px 0; font-size: 0.75rem; color: var(--text-muted);
+}
+.powered-by a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
+.powered-by a:hover { text-decoration: underline; }
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ═══ MOBILE ═══ */
+@media (max-width: 480px) {
+  .option-grid.cols-2 { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .option-card { padding: 12px; }
+  .option-name { font-size: 0.9rem; }
+  .est-range { font-size: 1.6rem; }
+  .share-modal { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="widget"></div>
+
+<!-- Share Modal -->
+<div class="share-overlay" id="shareOverlay" onclick="if(event.target===this)closeShare()">
+  <div class="share-modal">
+    <div class="share-modal-header">
+      <h3>📤 Share Your Estimate</h3>
+      <button class="share-modal-close" onclick="closeShare()">✕</button>
+    </div>
+    <div class="share-text-box" id="shareTextBox"></div>
+    <div class="share-actions">
+      <button class="share-action-btn copy" id="copyBtn" onclick="copyEstimate()">📋 Copy to Clipboard</button>
+      <a class="share-action-btn email" id="emailBtn" href="#">✉️ Email to a Tradie</a>
+      <a class="share-action-btn whatsapp" id="whatsappBtn" href="#" target="_blank">💬 Send via WhatsApp</a>
+      <a class="share-action-btn sms" id="smsBtn" href="#">💬 Send via SMS</a>
+    </div>
+    <div class="share-itabs-footer">
+      Get your own estimate at <a href="https://boilermaker-innovator.github.io/itabs-quotes/" target="_blank">iTabs</a> — free interactive estimators for trades
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// ENGINE v1.1 — Generic. Do not edit per client.
+// ══════════════════════════════════════════════════════════════
+const C = WIDGET_CONFIG;
+
+// Apply branding to CSS variables
+const r = document.documentElement.style;
+r.setProperty('--brand-primary', C.branding.primaryColor);
+r.setProperty('--brand-secondary', C.branding.secondaryColor);
+r.setProperty('--bg-main', C.branding.backgroundColor);
+r.setProperty('--bg-card', C.branding.cardBackground);
+r.setProperty('--bg-hover', C.branding.hoverBackground || '#1a2332');
+r.setProperty('--bg-dark', C.branding.darkBackground || '#0a0e14');
+r.setProperty('--border', C.branding.borderColor);
+r.setProperty('--text-primary', C.branding.textColor);
+r.setProperty('--text-secondary', C.branding.mutedText);
+r.setProperty('--text-muted', C.branding.dimText || '#5a6a7d');
+r.setProperty('--accent-green', C.branding.successColor);
+r.setProperty('--accent-red', C.branding.errorColor || '#ef4444');
+r.setProperty('--accent-blue', C.branding.infoColor || '#3b82f6');
+r.setProperty('--font-main', C.branding.fontFamily);
+r.setProperty('--font-mono', C.branding.monoFont);
+r.setProperty('--radius', C.branding.borderRadius);
+r.setProperty('--brand-glow', `rgba(${hexToRgb(C.branding.primaryColor)}, 0.15)`);
+document.body.style.background = C.branding.backgroundColor;
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? `${parseInt(result[1],16)},${parseInt(result[2],16)},${parseInt(result[3],16)}` : '0,0,0';
+}
+
+// State
+const state = {
+  answers: {},
+  sliders: {},
+  toggles: {},
+  openSection: null,
+  completedSections: new Set(),
+};
+
+// ── INIT ──
+function init() {
+  let html = '';
+  // Header
+  html += `<div class="header">
+    <div class="header-icon">${C.header.icon}</div>
+    <h1>${C.header.headline}</h1>
+    <p>${C.header.subtitle}</p>
+    ${C.header.badge ? `<div class="badge-line">${C.header.badge}</div>` : ''}
+  </div>`;
+  // Progress
+  html += `<div class="progress-label"><span>${C.header.disclaimer}</span><span id="progressText">0 of ${C.steps.length + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0)}</span></div>`;
+  html += `<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>`;
+  // Steps
+  C.steps.forEach((step, i) => { html += renderSection(step, i); });
+  // Estimate section
+  if (C.estimate) { html += renderEstimateSection(C.steps.length); }
+  // Lead capture
+  if (C.leadCapture && C.leadCapture.enabled) {
+    html += renderLeadSection(C.steps.length + (C.estimate ? 1 : 0));
+  }
+  // Footer
+  if (C.footer && C.footer.showPoweredBy) {
+    html += `<div class="powered-by">Powered by <a href="${C.footer.poweredByUrl}" target="_blank">iTabs</a> — free interactive estimators for trades</div>`;
+  }
+  document.getElementById('widget').innerHTML = html;
+  // Init sliders
+  C.steps.forEach(step => {
+    if (step.input.type === 'slider_group') {
+      step.input.sliders.forEach(s => {
+        const val = s.default;
+        if (s.valueMap) {
+          const mapped = s.valueMap.find(v => v.value === val);
+          state.sliders[s.id] = { raw: val, label: mapped ? mapped.label : val + (s.unit || ''), numeric: mapped ? mapped.numericValue : val };
+        } else {
+          state.sliders[s.id] = { raw: val, label: val + (s.unit || ''), numeric: val };
+        }
+      });
+    }
+  });
+  updateEstimate();
+  updateQuoteSummary();
+}
+
+// ── SECTION RENDERING ──
+function renderSection(step, index) {
+  const sectionId = `section-${index}`;
+  const completed = state.completedSections.has(sectionId) ? ' completed' : '';
+  const isOpen = state.openSection === sectionId;
+  const preview = getPreview(step);
+  const inputTabLabel = step.input.type === 'toggle_group' ? 'Add Extras' : step.input.type === 'slider_group' ? 'Set Size' : 'Choose';
+  const hintTabs = step.hints || [];
+
+  let contentHtml = '';
+  if (hintTabs.length > 0) {
+    contentHtml += `<div class="tabs"><button class="tab active" onclick="showTab(this, '${sectionId}-input')">${inputTabLabel}</button>`;
+    hintTabs.forEach((h, hi) => { contentHtml += `<button class="tab" onclick="showTab(this, '${sectionId}-hint-${hi}')">${h.tabLabel}</button>`; });
+    contentHtml += `</div>`;
+  }
+  contentHtml += `<div class="tab-panel show" id="${sectionId}-input">${renderInput(step, sectionId)}`;
+  if (step.warnings) step.warnings.forEach(w => {
+    contentHtml += `<div class="warning-card" id="${sectionId}-warning-${w.condition.replace(/[^a-z0-9]/gi,'')}" style="display:none;"><div class="warning-title">${w.icon} ${w.title}</div><p>${w.text}</p></div>`;
+  });
+  contentHtml += `</div>`;
+  hintTabs.forEach((hint, hi) => { contentHtml += `<div class="tab-panel" id="${sectionId}-hint-${hi}">${renderHint(hint)}</div>`; });
+
+  return `<div class="itab-section${completed}" id="${sectionId}"><div class="itab-header" onclick="toggleSection(${index})"><div class="itab-title"><span class="itab-number">${index + 1}</span><div><div class="itab-name">${step.title}</div><div class="itab-preview" id="${sectionId}-preview">${preview}</div></div></div><button class="i-button" id="${sectionId}-btn">i</button></div><div class="itab-content${isOpen ? ' show' : ''}" id="${sectionId}-content">${contentHtml}</div></div>`;
+}
+
+function renderEstimateSection(index) {
+  const sectionId = `section-${index}`;
+  const est = C.estimate;
+  const isOpen = state.openSection === sectionId;
+  const completed = state.completedSections.has(sectionId) ? ' completed' : '';
+  let hintsHtml = '';
+  if (est.hints) est.hints.forEach(h => { hintsHtml += renderHintItem(h); });
+
+  // Share button
+  const shareBtn = C.share && C.share.enabled
+    ? `<button class="share-btn" onclick="openShare()">📤 Share My Estimate</button>`
+    : '';
+
+  return `<div class="itab-section${completed}" id="${sectionId}"><div class="itab-header" onclick="toggleSection(${index})"><div class="itab-title"><span class="itab-number">${index + 1}</span><div><div class="itab-name">${est.title}</div><div class="itab-preview" id="${sectionId}-preview">${est.preview}</div></div></div><button class="i-button" id="${sectionId}-btn">i</button></div><div class="itab-content${isOpen ? ' show' : ''}" id="${sectionId}-content"><div class="estimate-box"><div class="est-label">Estimated range</div><div class="est-range" id="estRange">—</div><div class="est-note" id="estNote">Complete the sections above to see your estimate</div><div class="estimate-breakdown" id="estBreakdown"></div></div>${shareBtn}${hintsHtml}</div></div>`;
+}
+
+function renderLeadSection(index) {
+  const sectionId = `section-${index}`;
+  const lc = C.leadCapture;
+  const isOpen = state.openSection === sectionId;
+  const completed = state.completedSections.has(sectionId) ? ' completed' : '';
+  let fieldsHtml = '';
+  lc.fields.forEach(f => {
+    const req = f.required ? ' *' : '';
+    fieldsHtml += f.type === 'textarea'
+      ? `<div class="form-group"><label>${f.label}${req}</label><textarea id="form-${f.id}" placeholder="${f.placeholder}"></textarea></div>`
+      : `<div class="form-group"><label>${f.label}${req}</label><input type="${f.type}" id="form-${f.id}" placeholder="${f.placeholder}"></div>`;
+  });
+  return `<div class="itab-section${completed}" id="${sectionId}"><div class="itab-header" onclick="toggleSection(${index})"><div class="itab-title"><span class="itab-number">${index + 1}</span><div><div class="itab-name">${lc.title}</div><div class="itab-preview" id="${sectionId}-preview">${lc.preview}</div></div></div><button class="i-button" id="${sectionId}-btn">i</button></div><div class="itab-content${isOpen ? ' show' : ''}" id="${sectionId}-content"><div id="leadFormContainer"><p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px;">${lc.subheading}</p>${lc.showSummary ? `<div class="summary-box"><div class="summary-label">Your specs</div><div class="summary-content" id="quoteSummary">Select your options above first</div></div>` : ''}${fieldsHtml}<button class="submit-btn" id="submitBtn" onclick="submitLead()">${lc.submitText}</button>${lc.submitNote ? `<div style="text-align:center;margin-top:12px;font-size:0.75rem;color:var(--text-muted)">${lc.submitNote}</div>` : ''}</div><div class="success-message" id="successMsg" style="display:none;"><div class="check-icon">✅</div><h3>${lc.successMessage}</h3><p>${lc.successSubtext}</p></div></div></div>`;
+}
+
+// ── INPUTS ──
+function renderInput(step, sectionId) {
+  const input = step.input;
+  switch (input.type) {
+    case 'select': return renderSelect(step, sectionId, input);
+    case 'multi_select': return renderMultiSelect(step, sectionId, input);
+    case 'slider_group': return renderSliders(step, sectionId, input);
+    case 'toggle_group': return renderToggles(step, sectionId, input);
+    default: return '';
+  }
+}
+
+function renderSelect(step, sectionId, input) {
+  const cols = input.columns || 1;
+  const colsClass = cols > 1 ? ` cols-${cols}` : '';
+  let html = `<div class="option-grid${colsClass}">`;
+  input.options.forEach(opt => {
+    const selected = state.answers[step.id] === opt.value ? ' selected' : '';
+    const tags = opt.tags ? opt.tags.map(t => `<span class="option-tag${t.highlight ? ' highlight' : ''}">${t.text}</span>`).join('') : '';
+    html += `<div class="option-card${selected}" onclick="selectOption('${step.id}','${opt.value}',${C.steps.indexOf(step)},${input.autoAdvance || false})"><div class="option-top"><span class="option-name">${opt.icon} ${opt.label}</span>${opt.priceHint ? `<span class="option-price">${opt.priceHint}</span>` : ''}</div>${opt.description ? `<div class="option-desc">${opt.description}</div>` : ''}${tags ? `<div class="option-tags">${tags}</div>` : ''}<span class="option-check">✓ Selected</span></div>`;
+  });
+  return html + '</div>';
+}
+
+function renderMultiSelect(step, sectionId, input) {
+  if (!state.answers[step.id]) state.answers[step.id] = [];
+  const cols = input.columns || 1;
+  const colsClass = cols > 1 ? ` cols-${cols}` : '';
+  let html = `<div class="option-grid${colsClass}">`;
+  input.options.forEach(opt => {
+    const selected = state.answers[step.id].includes(opt.value) ? ' selected' : '';
+    html += `<div class="option-card${selected}" onclick="toggleMultiOption('${step.id}','${opt.value}',this)"><div class="option-top"><span class="option-name">${opt.icon} ${opt.label}</span>${opt.priceHint ? `<span class="option-price">${opt.priceHint}</span>` : ''}</div>${opt.description ? `<div class="option-desc">${opt.description}</div>` : ''}<span class="option-check">✓ Selected</span></div>`;
+  });
+  html += '</div>';
+  if (input.optional) html += `<button class="tab" style="margin-top:10px;width:100%;text-align:center;" onclick="skipStep(${C.steps.indexOf(step)})">Skip — none needed</button>`;
+  return html;
+}
+
+function renderSliders(step, sectionId, input) {
+  let html = '';
+  input.sliders.forEach(s => {
+    const current = state.sliders[s.id];
+    const displayValue = current ? current.label : s.default + (s.unit || '');
+    html += `<div class="slider-group"><div class="slider-label"><span>${s.label}</span><span class="slider-value" id="slider-val-${s.id}">${displayValue}</span></div><input type="range" id="slider-${s.id}" min="${s.min}" max="${s.max}" value="${s.default}" step="${s.step}" oninput="updateSlider('${s.id}','${step.id}',${C.steps.indexOf(step)},this.value)">${s.markers ? `<div class="slider-markers">${s.markers.map(m => `<span>${m}</span>`).join('')}</div>` : ''}</div>`;
+  });
+  return html;
+}
+
+function renderToggles(step, sectionId, input) {
+  return input.toggles.map(t => {
+    const isOn = state.toggles[t.id] ? ' on' : '';
+    return `<div class="toggle-row"><div class="toggle-info"><div class="toggle-name">${t.icon} ${t.label}</div><div class="toggle-cost">${t.costHint}</div></div><div class="toggle-switch${isOn}" id="toggle-${t.id}" onclick="toggleExtra('${t.id}','${step.id}',${C.steps.indexOf(step)})"><div class="toggle-knob"></div></div></div>`;
+  }).join('');
+}
+
+// ── HINTS ──
+function renderHint(hint) {
+  switch (hint.type) {
+    case 'comparison_table': return renderComparisonTable(hint);
+    case 'tips': return hint.tips.map(t => `<div class="tip-card"><div class="tip-title">${t.icon} ${t.title}</div><p>${t.text}</p></div>`).join('');
+    case 'mixed': return hint.content.map(item => renderHintItem(item)).join('');
+    case 'custom_html': return hint.content;
+    default: return '';
+  }
+}
+
+function renderComparisonTable(hint) {
+  let html = '<table class="compare-table"><thead><tr>';
+  hint.columns.forEach(c => { html += `<th>${c}</th>`; });
+  html += '</tr></thead><tbody>';
+  hint.rows.forEach(row => {
+    html += '<tr>';
+    row.forEach(cell => {
+      const style = hint.cellStyles && hint.cellStyles[cell];
+      html += `<td${style ? ` class="${style}"` : ''}>${cell}</td>`;
+    });
+    html += '</tr>';
+  });
+  return html + '</tbody></table>';
+}
+
+function renderHintItem(item) {
+  switch (item.type) {
+    case 'paragraph': return `<p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:12px;">${item.text}</p>`;
+    case 'key_point': return `<div class="key-point"><div class="kp-label">${item.label}</div><p>${item.text}</p></div>`;
+    case 'tip': return `<div class="tip-card"><div class="tip-title">${item.icon} ${item.title}</div><p>${item.text}</p></div>`;
+    default: return '';
+  }
+}
+
+// ── INTERACTIONS ──
+function toggleSection(index) {
+  const sectionId = `section-${index}`;
+  const content = document.getElementById(sectionId + '-content');
+  const btn = document.getElementById(sectionId + '-btn');
+  const isOpen = content && content.classList.contains('show');
+  document.querySelectorAll('.itab-content').forEach(c => c.classList.remove('show'));
+  document.querySelectorAll('.i-button').forEach(b => b.classList.remove('active'));
+  if (!isOpen && content) {
+    content.classList.add('show');
+    if (btn) btn.classList.add('active');
+    state.openSection = sectionId;
+    state.completedSections.add(sectionId);
+    updateProgress();
+    setTimeout(() => { document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  } else {
+    state.openSection = null;
+  }
+}
+
+function showTab(btn, panelId) {
+  const container = btn.closest('.itab-content');
+  container.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('show'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('show');
+}
+
+function selectOption(stepId, value, stepIndex, autoAdvance) {
+  state.answers[stepId] = value;
+  const sectionId = `section-${stepIndex}`;
+  const section = document.getElementById(sectionId);
+  section.querySelectorAll(`#${sectionId}-input .option-card`).forEach(c => c.classList.remove('selected'));
+  const cards = section.querySelectorAll(`#${sectionId}-input .option-card`);
+  const step = C.steps[stepIndex];
+  step.input.options.forEach((opt, i) => {
+    if (opt.value === value && cards[i]) cards[i].classList.add('selected');
+  });
+  section.classList.add('completed');
+  state.completedSections.add(sectionId);
+  const opt = step.input.options.find(o => o.value === value);
+  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${opt ? opt.label : value}</span>`;
+  updateEstimate(); updateQuoteSummary(); updateProgress(); checkWarnings();
+  if (autoAdvance) setTimeout(() => toggleSection(stepIndex + 1), 400);
+}
+
+function toggleMultiOption(stepId, value, el) {
+  if (!state.answers[stepId]) state.answers[stepId] = [];
+  const idx = state.answers[stepId].indexOf(value);
+  if (idx > -1) { state.answers[stepId].splice(idx, 1); el.classList.remove('selected'); }
+  else { state.answers[stepId].push(value); el.classList.add('selected'); }
+  const stepIndex = C.steps.findIndex(s => s.id === stepId);
+  const sectionId = `section-${stepIndex}`;
+  if (state.answers[stepId].length > 0) {
+    document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${state.answers[stepId].length} selected</span>`;
+    document.getElementById(sectionId).classList.add('completed');
+    state.completedSections.add(sectionId);
+  } else {
+    document.getElementById(sectionId + '-preview').textContent = C.steps[stepIndex].preview;
+    document.getElementById(sectionId).classList.remove('completed');
+    state.completedSections.delete(sectionId);
+  }
+  updateEstimate(); updateQuoteSummary(); updateProgress();
+}
+
+function updateSlider(sliderId, stepId, stepIndex, rawValue) {
+  rawValue = parseInt(rawValue);
+  const step = C.steps[stepIndex];
+  const sliderConfig = step.input.sliders.find(s => s.id === sliderId);
+  let displayLabel, numericVal;
+  if (sliderConfig.valueMap) {
+    const mapped = sliderConfig.valueMap.find(v => v.value === rawValue);
+    displayLabel = mapped ? mapped.label : rawValue + (sliderConfig.unit || '');
+    numericVal = mapped ? mapped.numericValue : rawValue;
+  } else {
+    displayLabel = rawValue + (sliderConfig.unit || '');
+    numericVal = rawValue;
+  }
+  state.sliders[sliderId] = { raw: rawValue, label: displayLabel, numeric: numericVal };
+  document.getElementById('slider-val-' + sliderId).textContent = displayLabel;
+  const sectionId = `section-${stepIndex}`;
+  const vals = step.input.sliders.map(s => state.sliders[s.id] ? state.sliders[s.id].label : '').filter(Boolean);
+  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${vals.join(' × ')}</span>`;
+  document.getElementById(sectionId).classList.add('completed');
+  state.completedSections.add(sectionId);
+  updateEstimate(); updateQuoteSummary(); updateProgress();
+}
+
+function toggleExtra(extraId, stepId, stepIndex) {
+  state.toggles[extraId] = !state.toggles[extraId];
+  const el = document.getElementById('toggle-' + extraId);
+  el.classList.toggle('on');
+  const sectionId = `section-${stepIndex}`;
+  const step = C.steps[stepIndex];
+  const activeCount = step.input.toggles.filter(t => state.toggles[t.id]).length;
+  if (activeCount > 0) {
+    document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${activeCount} extra${activeCount > 1 ? 's' : ''} added</span>`;
+    document.getElementById(sectionId).classList.add('completed');
+    state.completedSections.add(sectionId);
+  } else {
+    document.getElementById(sectionId + '-preview').textContent = step.preview;
+    document.getElementById(sectionId).classList.remove('completed');
+    state.completedSections.delete(sectionId);
+  }
+  updateEstimate(); updateQuoteSummary(); updateProgress();
+}
+
+function skipStep(stepIndex) { toggleSection(stepIndex + 1); }
+
+// ── PRICING ENGINE v1.1 ──
+function getSliderNumeric(sliderId) { return state.sliders[sliderId] ? state.sliders[sliderId].numeric : 0; }
+
+function applyAdjustments(low, high, adjustments) {
+  if (!adjustments) return { low, high };
+  adjustments.forEach(adj => {
+    const answer = state.answers[adj.source];
+    if (answer !== undefined && adj.type === 'additive') {
+      const val = adj.values[answer] !== undefined ? adj.values[answer] : (adj.values._default || 0);
+      low += val;
+      high += val;
+    }
+  });
+  return { low, high };
+}
+
+function calculateEstimate() {
+  const p = C.pricing;
+  const primaryAnswer = state.answers[p.basePriceStep];
+  if (!primaryAnswer || !p.basePrices[primaryAnswer]) return null;
+
+  const base = p.basePrices[primaryAnswer];
+  let low = base.low;
+  let high = base.high;
+
+  // 1. Pre-multiplier adjustments
+  const pre = applyAdjustments(low, high, p.preAdjustments);
+  low = pre.low; high = pre.high;
+
+  // 2. Multipliers (from sliders OR selects)
+  if (p.multipliers) {
+    p.multipliers.forEach(m => {
+      let mult = 1;
+      if (m.type === 'value_map' && state.sliders[m.source]) {
+        const numericVal = getSliderNumeric(m.source);
+        mult = m.values[numericVal] !== undefined ? m.values[numericVal] : 1;
+      } else if (m.type === 'select_map' && state.answers[m.source] !== undefined) {
+        mult = m.values[state.answers[m.source]] !== undefined ? m.values[state.answers[m.source]] : 1;
+      }
+      low *= mult;
+      high *= mult;
+    });
+  }
+
+  // 3. Multiply by quantity
+  const quantity = p.quantitySource && state.sliders[p.quantitySource] ? state.sliders[p.quantitySource].numeric : 1;
+  low = Math.round(low * quantity);
+  high = Math.round(high * quantity);
+
+  // 4. Post-multiplier adjustments
+  const post = applyAdjustments(low, high, p.postAdjustments);
+  low = post.low; high = post.high;
+
+  // Build breakdown
+  const breakdown = [];
+  const primaryOpt = findOption(p.basePriceStep, primaryAnswer);
+  let baseLine = primaryOpt ? primaryOpt.label : primaryAnswer;
+  if (p.quantitySource && state.sliders[p.quantitySource]) {
+    baseLine += ` (${state.sliders[p.quantitySource].raw}${getSliderUnit(p.quantitySource)})`;
+  }
+  breakdown.push({ label: baseLine, low, high });
+
+  // 5. Extras
+  let runningLow = low, runningHigh = high;
+  if (p.extras) {
+    p.extras.forEach(extra => {
+      if (!state.toggles[extra.id]) return;
+      let extLow = 0, extHigh = 0;
+      switch (extra.type) {
+        case 'fixed': extLow = extra.low; extHigh = extra.high; break;
+        case 'per_unit': extLow = Math.round(extra.lowPerUnit * quantity); extHigh = Math.round(extra.highPerUnit * quantity); break;
+        case 'percentage': extLow = Math.round(runningLow * (extra.lowPercent / 100)); extHigh = Math.round(runningHigh * (extra.highPercent / 100)); break;
+      }
+      runningLow += extLow; runningHigh += extHigh;
+      breakdown.push({ label: extra.breakdownLabel, low: extLow, high: extHigh, prefix: extra.type === 'percentage' ? '+' : '' });
+    });
+  }
+
+  // 6. Minimum & rounding
+  runningLow = Math.max(runningLow, p.minimumPrice || 0);
+  runningHigh = Math.max(runningHigh, p.minimumPrice || 0);
+  if (p.roundTo && p.roundTo > 0) {
+    runningLow = Math.round(runningLow / p.roundTo) * p.roundTo;
+    runningHigh = Math.round(runningHigh / p.roundTo) * p.roundTo;
+  }
+
+  return { low: runningLow, high: runningHigh, breakdown };
+}
+
+function findOption(stepId, value) {
+  const step = C.steps.find(s => s.id === stepId);
+  return step && step.input.options ? step.input.options.find(o => o.value === value) : null;
+}
+
+function getSliderUnit(sliderId) {
+  for (const step of C.steps) {
+    if (step.input.type === 'slider_group') {
+      const s = step.input.sliders.find(sl => sl.id === sliderId);
+      if (s) return s.unit || '';
+    }
+  }
+  return '';
+}
+
+function updateEstimate() {
+  const est = calculateEstimate();
+  const rangeEl = document.getElementById('estRange');
+  const noteEl = document.getElementById('estNote');
+  const breakdownEl = document.getElementById('estBreakdown');
+  const estIdx = C.steps.length;
+  const previewEl = document.getElementById(`section-${estIdx}-preview`);
+  if (!rangeEl) return;
+  if (!est) {
+    rangeEl.textContent = '—';
+    noteEl.textContent = 'Complete the sections above to see your estimate';
+    breakdownEl.innerHTML = '';
+    if (previewEl) previewEl.textContent = C.estimate.preview;
+    return;
+  }
+  const rangeText = `$${est.low.toLocaleString()} – $${est.high.toLocaleString()}`;
+  rangeEl.textContent = rangeText;
+  noteEl.textContent = C.estimate.note;
+  if (C.pricing.showBreakdown && est.breakdown) {
+    breakdownEl.innerHTML = est.breakdown.map(b => `<div class="breakdown-row"><span class="br-label">${b.label}</span><span class="br-value">${b.prefix || ''}$${b.low.toLocaleString()} – $${b.high.toLocaleString()}</span></div>`).join('');
+  }
+  if (previewEl) previewEl.innerHTML = `<span class="selected">✓ ${rangeText}</span>`;
+}
+
+// ── QUOTE SUMMARY ──
+function updateQuoteSummary() {
+  const el = document.getElementById('quoteSummary');
+  if (!el) return;
+  let lines = [];
+  C.steps.forEach(step => {
+    if (step.input.type === 'select' && state.answers[step.id]) {
+      const opt = findOption(step.id, state.answers[step.id]);
+      lines.push(`${opt ? opt.icon : '•'} ${step.title}: <strong>${opt ? opt.label : state.answers[step.id]}</strong>`);
+    }
+    if (step.input.type === 'slider_group') {
+      const vals = step.input.sliders.map(s => state.sliders[s.id] ? state.sliders[s.id].label : '').filter(Boolean);
+      if (vals.length) lines.push(`📐 ${step.title}: <strong>${vals.join(' × ')}</strong>`);
+    }
+    if (step.input.type === 'toggle_group') {
+      const active = step.input.toggles.filter(t => state.toggles[t.id]);
+      if (active.length) lines.push(`➕ Extras: ${active.map(t => t.icon + ' ' + t.label).join(', ')}`);
+    }
+  });
+  const est = calculateEstimate();
+  if (est) lines.push(`💰 Estimate: <strong>$${est.low.toLocaleString()} – $${est.high.toLocaleString()}</strong>`);
+  el.innerHTML = lines.length ? lines.join('<br>') : 'Select your options above first';
+}
+
+// ── WARNINGS ──
+function checkWarnings() {
+  const answers = state.answers;
+  C.steps.forEach((step, i) => {
+    if (!step.warnings) return;
+    step.warnings.forEach(w => {
+      const elId = `section-${i}-warning-${w.condition.replace(/[^a-z0-9]/gi,'')}`;
+      const el = document.getElementById(elId);
+      if (!el) return;
+      try { el.style.display = eval(w.condition) ? 'block' : 'none'; }
+      catch(e) { el.style.display = 'none'; }
+    });
+  });
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0);
+  const completed = state.completedSections.size;
+  const pct = (completed / totalSections) * 100;
+  const fillEl = document.getElementById('progressFill');
+  const textEl = document.getElementById('progressText');
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (textEl) textEl.textContent = `${completed} of ${totalSections}`;
+}
+
+// ── LEAD SUBMISSION ──
+async function submitLead() {
+  const lc = C.leadCapture;
+  const formData = {};
+  let missingRequired = false;
+  lc.fields.forEach(f => {
+    const el = document.getElementById(`form-${f.id}`);
+    const val = el ? el.value.trim() : '';
+    formData[f.id] = val;
+    if (f.required && !val) missingRequired = true;
+  });
+  if (missingRequired) { alert('Just need the required fields filled in 👍'); return; }
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  let selections = '';
+  C.steps.forEach(step => {
+    if (step.input.type === 'select' && state.answers[step.id]) {
+      const opt = findOption(step.id, state.answers[step.id]);
+      selections += `${step.title}: ${opt ? opt.label : state.answers[step.id]}\n`;
+    }
+    if (step.input.type === 'slider_group') {
+      const vals = step.input.sliders.map(s => `${s.label}: ${state.sliders[s.id] ? state.sliders[s.id].label : ''}`);
+      selections += vals.join(', ') + '\n';
+    }
+    if (step.input.type === 'toggle_group') {
+      const active = step.input.toggles.filter(t => state.toggles[t.id]).map(t => t.label);
+      if (active.length) selections += `Extras: ${active.join(', ')}\n`;
+    }
+  });
+  const est = calculateEstimate();
+  const estText = est ? `$${est.low.toLocaleString()} – $${est.high.toLocaleString()}` : 'Not calculated';
+  try {
+    if (lc.delivery.method === 'web3forms') {
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: lc.delivery.web3formsKey,
+          subject: lc.delivery.emailSubject,
+          from_name: `${C.business.name} Widget`,
+          to: lc.delivery.notifyEmail,
+          message: `NEW ENQUIRY — ${C.business.name}\n==================\n${Object.entries(formData).map(([k,v]) => `${k}: ${v}`).join('\n')}\n\nSELECTIONS\n==================\n${selections}\nESTIMATE: ${estText}`.trim(),
+          ...formData, estimate_range: estText, selections_summary: selections,
+        }),
+      });
+    }
+  } catch (err) { console.error('Submit error:', err); }
+  document.getElementById('leadFormContainer').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+  const leadIdx = C.steps.length + (C.estimate ? 1 : 0);
+  const sectionId = `section-${leadIdx}`;
+  document.getElementById(sectionId).classList.add('completed');
+  state.completedSections.add(sectionId);
+  document.getElementById(sectionId + '-preview').innerHTML = '<span class="selected">✓ Sent!</span>';
+  updateProgress();
+}
+
+// ── SHARE FEATURE ──
+function generateShareText() {
+  const lines = [];
+  const shareEmoji = (C.share && C.share.tradeEmoji) || '📋';
+  const shareLabel = (C.share && C.share.tradeLabel) || 'ESTIMATE';
+  lines.push(shareEmoji + ' ' + shareLabel);
+  lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+  lines.push('');
+
+  C.steps.forEach(step => {
+    if (step.input.type === 'select' && state.answers[step.id]) {
+      const opt = findOption(step.id, state.answers[step.id]);
+      lines.push(`${step.title}: ${opt ? opt.label : state.answers[step.id]}`);
+    }
+    if (step.input.type === 'slider_group') {
+      step.input.sliders.forEach(s => {
+        if (state.sliders[s.id]) lines.push(`${s.label}: ${state.sliders[s.id].label}`);
+      });
+    }
+    if (step.input.type === 'toggle_group') {
+      const active = step.input.toggles.filter(t => state.toggles[t.id]).map(t => t.label);
+      if (active.length) lines.push(`Extras: ${active.join(', ')}`);
+    }
+  });
+
+  const est = calculateEstimate();
+  if (est) {
+    lines.push('');
+    lines.push(`💰 Estimated range: $${est.low.toLocaleString()} – $${est.high.toLocaleString()}`);
+    lines.push(C.estimate.note || '');
+  }
+
+  lines.push('');
+  lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+  lines.push(`Built with iTabs — free interactive estimators`);
+  if (C.share && C.share.hubUrl) lines.push(C.share.hubUrl);
+
+  return lines.join('\n');
+}
+
+function openShare() {
+  const est = calculateEstimate();
+  if (!est) {
+    alert('Complete the sections above first to generate an estimate.');
+    return;
+  }
+
+  const shareText = generateShareText();
+  document.getElementById('shareTextBox').textContent = shareText;
+
+  // Set up email link
+  const subject = encodeURIComponent(((C.share && C.share.tradeLabel) || 'Estimate') + ' — Perth');
+  const body = encodeURIComponent(shareText);
+  document.getElementById('emailBtn').href = `mailto:?subject=${subject}&body=${body}`;
+
+  // Set up WhatsApp link
+  const waText = encodeURIComponent(shareText);
+  document.getElementById('whatsappBtn').href = `https://wa.me/?text=${waText}`;
+
+  // Set up SMS link
+  document.getElementById('smsBtn').href = `sms:?body=${body}`;
+
+  // Reset copy button
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.textContent = '📋 Copy to Clipboard';
+  copyBtn.classList.remove('copied');
+
+  document.getElementById('shareOverlay').classList.add('show');
+}
+
+function closeShare() {
+  document.getElementById('shareOverlay').classList.remove('show');
+}
+
+async function copyEstimate() {
+  const shareText = generateShareText();
+  try {
+    await navigator.clipboard.writeText(shareText);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy to Clipboard';
+      btn.classList.remove('copied');
+    }, 2500);
+  } catch(e) {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = shareText;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+  }
+}
+
+// ── HELPERS ──
+function getPreview(step) {
+  if (step.input.type === 'select' && state.answers[step.id]) {
+    const opt = step.input.options.find(o => o.value === state.answers[step.id]);
+    return `<span class="selected">✓ ${opt ? opt.label : state.answers[step.id]}</span>`;
+  }
+  return step.preview;
+}
+
+// ── GO ──
+init();
+</script>
+
+</body>
+</html>
