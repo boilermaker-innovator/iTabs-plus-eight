@@ -6,19 +6,21 @@
 <title>iTabs Quote Estimator</title>
 
 <!-- ============================================================
-     iTabs Quotes Engine v1.0
+     iTabs Quotes Engine v1.3
      Config-driven interactive quote estimator
      
-     HOW IT WORKS:
-     - Edit WIDGET_CONFIG below to customise for any trade
-     - The engine reads the config and renders everything
-     - One engine, infinite trades
+     WHAT'S NEW in v1.3:
+     - Combined share section (Copy / WhatsApp / SMS / Email to self)
+     - Remembers share preference via localStorage
+     - Lead capture only shows when web3formsKey is set
+     - "Back to trades" nav link
+     - Fixed "Extras: undefined" bug in quote summary
      ============================================================ -->
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// WIDGET CONFIG â€” Edit this for each business/trade
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
+// WIDGET CONFIG — Edit this for each business/trade
+// ═══════════════════════════════════════════════════════════════
 const WIDGET_CONFIG = {
 
   business: {
@@ -54,15 +56,18 @@ const WIDGET_CONFIG = {
   },
 
   header: {
-    icon: "ðŸ—ï¸",
+    icon: "🏗️",
     headline: "How much is my fence?",
     subtitle: "Tap through to get a ballpark price for your new fence. Takes about 60 seconds.",
-    badge: "ðŸ“ Prices based on Perth, WA â€” 2025",
+    badge: "📍 Prices based on Perth, WA — 2025/26",
     disclaimer: "Estimates are approximate. Final pricing confirmed after site inspection.",
   },
 
+  // Back link to hub page (set to "" or remove to hide)
+  hubUrl: "index.html",
+
   steps: [
-    // â”€â”€ STEP 1: Fence Type â”€â”€
+    // — STEP 1: Fence Type —
     {
       id: "fence_type",
       title: "What type of fence?",
@@ -75,9 +80,9 @@ const WIDGET_CONFIG = {
           {
             value: "colorbond",
             label: "Colorbond",
-            icon: "ðŸ”©",
+            icon: "🔩",
             description: "Steel panels. Most popular in Perth. Private, low maintenance, lasts 20+ years. 16 colours.",
-            priceHint: "$90â€“$125/m",
+            priceHint: "$90–$125/m",
             tags: [
               { text: "Most Popular in WA", highlight: true },
               { text: "10yr warranty" }
@@ -86,9 +91,9 @@ const WIDGET_CONFIG = {
           {
             value: "timber",
             label: "Timber Paling",
-            icon: "ðŸªµ",
-            description: "Natural look. Cheaper upfront but needs painting/staining every few years. Lasts 10â€“20 years.",
-            priceHint: "$120â€“$200/m",
+            icon: "🪵",
+            description: "Natural look. Cheaper upfront but needs painting/staining every few years. Lasts 10–20 years.",
+            priceHint: "$120–$200/m",
             tags: [
               { text: "Classic look" },
               { text: "More maintenance" }
@@ -97,23 +102,23 @@ const WIDGET_CONFIG = {
           {
             value: "aluminium",
             label: "Aluminium Slat",
-            icon: "âœ¨",
-            description: "Modern look. Won't rust â€” perfect for coastal Perth. Privacy with airflow. Lasts 50+ years.",
-            priceHint: "$180â€“$300/m",
+            icon: "✨",
+            description: "Modern look. Great for front fences, pools & slopes. Won't rust. Costs more but lasts forever.",
+            priceHint: "$180–$300/m",
             tags: [
               { text: "Premium" },
-              { text: "Coastal safe" }
+              { text: "Rust-free" }
             ]
           },
           {
             value: "pool",
             label: "Pool Fencing",
-            icon: "ðŸŠ",
-            description: "Glass, aluminium tubular, or perforated panels. Must meet Australian safety standards. Building permit required.",
-            priceHint: "$200â€“$600/m",
+            icon: "🏊",
+            description: "Glass or aluminium to WA pool safety standards. Must be compliant — council inspects.",
+            priceHint: "$200–$600/m",
             tags: [
-              { text: "Compliance required" },
-              { text: "Safety rated" }
+              { text: "Safety compliant", highlight: true },
+              { text: "Glass or aluminium" }
             ]
           }
         ]
@@ -122,149 +127,169 @@ const WIDGET_CONFIG = {
         {
           tabLabel: "Compare",
           type: "comparison_table",
-          columns: ["Feature", "Colorbond", "Timber", "Aluminium"],
+          headers: ["Type", "Cost", "Maintenance", "Life"],
           rows: [
-            ["Privacy", "Full", "Full", "Varies"],
-            ["Maintenance", "Minimal", "Regular", "Minimal"],
-            ["Lifespan", "20â€“25 yrs", "10â€“20 yrs", "50+ yrs"],
-            ["Coastal?", "OK", "Risky", "Best"],
-            ["Termites?", "No risk", "Risk", "No risk"],
-            ["Bushfire safe?", "Yes", "No", "Yes"],
-          ],
-          cellStyles: {
-            "Minimal": "positive", "No risk": "positive", "Yes": "positive",
-            "Full": "positive", "Best": "positive",
-            "Regular": "negative", "Risk": "negative", "Risky": "negative", "No": "negative",
-          }
-        },
-        {
-          tabLabel: "Perth Tips",
-          type: "tips",
-          tips: [
-            {
-              icon: "ðŸŒŠ",
-              title: "Near the coast?",
-              text: "Aluminium slat is your best bet. Won't corrode from salt air. Worth the extra cost in Freo, Scarborough, or anywhere near the ocean."
-            },
-            {
-              icon: "ðŸ”¥",
-              title: "Bushfire zone?",
-              text: "Colorbond is non-combustible â€” the go-to for hills areas like Kalamunda, Mundaring, and Roleystone. Timber is not recommended."
-            },
-            {
-              icon: "ðŸ ",
-              title: "Replacing old asbestos (Super 6)?",
-              text: "Super 6 and Hardifence are no longer made. Most people switch to Colorbond â€” licensed removal is required for asbestos."
-            },
+            ["Colorbond", "$90–$125/m", "Almost none", "20+ yrs"],
+            ["Timber", "$120–$200/m", "Paint every 3–5 yrs", "10–20 yrs"],
+            ["Aluminium", "$180–$300/m", "Almost none", "25+ yrs"],
+            ["Pool (glass)", "$200–$600/m", "Clean panels", "20+ yrs"]
           ]
         },
-      ],
+        {
+          tabLabel: "Tips",
+          type: "mixed",
+          content: [
+            {
+              type: "tip",
+              icon: "🌊",
+              title: "Near the coast?",
+              text: "Within 1km of the ocean? Go Colorbond or aluminium. Timber rots faster and cheap steel rusts. Ask about coastal-rated Colorbond."
+            },
+            {
+              type: "tip",
+              icon: "🔥",
+              title: "Bushfire zone?",
+              text: "BAL-rated areas (Kalamunda, Hills) may require non-combustible fencing. Colorbond and aluminium are fine. Timber usually isn't."
+            }
+          ]
+        }
+      ]
     },
 
-    // â”€â”€ STEP 2: Size â”€â”€
+    // — STEP 2: Size —
     {
       id: "size",
-      title: "How much fencing?",
-      preview: "Length & height",
+      title: "How big is the fence?",
+      preview: "Set your size",
       input: {
         type: "slider_group",
         sliders: [
           {
             id: "length_m",
-            label: "Total length (metres)",
+            label: "Length",
             min: 5,
-            max: 100,
-            default: 20,
-            step: 1,
+            max: 80,
+            step: 5,
+            default: 25,
             unit: "m",
-            markers: ["5m", "Small yard ~15m", "Avg ~30m", "100m"],
+            markers: ["5m", "25m", "50m", "80m"]
           },
           {
             id: "height_m",
             label: "Height",
-            min: 0,
-            max: 3,
-            default: 2,
+            min: 1,
+            max: 4,
             step: 1,
+            default: 3,
             unit: "",
-            valueMap: [
-              { value: 0, label: "0.9m (low)", numericValue: 0.9 },
-              { value: 1, label: "1.2m (front fence)", numericValue: 1.2 },
-              { value: 2, label: "1.8m (standard)", numericValue: 1.8 },
-              { value: 3, label: "2.1m (extra tall)", numericValue: 2.1 },
-            ],
             markers: ["0.9m", "1.2m", "1.8m", "2.1m"],
+            valueMap: [
+              { value: 1, label: "0.9m", numericValue: 0.9 },
+              { value: 2, label: "1.2m", numericValue: 1.2 },
+              { value: 3, label: "1.8m (standard)", numericValue: 1.8 },
+              { value: 4, label: "2.1m (extra privacy)", numericValue: 2.1 }
+            ]
           }
         ]
       },
       hints: [
         {
-          tabLabel: "Measuring Tips",
+          tabLabel: "Guide",
           type: "mixed",
           content: [
             {
-              type: "paragraph",
-              text: "Walk the fence line and count your steps. Each big step is roughly 1 metre. Or use Google Maps â€” right-click and \"Measure distance\" to get an estimate from above."
+              type: "key_point",
+              label: "📏 How to measure",
+              text: "Walk the fence line with your phone's step counter. Average stride is about 0.75m. Or use Google Maps — right-click to measure distance."
             },
             {
               type: "key_point",
-              label: "Don't stress about exact numbers",
-              text: "This gives you a ballpark. The fencing company will do a proper site measure when they quote â€” it's usually free."
+              label: "🏘️ Standard block",
+              text: "Typical Perth block perimeter is about 50–60m. If you're just doing the back and one side, that's usually 25–30m."
             },
             {
-              type: "tip",
-              icon: "ðŸ“",
-              title: "Typical Perth block sizes",
-              text: "Standard 450mÂ² block: ~30m of side/rear fencing. Quarter acre (1,012mÂ²): ~50â€“60m. Duplex or villa: ~15â€“20m."
+              type: "key_point",
+              label: "📐 Standard height",
+              text: "1.8m is the standard for boundary fences in Perth. Under 1.8m doesn't usually need council approval. Over 2.1m may need a permit."
             }
           ]
-        }
-      ],
-      warnings: [
-        {
-          condition: "answers.fence_type === 'pool' && getSliderNumeric('height_m') < 1.2",
-          icon: "âš ï¸",
-          title: "Pool fencing minimum 1.2m",
-          text: "By Australian law, pool fencing must be at least 1.2m high. Heights below this won't pass inspection.",
-          style: "error"
         }
       ]
     },
 
-    // â”€â”€ STEP 3: Extras â”€â”€
+    // — STEP 3: Conditions —
     {
-      id: "extras",
-      title: "Any extras?",
-      preview: "Gates, removal, etc",
+      id: "conditions",
+      title: "What's the site like?",
+      preview: "Tap to choose",
       input: {
-        type: "toggle_group",
-        toggles: [
-          { id: "gate", label: "Single pedestrian gate", icon: "ðŸšª", costHint: "Adds ~$350â€“$600" },
-          { id: "drivegate", label: "Double/driveway gate", icon: "ðŸš—", costHint: "Adds ~$800â€“$1,500" },
-          { id: "removal", label: "Old fence removal", icon: "ðŸ—‘ï¸", costHint: "Adds ~$15â€“$30/m" },
-          { id: "slope", label: "Sloping block", icon: "ðŸ“", costHint: "Adds ~10â€“20% to labour" },
-          { id: "plinth", label: "Plinth (gap filler under fence)", icon: "ðŸ§±", costHint: "Adds ~$15â€“$25/m" },
-          { id: "lattice", label: "Lattice/slat top extension", icon: "ðŸŒ¿", costHint: "Adds ~$20â€“$35/m" },
+        type: "select",
+        columns: 2,
+        autoAdvance: true,
+        options: [
+          { value: "easy", label: "Easy", icon: "✅", description: "Flat, clear access" },
+          { value: "moderate", label: "Moderate", icon: "⚠️", description: "Minor slope or tight access" },
+          { value: "hard", label: "Difficult", icon: "🔧", description: "Steep slope, rock, or poor access" },
+          { value: "unknown", label: "Not sure", icon: "🤷", description: "Need a site visit" }
         ]
       },
       hints: [
         {
-          tabLabel: "What's Included?",
+          tabLabel: "What matters",
           type: "mixed",
           content: [
             {
-              type: "paragraph",
-              text: "A standard quote from most Perth fencers includes: posts, rails, panels, cement for footings, and basic install on flat ground. Here's what might cost extra:"
+              type: "key_point",
+              label: "⛰️ Sloping block?",
+              text: "Stepped fencing on a slope costs 10–20% more due to extra cutting and posts. Raked (angled) panels on Colorbond are possible but cost more."
             },
             {
               type: "key_point",
-              label: "âš ï¸ Asbestos fence (Super 6)?",
-              text: "Needs licensed removal â€” usually $30â€“$60/m extra. Don't break it yourself, it's a health risk and you'll cop a fine."
+              label: "⚠️ Asbestos fence (Super 6)?",
+              text: "Needs licensed removal — usually $30–$60/m extra. Don't break it yourself, it's a health risk and you'll cop a fine."
             },
             {
               type: "key_point",
-              label: "ðŸª¨ Rocky soil or limestone?",
-              text: "Common in Perth â€” especially north of the river. May need core drilling for posts, which adds $10â€“$20 per post hole."
+              label: "🪨 Rocky soil or limestone?",
+              text: "Common in Perth — especially north of the river. May need core drilling for posts, which adds $10–$20 per post hole."
+            }
+          ]
+        }
+      ]
+    },
+
+    // — STEP 4: Extras —
+    {
+      id: "extras",
+      title: "Any extras?",
+      preview: "Optional add-ons",
+      input: {
+        type: "toggle_group",
+        toggles: [
+          { id: "gate", label: "Pedestrian gate", icon: "🚪", costLabel: "+$350–$600" },
+          { id: "drivegate", label: "Driveway gate", icon: "🚗", costLabel: "+$800–$1,500" },
+          { id: "removal", label: "Old fence removal", icon: "🗑️", costLabel: "+$15–$30/m" },
+          { id: "slope", label: "Sloping block work", icon: "⛰️", costLabel: "+10–20%" },
+          { id: "plinth", label: "Concrete plinths", icon: "🧱", costLabel: "+$15–$25/m" },
+          { id: "lattice", label: "Lattice top extension", icon: "🌿", costLabel: "+$20–$35/m" }
+        ]
+      },
+      hints: [
+        {
+          tabLabel: "Info",
+          type: "mixed",
+          content: [
+            {
+              type: "tip",
+              icon: "🚗",
+              title: "Driveway gates",
+              text: "Sliding gates are more common in Perth than swing gates — they need less clearance. Automation adds $500–$1,500 depending on the gate size."
+            },
+            {
+              type: "tip",
+              icon: "🧱",
+              title: "Plinths",
+              text: "Concrete plinths run along the bottom of the fence. They stop dogs digging under and prevent grass growing through. Common on Colorbond."
             }
           ]
         }
@@ -272,27 +297,27 @@ const WIDGET_CONFIG = {
     },
   ],
 
-  // â”€â”€ ESTIMATE DISPLAY â”€â”€
+  // — ESTIMATE DISPLAY —
   estimate: {
     title: "Your ballpark price",
     preview: "Based on your selections",
-    note: "Supply & install â€¢ incl. GST â€¢ Perth metro",
+    note: "Supply & install • incl. GST • Perth metro",
     hints: [
       {
         type: "key_point",
         label: "How accurate is this?",
-        text: "This is a rough guide based on average Perth pricing in 2025. Your actual quote depends on soil type, access, specific materials, and the installer. Get 2â€“3 quotes to compare."
+        text: "This is a rough guide based on average Perth pricing in 2025. Your actual quote depends on soil type, access, specific materials, and the installer. Get 2–3 quotes to compare."
       },
       {
         type: "tip",
-        icon: "ðŸ’¡",
+        icon: "💡",
         title: "Neighbour splitting costs?",
-        text: "In WA, neighbours generally split the cost of a dividing fence 50/50. The Dividing Fences Act 1961 covers this â€” but have a chat with them first before getting quotes."
+        text: "In WA, neighbours generally split the cost of a dividing fence 50/50. The Dividing Fences Act 1961 covers this — but have a chat with them first before getting quotes."
       }
     ]
   },
 
-  // â”€â”€ PRICING LOGIC â”€â”€
+  // — PRICING LOGIC —
   pricing: {
     unit: "metre",
     unitLabel: "per metre",
@@ -324,28 +349,37 @@ const WIDGET_CONFIG = {
     minimumPrice: 500,
   },
 
-  // â”€â”€ LEAD CAPTURE â”€â”€
+  // — SHARE CONFIG —
+  share: {
+    enabled: true,
+    // Header line in the shared text
+    header: "🏗️ Fencing Estimate — Perth",
+    // Methods to show: copy, whatsapp, sms, email
+    methods: ["copy", "whatsapp", "sms", "email"],
+  },
+
+  // — LEAD CAPTURE (only shows if web3formsKey is set) —
   leadCapture: {
     enabled: true,
-    title: "Get your actual quote",
-    preview: "Free, no obligation",
+    title: "Want a fencing company to contact you?",
+    preview: "Free quotes, no obligation",
     heading: "We've got your specs.",
-    subheading: "Drop your details and we'll get back to you with an exact price â€” usually within 24 hours.",
+    subheading: "Leave your details and local fencing companies can get back to you with an actual quote.",
     showSummary: true,
     fields: [
       { id: "name", label: "Your name", type: "text", placeholder: "e.g. Dave", required: true },
       { id: "contact", label: "Phone or email", type: "text", placeholder: "e.g. 0412 345 678", required: true },
       { id: "suburb", label: "Suburb", type: "text", placeholder: "e.g. Joondalup", required: false },
-      { id: "notes", label: "Anything else we should know?", type: "textarea", placeholder: "e.g. Replacing old asbestos fence, dog keeps escaping...", required: false },
+      { id: "notes", label: "Anything else?", type: "textarea", placeholder: "", required: false },
     ],
-    submitText: "ðŸ“© Send My Quote Request",
+    submitText: "📩 Send My Quote Request",
     submitNote: "No spam. Just your quote.",
-    successMessage: "Quote request sent!",
+    successMessage: "Quote request sent! ✅",
     successSubtext: "We'll be in touch within 24 hours with a proper price based on your specs.",
     delivery: {
       method: "web3forms",
-      web3formsKey: "99a11c15-5c61-4765-99c5-673adec64b16",
-      notifyEmail: "responses@itabs.ai",
+      web3formsKey: "",          // Leave empty for generic estimators
+      notifyEmail: "",
       emailSubject: "New Fence Enquiry",
     }
   },
@@ -357,24 +391,16 @@ const WIDGET_CONFIG = {
     badges: ["Licensed & Insured", "Perth Local", "Free Quotes"],
   },
 
-  share: {
-    enabled: true,
-    tradeEmoji: "🏗️",
-    tradeLabel: "FENCING ESTIMATE",
-    hubUrl: "https://boilermaker-innovator.github.io/itabs-quotes/",
-    tagline: "Built with iTabs — free interactive estimators for trades",
-  },
-
   footer: {
     showPoweredBy: true,
-    poweredByUrl: "https://boilermaker-innovator.github.io/itabs-quotes/",
+    poweredByUrl: "https://itabs.ai",
   }
 };
 </script>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-     ENGINE â€” Everything below here is generic. Do not edit per client.
-     â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════════════════════════════════════════════════════
+     ENGINE — Everything below here is generic. Do not edit per client.
+     ═══════════════════════════════════════════════════════════════ -->
 
 <script>
 // Load Google Fonts from config
@@ -393,7 +419,7 @@ document.title = WIDGET_CONFIG.header.headline + ' | ' + WIDGET_CONFIG.business.
 </script>
 
 <style>
-/* â•â•â• CSS VARIABLES â€” Set from config via JS â•â•â• */
+/* ═══ CSS VARIABLES — Set from config via JS ═══ */
 :root {
   --bg-main: #0c1117;
   --bg-card: #151c25;
@@ -402,7 +428,7 @@ document.title = WIDGET_CONFIG.header.headline + ' | ' + WIDGET_CONFIG.business.
   --border: #222d3a;
   --brand-primary: #f59e0b;
   --brand-secondary: #d97706;
-  --brand-glow: rgba(245, 158, 11, 0.15);
+  --brand-glow: rgba(245, 158, 11, 0.25);
   --accent-green: #22c55e;
   --accent-blue: #3b82f6;
   --accent-red: #ef4444;
@@ -430,7 +456,16 @@ body {
   padding: 20px 16px 40px;
 }
 
-/* â•â•â• HEADER â•â•â• */
+/* ═══ BACK NAV ═══ */
+.back-nav {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--text-muted); font-size: 0.85rem; text-decoration: none;
+  padding: 8px 14px; border-radius: 8px; background: var(--bg-card);
+  border: 1px solid var(--border); transition: all 0.2s; margin-bottom: 8px;
+}
+.back-nav:hover { color: var(--text-primary); border-color: var(--brand-primary); }
+
+/* ═══ HEADER ═══ */
 .header { text-align: center; padding: 30px 0 25px; }
 .header-icon { font-size: 2.5rem; margin-bottom: 12px; }
 .header h1 {
@@ -444,7 +479,7 @@ body {
   padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;
 }
 
-/* â•â•â• PROGRESS â•â•â• */
+/* ═══ PROGRESS ═══ */
 .progress-label {
   display: flex; justify-content: space-between; margin-bottom: 8px;
   font-size: 0.75rem; color: var(--text-muted);
@@ -457,7 +492,7 @@ body {
   border-radius: 10px; width: 0%; transition: width 0.5s ease;
 }
 
-/* â•â•â• ACCORDION SECTIONS â•â•â• */
+/* ═══ ACCORDION SECTIONS ═══ */
 .itab-section {
   background: var(--bg-card); border-radius: var(--radius); margin-bottom: 14px;
   overflow: hidden; border: 1px solid var(--border); transition: all 0.3s ease; scroll-margin-top: 16px;
@@ -495,7 +530,7 @@ body {
 .itab-content { display: none; padding: 0 16px 18px; border-top: 1px solid var(--border); }
 .itab-content.show { display: block; animation: fadeInUp 0.3s ease; }
 
-/* â•â•â• TABS â•â•â• */
+/* ═══ TABS ═══ */
 .tabs {
   display: flex; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--border);
   margin-bottom: 14px; flex-wrap: wrap;
@@ -515,7 +550,7 @@ body {
 .tab-panel h3 { color: var(--brand-primary); margin-bottom: 10px; font-size: 1rem; }
 .tab-panel p { color: var(--text-secondary); margin-bottom: 12px; line-height: 1.6; font-size: 0.9rem; }
 
-/* â•â•â• SELECT OPTIONS â•â•â• */
+/* ═══ SELECT OPTIONS ═══ */
 .option-grid { display: grid; gap: 10px; margin: 10px 0; }
 .option-grid.cols-2 { grid-template-columns: 1fr 1fr; }
 .option-card {
@@ -537,7 +572,7 @@ body {
 }
 .option-tag.highlight { background: rgba(245, 158, 11, 0.15); color: var(--brand-primary); }
 
-/* â•â•â• SLIDERS â•â•â• */
+/* ═══ SLIDERS ═══ */
 .slider-group { margin: 16px 0; }
 .slider-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
 .slider-label span { color: var(--text-secondary); font-size: 0.9rem; }
@@ -561,7 +596,7 @@ input[type="range"]::-moz-range-thumb {
   color: var(--text-muted); margin-top: 4px;
 }
 
-/* â•â•â• TOGGLES â•â•â• */
+/* ═══ TOGGLES ═══ */
 .toggle-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 14px 0; border-bottom: 1px solid var(--border);
@@ -581,7 +616,7 @@ input[type="range"]::-moz-range-thumb {
 }
 .toggle-switch.on .toggle-knob { left: 24px; }
 
-/* â•â•â• ESTIMATE BOX â•â•â• */
+/* ═══ ESTIMATE BOX ═══ */
 .estimate-box {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(217, 119, 6, 0.05));
   border: 2px solid var(--brand-primary); border-radius: var(--radius);
@@ -599,7 +634,65 @@ input[type="range"]::-moz-range-thumb {
 .breakdown-row .br-label { color: var(--text-secondary); }
 .breakdown-row .br-value { font-family: var(--font-mono); color: var(--text-primary); font-weight: 500; }
 
-/* â•â•â• KEY POINTS & TIPS â•â•â• */
+/* ═══ SHARE SECTION ═══ */
+.share-area { margin-top: 20px; }
+
+.share-specs {
+  background: var(--bg-dark); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-bottom: 16px; font-size: 0.83rem;
+}
+.share-specs-label {
+  font-weight: 600; color: var(--brand-primary); margin-bottom: 8px;
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.share-specs-content { color: var(--text-secondary); line-height: 1.8; }
+
+.share-btn-wrap { position: relative; }
+
+.share-main-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border: none; border-radius: 10px; color: #000; font-family: var(--font-main);
+  font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.share-main-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--brand-glow); }
+.share-main-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.share-dropdown {
+  display: none; position: absolute; bottom: calc(100% + 8px); left: 0; right: 0;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 10;
+  animation: fadeInUp 0.2s ease;
+}
+.share-dropdown.show { display: block; }
+
+.share-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; cursor: pointer; transition: background 0.15s;
+  border-bottom: 1px solid var(--border); color: var(--text-primary); font-size: 0.9rem;
+}
+.share-option:last-child { border-bottom: none; }
+.share-option:hover { background: var(--bg-hover); }
+.share-option .share-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+.share-option .share-label { font-weight: 500; }
+
+.share-pref-note {
+  text-align: center; margin-top: 8px; font-size: 0.75rem; color: var(--text-muted);
+}
+.share-pref-note a {
+  color: var(--brand-primary); cursor: pointer; text-decoration: underline;
+}
+
+.share-toast {
+  display: none; text-align: center; padding: 10px;
+  background: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent-green);
+  border-radius: 8px; color: var(--accent-green); font-size: 0.85rem; font-weight: 500;
+  margin-top: 10px; animation: fadeInUp 0.3s ease;
+}
+.share-toast.show { display: block; }
+
+/* ═══ KEY POINTS & TIPS ═══ */
 .key-point {
   background: var(--bg-dark); border-left: 4px solid var(--brand-primary);
   padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0;
@@ -624,7 +717,7 @@ input[type="range"]::-moz-range-thumb {
 .warning-card .warning-title { font-weight: 600; color: var(--accent-red); margin-bottom: 4px; }
 .warning-card p { color: var(--text-secondary); margin-bottom: 0; font-size: 0.83rem; }
 
-/* â•â•â• COMPARISON TABLE â•â•â• */
+/* ═══ COMPARISON TABLE ═══ */
 .compare-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.82rem; }
 .compare-table th {
   text-align: left; padding: 10px 8px; color: var(--text-muted); font-weight: 600;
@@ -636,7 +729,7 @@ input[type="range"]::-moz-range-thumb {
 .compare-table .positive { color: var(--accent-green); }
 .compare-table .negative { color: var(--accent-red); }
 
-/* â•â•â• LEAD FORM â•â•â• */
+/* ═══ LEAD FORM ═══ */
 .form-group { margin-bottom: 12px; text-align: left; }
 .form-group label { display: block; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 4px; font-weight: 500; }
 .form-group input, .form-group textarea {
@@ -671,7 +764,7 @@ input[type="range"]::-moz-range-thumb {
 .success-message h3 { color: var(--accent-green); margin-bottom: 8px; }
 .success-message p { color: var(--text-secondary); font-size: 0.9rem; }
 
-/* â•â•â• SOCIAL PROOF â•â•â• */
+/* ═══ SOCIAL PROOF ═══ */
 .social-proof {
   display: flex; align-items: center; justify-content: center; gap: 16px;
   padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border);
@@ -685,68 +778,13 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.75rem; white-space: nowrap;
 }
 
-/* â•â•â• FOOTER â•â•â• */
+/* ═══ FOOTER ═══ */
 .powered-by {
   text-align: center; padding: 30px 0 10px; font-size: 0.75rem; color: var(--text-muted);
 }
 .powered-by a { color: var(--brand-primary); text-decoration: none; font-weight: 600; }
 
-/* === SHARE BUTTON === */
-.share-btn {
-  width: 100%; padding: 16px 20px; margin-top: 16px;
-  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
-  color: #000; border: none; border-radius: var(--radius);
-  font-size: 1rem; font-weight: 700; font-family: var(--font-main);
-  cursor: pointer; transition: all 0.2s; text-align: center;
-}
-.share-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.share-btn:active { transform: translateY(0); }
-.share-overlay {
-  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;
-  padding: 16px;
-}
-.share-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
-.share-modal {
-  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-  max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px;
-}
-.share-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.share-modal-header h3 { font-size: 1.1rem; font-weight: 700; }
-.share-modal-close {
-  width: 32px; height: 32px; background: var(--bg-hover); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;
-  display: flex; align-items: center; justify-content: center; font-family: var(--font-main);
-}
-.share-modal-close:hover { color: var(--text-primary); background: var(--border); }
-.share-text-box {
-  background: var(--bg-dark); border: 1px solid var(--border); border-radius: 10px;
-  padding: 16px; font-family: var(--font-main); font-size: 0.85rem;
-  color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap;
-  margin-bottom: 16px; max-height: 300px; overflow-y: auto;
-}
-.share-actions { display: flex; flex-direction: column; gap: 10px; }
-.share-action-btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 14px 20px; border-radius: var(--radius); font-size: 0.95rem;
-  font-weight: 600; font-family: var(--font-main); cursor: pointer;
-  border: none; transition: all 0.2s; text-decoration: none; text-align: center;
-}
-.share-action-btn:hover { filter: brightness(1.1); }
-.share-action-btn.copy { background: var(--brand-primary); color: #000; }
-.share-action-btn.copy.copied { background: var(--accent-green); color: #fff; }
-.share-action-btn.email { background: var(--accent-blue); color: #fff; }
-.share-action-btn.whatsapp { background: #25d366; color: #fff; }
-.share-action-btn.sms { background: #8b5cf6; color: #fff; }
-.share-itabs-footer {
-  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border);
-  text-align: center; font-size: 0.75rem; color: var(--text-muted);
-}
-.share-itabs-footer a { color: var(--brand-primary); text-decoration: none; }
-.share-itabs-footer a:hover { text-decoration: underline; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* â•â•â• ANIMATIONS â•â•â• */
+/* ═══ ANIMATIONS ═══ */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -760,22 +798,31 @@ input[type="range"]::-moz-range-thumb {
 </div>
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// iTabs Quotes Engine v1.0
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════
+// iTabs Quotes Engine v1.3
+// ═══════════════════════════════════════════════════════════════
 
 const C = WIDGET_CONFIG;
 
-// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Check if lead capture should show (only when web3forms key is actually set)
+const hasLeadCapture = C.leadCapture && C.leadCapture.enabled &&
+  C.leadCapture.delivery && C.leadCapture.delivery.web3formsKey &&
+  C.leadCapture.delivery.web3formsKey.trim() !== '';
+
+// Check if share is enabled
+const hasShare = C.share && C.share.enabled;
+
+// — STATE —
 const state = {
-  answers: {},       // { step_id: value } for selects
-  sliders: {},       // { slider_id: { raw, numeric, label } }
-  toggles: {},       // { toggle_id: true/false }
+  answers: {},
+  sliders: {},
+  toggles: {},
   openSection: null,
   completedSections: new Set(),
+  shareDropdownOpen: false,
 };
 
-// â”€â”€ APPLY BRANDING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — APPLY BRANDING —
 function applyBranding() {
   const b = C.branding;
   const r = document.documentElement.style;
@@ -797,13 +844,21 @@ function applyBranding() {
   r.setProperty('--radius', b.borderRadius);
 }
 
-// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — INIT —
 function init() {
   applyBranding();
   initSliderDefaults();
   render();
-  // Auto-open first section
   setTimeout(() => toggleSection(0), 300);
+
+  // Close share dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.share-btn-wrap')) {
+      const dd = document.getElementById('shareDropdown');
+      if (dd) dd.classList.remove('show');
+      state.shareDropdownOpen = false;
+    }
+  });
 }
 
 function initSliderDefaults() {
@@ -827,10 +882,15 @@ function initSliderDefaults() {
   });
 }
 
-// â”€â”€ RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — RENDER —
 function render() {
   const app = document.getElementById('app');
   let html = '';
+
+  // Back nav
+  if (C.hubUrl) {
+    html += `<a href="${C.hubUrl}" class="back-nav">← Back to trades</a>`;
+  }
 
   // Header
   html += renderHeader();
@@ -839,10 +899,10 @@ function render() {
   if (C.socialProof && C.socialProof.enabled) html += renderSocialProof();
 
   // Progress
-  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0);
+  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (hasLeadCapture ? 1 : 0);
   html += `
     <div class="progress-label">
-      <span>Your quote</span>
+      <span>${C.header.disclaimer || 'Your quote'}</span>
       <span id="progressText">0 of ${totalSections}</span>
     </div>
     <div class="progress-bar">
@@ -854,19 +914,19 @@ function render() {
     html += renderSection(step, i);
   });
 
-  // Estimate section
+  // Estimate section (includes share)
   if (C.estimate) {
     html += renderEstimateSection(C.steps.length);
   }
 
-  // Lead capture section
-  if (C.leadCapture && C.leadCapture.enabled) {
+  // Lead capture section (only if web3forms key is set)
+  if (hasLeadCapture) {
     html += renderLeadSection(C.steps.length + (C.estimate ? 1 : 0));
   }
 
   // Footer
   if (C.footer && C.footer.showPoweredBy) {
-    html += `<div class="powered-by">Powered by <a href="${C.footer.poweredByUrl}" target="_blank">iTabs</a> Â· Interactive tools that convert</div>`;
+    html += `<div class="powered-by">Powered by <a href="${C.footer.poweredByUrl}" target="_blank">iTabs</a> · Interactive tools that convert</div>`;
   }
 
   app.innerHTML = html;
@@ -885,7 +945,7 @@ function renderHeader() {
 
 function renderSocialProof() {
   const sp = C.socialProof;
-  const stars = 'â˜…'.repeat(Math.floor(sp.rating));
+  const stars = '★'.repeat(Math.floor(sp.rating));
   return `
     <div class="social-proof">
       <span class="sp-stars">${stars}</span>
@@ -894,7 +954,7 @@ function renderSocialProof() {
     </div>`;
 }
 
-// â”€â”€ SECTION RENDERING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — SECTION RENDERING —
 function renderSection(step, index) {
   const sectionId = `section-${index}`;
   const completed = state.completedSections.has(sectionId) ? ' completed' : '';
@@ -903,7 +963,6 @@ function renderSection(step, index) {
 
   let contentHtml = '';
 
-  // Build tabs: first tab is always "Choose"/"Set"/"Add", rest from hints
   const inputTabLabel = step.input.type === 'toggle_group' ? 'Add Extras' :
                         step.input.type === 'slider_group' ? 'Set Size' : 'Choose';
 
@@ -919,10 +978,8 @@ function renderSection(step, index) {
     contentHtml += `</div>`;
   }
 
-  // Input panel
   contentHtml += `<div class="tab-panel show" id="${sectionId}-input">`;
   contentHtml += renderInput(step, sectionId);
-  // Warnings
   if (step.warnings) {
     step.warnings.forEach(w => {
       contentHtml += `<div class="warning-card" id="${sectionId}-warning-${w.condition.replace(/[^a-z0-9]/gi,'')}" style="display:none;">
@@ -933,7 +990,6 @@ function renderSection(step, index) {
   }
   contentHtml += `</div>`;
 
-  // Hint panels
   hintTabs.forEach((hint, hi) => {
     contentHtml += `<div class="tab-panel" id="${sectionId}-hint-${hi}">`;
     contentHtml += renderHint(hint);
@@ -969,6 +1025,12 @@ function renderEstimateSection(index) {
     est.hints.forEach(h => { hintsHtml += renderHintItem(h); });
   }
 
+  // Share area HTML
+  let shareHtml = '';
+  if (hasShare) {
+    shareHtml = renderShareArea();
+  }
+
   return `
     <div class="itab-section${completed}" id="${sectionId}">
       <div class="itab-header" onclick="toggleSection(${index})">
@@ -984,13 +1046,56 @@ function renderEstimateSection(index) {
       <div class="itab-content${isOpen ? ' show' : ''}" id="${sectionId}-content">
         <div class="estimate-box">
           <div class="est-label">Estimated range</div>
-          <div class="est-range" id="estRange">â€”</div>
+          <div class="est-range" id="estRange">—</div>
           <div class="est-note" id="estNote">Complete the sections above to see your estimate</div>
           <div class="estimate-breakdown" id="estBreakdown"></div>
         </div>
-        ${C.share && C.share.enabled ? '<button class="share-btn" onclick="openShare()">📤 Share My Estimate</button>' : ''}
+        ${shareHtml}
         ${hintsHtml}
       </div>
+    </div>`;
+}
+
+function renderShareArea() {
+  const methods = (C.share && C.share.methods) || ['copy', 'whatsapp', 'sms', 'email'];
+  const savedPref = getSavedSharePref();
+
+  const methodLabels = {
+    copy: { icon: '📋', label: 'Copy to clipboard' },
+    whatsapp: { icon: '📱', label: 'WhatsApp' },
+    sms: { icon: '💬', label: 'SMS' },
+    email: { icon: '📧', label: 'Email to myself' },
+  };
+
+  let dropdownHtml = methods.map(m => {
+    const info = methodLabels[m] || { icon: '📤', label: m };
+    return `<div class="share-option" onclick="executeShare('${m}')" data-method="${m}">
+      <span class="share-icon">${info.icon}</span>
+      <span class="share-label">${info.label}</span>
+    </div>`;
+  }).join('');
+
+  // If user has a saved preference, show which method will be used
+  let btnLabel = '📤 Share My Quote';
+  let prefNote = '';
+  if (savedPref && methods.includes(savedPref)) {
+    const info = methodLabels[savedPref];
+    btnLabel = `${info.icon} Share via ${info.label}`;
+    prefNote = `<div class="share-pref-note">or <a onclick="openShareDropdown(event)">choose another method</a></div>`;
+  }
+
+  return `
+    <div class="share-area">
+      <div class="share-specs">
+        <div class="share-specs-label">YOUR SPECS</div>
+        <div class="share-specs-content" id="shareSpecsSummary">Select your options above first</div>
+      </div>
+      <div class="share-btn-wrap">
+        <div class="share-dropdown" id="shareDropdown">${dropdownHtml}</div>
+        <button class="share-main-btn" id="shareMainBtn" onclick="handleShareClick()">${btnLabel}</button>
+        ${prefNote}
+      </div>
+      <div class="share-toast" id="shareToast"></div>
     </div>`;
 }
 
@@ -1004,9 +1109,9 @@ function renderLeadSection(index) {
   lc.fields.forEach(f => {
     const reqMark = f.required ? ' *' : '';
     if (f.type === 'textarea') {
-      fieldsHtml += `<div class="form-group"><label>${f.label}${reqMark}</label><textarea id="form-${f.id}" placeholder="${f.placeholder}"></textarea></div>`;
+      fieldsHtml += `<div class="form-group"><label>${f.label}${reqMark}</label><textarea id="form-${f.id}" placeholder="${f.placeholder || ''}"></textarea></div>`;
     } else {
-      fieldsHtml += `<div class="form-group"><label>${f.label}${reqMark}</label><input type="${f.type}" id="form-${f.id}" placeholder="${f.placeholder}"></div>`;
+      fieldsHtml += `<div class="form-group"><label>${f.label}${reqMark}</label><input type="${f.type}" id="form-${f.id}" placeholder="${f.placeholder || ''}"></div>`;
     }
   });
 
@@ -1035,7 +1140,7 @@ function renderLeadSection(index) {
           ${lc.submitNote ? `<div style="text-align:center;margin-top:12px;font-size:0.75rem;color:var(--text-muted)">${lc.submitNote}</div>` : ''}
         </div>
         <div class="success-message" id="successMsg" style="display:none;">
-          <div class="check-icon">âœ…</div>
+          <div class="check-icon">✅</div>
           <h3>${lc.successMessage}</h3>
           <p>${lc.successSubtext}</p>
         </div>
@@ -1043,7 +1148,7 @@ function renderLeadSection(index) {
     </div>`;
 }
 
-// â”€â”€ INPUT RENDERING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — INPUT RENDERING —
 function renderInput(step, sectionId) {
   const input = step.input;
   switch (input.type) {
@@ -1066,12 +1171,12 @@ function renderSelect(step, sectionId, input) {
     html += `
       <div class="option-card${selected}" onclick="selectOption('${step.id}', '${opt.value}', ${C.steps.indexOf(step)}, ${input.autoAdvance || false})">
         <div class="option-top">
-          <span class="option-name">${opt.icon} ${opt.label}</span>
+          <span class="option-name">${opt.icon || ''} ${opt.label}</span>
           ${opt.priceHint ? `<span class="option-price">${opt.priceHint}</span>` : ''}
         </div>
         ${opt.description ? `<div class="option-desc">${opt.description}</div>` : ''}
         ${tagsHtml ? `<div class="option-tags">${tagsHtml}</div>` : ''}
-        <span class="option-check">âœ“ Selected</span>
+        <div class="option-check">✓ Selected</div>
       </div>`;
   });
   html += '</div>';
@@ -1079,25 +1184,26 @@ function renderSelect(step, sectionId, input) {
 }
 
 function renderMultiSelect(step, sectionId, input) {
-  // Similar to select but with multi-selection
   const colsClass = input.columns === 2 ? ' cols-2' : '';
-  if (!state.answers[step.id]) state.answers[step.id] = [];
   let html = `<div class="option-grid${colsClass}">`;
-  input.options.forEach(opt => {
-    const selected = state.answers[step.id].includes(opt.value) ? ' selected' : '';
+  input.options.forEach((opt, i) => {
+    const selected = state.answers[step.id] && state.answers[step.id].includes(opt.value) ? ' selected' : '';
     html += `
       <div class="option-card${selected}" onclick="toggleMultiOption('${step.id}', '${opt.value}', this)">
         <div class="option-top">
-          <span class="option-name">${opt.icon} ${opt.label}</span>
+          <span class="option-name">${opt.icon || ''} ${opt.label}</span>
           ${opt.priceHint ? `<span class="option-price">${opt.priceHint}</span>` : ''}
         </div>
         ${opt.description ? `<div class="option-desc">${opt.description}</div>` : ''}
-        <span class="option-check">âœ“ Selected</span>
+        <div class="option-check">✓ Selected</div>
       </div>`;
   });
   html += '</div>';
-  if (input.optional) {
-    html += `<button class="tab" style="margin-top:10px;width:100%;text-align:center;" onclick="skipStep(${C.steps.indexOf(step)})">Skip â€” none needed</button>`;
+  if (input.skipLabel !== false) {
+    const stepIdx = C.steps.indexOf(step);
+    html += `<div style="text-align:center;margin-top:10px;">
+      <button onclick="skipStep(${stepIdx})" style="background:none;border:none;color:var(--text-muted);font-family:var(--font-main);font-size:0.85rem;cursor:pointer;text-decoration:underline;">Skip this step</button>
+    </div>`;
   }
   return html;
 }
@@ -1105,16 +1211,15 @@ function renderMultiSelect(step, sectionId, input) {
 function renderSliders(step, sectionId, input) {
   let html = '';
   input.sliders.forEach(s => {
-    const current = state.sliders[s.id];
-    const displayValue = current ? current.label : s.default + (s.unit || '');
+    const val = state.sliders[s.id] || { raw: s.default, label: s.default + (s.unit || '') };
     html += `
       <div class="slider-group">
         <div class="slider-label">
           <span>${s.label}</span>
-          <span class="slider-value" id="slider-val-${s.id}">${displayValue}</span>
+          <span class="slider-value" id="slider-val-${s.id}">${val.label}</span>
         </div>
-        <input type="range" id="slider-${s.id}" min="${s.min}" max="${s.max}" value="${s.default}" step="${s.step}"
-               oninput="updateSlider('${s.id}', '${step.id}', ${C.steps.indexOf(step)}, this.value)">
+        <input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${val.raw}"
+          oninput="updateSlider('${s.id}', '${step.id}', ${C.steps.indexOf(step)}, this.value)">
         ${s.markers ? `<div class="slider-markers">${s.markers.map(m => `<span>${m}</span>`).join('')}</div>` : ''}
       </div>`;
   });
@@ -1128,8 +1233,8 @@ function renderToggles(step, sectionId, input) {
     html += `
       <div class="toggle-row">
         <div class="toggle-info">
-          <div class="toggle-name">${t.icon} ${t.label}</div>
-          <div class="toggle-cost">${t.costHint}</div>
+          <div class="toggle-name">${t.icon || ''} ${t.label}</div>
+          <div class="toggle-cost">${t.costLabel || ''}</div>
         </div>
         <div class="toggle-switch${isOn}" id="toggle-${t.id}" onclick="toggleExtra('${t.id}', '${step.id}', ${C.steps.indexOf(step)})">
           <div class="toggle-knob"></div>
@@ -1139,26 +1244,24 @@ function renderToggles(step, sectionId, input) {
   return html;
 }
 
-// â”€â”€ HINT RENDERING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — HINT RENDERING —
 function renderHint(hint) {
   switch (hint.type) {
     case 'comparison_table': return renderComparisonTable(hint);
     case 'tips': return renderTips(hint);
     case 'mixed': return renderMixed(hint);
-    case 'custom_html': return hint.content;
     default: return '';
   }
 }
 
 function renderComparisonTable(hint) {
   let html = '<table class="compare-table"><thead><tr>';
-  hint.columns.forEach(c => { html += `<th>${c}</th>`; });
+  hint.headers.forEach(h => { html += `<th>${h}</th>`; });
   html += '</tr></thead><tbody>';
   hint.rows.forEach(row => {
     html += '<tr>';
-    row.forEach((cell, i) => {
-      const style = hint.cellStyles && hint.cellStyles[cell];
-      const cls = style ? ` class="${style}"` : '';
+    row.forEach((cell, ci) => {
+      const cls = cell === '✓' ? ' class="positive"' : cell === '✗' ? ' class="negative"' : '';
       html += `<td${cls}>${cell}</td>`;
     });
     html += '</tr>';
@@ -1192,14 +1295,13 @@ function renderHintItem(item) {
   }
 }
 
-// â”€â”€ INTERACTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — INTERACTIONS —
 function toggleSection(index) {
   const sectionId = `section-${index}`;
   const content = document.getElementById(sectionId + '-content');
   const btn = document.getElementById(sectionId + '-btn');
   const isOpen = content && content.classList.contains('show');
 
-  // Close all
   document.querySelectorAll('.itab-content').forEach(c => c.classList.remove('show'));
   document.querySelectorAll('.i-button').forEach(b => b.classList.remove('active'));
 
@@ -1230,25 +1332,22 @@ function selectOption(stepId, value, stepIndex, autoAdvance) {
   state.answers[stepId] = value;
   const sectionId = `section-${stepIndex}`;
 
-  // Update visual selection
   const section = document.getElementById(sectionId);
   section.querySelectorAll(`#${sectionId}-input .option-card`).forEach(c => c.classList.remove('selected'));
-  // Find and select the right one
   const cards = section.querySelectorAll(`#${sectionId}-input .option-card`);
   const step = C.steps[stepIndex];
   step.input.options.forEach((opt, i) => {
     if (opt.value === value && cards[i]) cards[i].classList.add('selected');
   });
 
-  // Mark completed
   section.classList.add('completed');
   state.completedSections.add(sectionId);
 
-  // Update preview
   const opt = step.input.options.find(o => o.value === value);
-  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">âœ“ ${opt ? opt.label : value}</span>`;
+  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${opt ? opt.label : value}</span>`;
 
   updateEstimate();
+  updateShareSummary();
   updateQuoteSummary();
   updateProgress();
   checkWarnings();
@@ -1269,6 +1368,7 @@ function toggleMultiOption(stepId, value, el) {
     el.classList.add('selected');
   }
   updateEstimate();
+  updateShareSummary();
   updateQuoteSummary();
 }
 
@@ -1286,23 +1386,21 @@ function updateSlider(sliderId, stepId, stepIndex, rawValue) {
     state.sliders[sliderId] = { raw, numeric: raw, label: raw + (sliderConfig.unit || '') };
   }
 
-  // Update display
   document.getElementById(`slider-val-${sliderId}`).textContent = state.sliders[sliderId].label;
 
-  // Mark completed & update preview
   const sectionId = `section-${stepIndex}`;
   document.getElementById(sectionId).classList.add('completed');
   state.completedSections.add(sectionId);
 
-  // Build preview from all sliders in this step
   const previews = step.input.sliders.map(s => {
     const val = state.sliders[s.id];
     if (s.valueMap) return val.numeric + 'm';
     return val.raw + (s.unit || '');
   });
-  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">âœ“ ${previews.join(' Ã— ')}</span>`;
+  document.getElementById(sectionId + '-preview').innerHTML = `<span class="selected">✓ ${previews.join(' × ')}</span>`;
 
   updateEstimate();
+  updateShareSummary();
   updateQuoteSummary();
   updateProgress();
   checkWarnings();
@@ -1313,14 +1411,13 @@ function toggleExtra(toggleId, stepId, stepIndex) {
   const el = document.getElementById(`toggle-${toggleId}`);
   el.classList.toggle('on');
 
-  // Update preview
   const sectionId = `section-${stepIndex}`;
   const step = C.steps[stepIndex];
   const activeCount = step.input.toggles.filter(t => state.toggles[t.id]).length;
 
   if (activeCount > 0) {
     document.getElementById(sectionId + '-preview').innerHTML =
-      `<span class="selected">âœ“ ${activeCount} extra${activeCount > 1 ? 's' : ''} added</span>`;
+      `<span class="selected">✓ ${activeCount} extra${activeCount > 1 ? 's' : ''} added</span>`;
     document.getElementById(sectionId).classList.add('completed');
     state.completedSections.add(sectionId);
   } else {
@@ -1330,6 +1427,7 @@ function toggleExtra(toggleId, stepId, stepIndex) {
   }
 
   updateEstimate();
+  updateShareSummary();
   updateQuoteSummary();
   updateProgress();
 }
@@ -1338,7 +1436,7 @@ function skipStep(stepIndex) {
   toggleSection(stepIndex + 1);
 }
 
-// â”€â”€ PRICING ENGINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — PRICING ENGINE —
 function getSliderNumeric(sliderId) {
   return state.sliders[sliderId] ? state.sliders[sliderId].numeric : 0;
 }
@@ -1346,7 +1444,6 @@ function getSliderNumeric(sliderId) {
 function calculateEstimate() {
   const p = C.pricing;
 
-  // Get base price from primary selection
   const primaryAnswer = state.answers[p.basePriceStep];
   if (!primaryAnswer || !p.basePrices[primaryAnswer]) return null;
 
@@ -1354,7 +1451,19 @@ function calculateEstimate() {
   let low = base.low;
   let high = base.high;
 
-  // Apply multipliers
+  // Pre-adjustments
+  if (p.preAdjustments) {
+    p.preAdjustments.forEach(adj => {
+      const answer = state.answers[adj.source];
+      if (answer && adj.type === 'additive') {
+        const val = adj.values[answer] !== undefined ? adj.values[answer] : (adj.values._default || 0);
+        low += val;
+        high += val;
+      }
+    });
+  }
+
+  // Multipliers
   if (p.multipliers) {
     p.multipliers.forEach(m => {
       if (m.type === 'value_map') {
@@ -1365,10 +1474,17 @@ function calculateEstimate() {
           high *= mult;
         }
       }
+      if (m.type === 'select_map') {
+        const answer = state.answers[m.source];
+        if (answer && m.values[answer] !== undefined) {
+          low *= m.values[answer];
+          high *= m.values[answer];
+        }
+      }
     });
   }
 
-  // Apply adjustments (additive from select steps)
+  // Adjustments (legacy)
   if (p.adjustments) {
     p.adjustments.forEach(adj => {
       const answer = state.answers[adj.source];
@@ -1385,21 +1501,31 @@ function calculateEstimate() {
   low = Math.round(low * quantity);
   high = Math.round(high * quantity);
 
+  // Post-adjustments
+  if (p.postAdjustments) {
+    p.postAdjustments.forEach(adj => {
+      const answer = state.answers[adj.source];
+      if (answer && adj.type === 'additive') {
+        const val = adj.values[answer] !== undefined ? adj.values[answer] : (adj.values._default || 0);
+        low += val;
+        high += val;
+      }
+    });
+  }
+
   // Build breakdown
   const breakdown = [];
   const primaryOpt = findOption(p.basePriceStep, primaryAnswer);
   const primaryLabel = primaryOpt ? primaryOpt.label : primaryAnswer;
 
-  // Base line
   let baseLine = primaryLabel;
   if (p.quantitySource && state.sliders[p.quantitySource]) {
     baseLine += ` (${state.sliders[p.quantitySource].raw}${getSliderUnit(p.quantitySource)}`;
-    // Add other slider values to label
     const baseStep = C.steps.find(s => s.input.type === 'slider_group' && s.input.sliders.some(sl => sl.id === p.quantitySource));
     if (baseStep) {
       baseStep.input.sliders.forEach(s => {
         if (s.id !== p.quantitySource && state.sliders[s.id]) {
-          baseLine += ` Ã— ${state.sliders[s.id].numeric}m`;
+          baseLine += ` × ${state.sliders[s.id].numeric}m`;
         }
       });
     }
@@ -1473,17 +1599,17 @@ function updateEstimate() {
   const estSectionIndex = C.steps.length;
   const previewEl = document.getElementById(`section-${estSectionIndex}-preview`);
 
-  if (!rangeEl) return; // Not yet rendered
+  if (!rangeEl) return;
 
   if (!est) {
-    rangeEl.textContent = 'â€”';
+    rangeEl.textContent = '—';
     noteEl.textContent = 'Complete the sections above to see your estimate';
     breakdownEl.innerHTML = '';
     if (previewEl) previewEl.textContent = C.estimate.preview;
     return;
   }
 
-  const rangeText = `$${est.low.toLocaleString()} â€“ $${est.high.toLocaleString()}`;
+  const rangeText = `$${est.low.toLocaleString()} – $${est.high.toLocaleString()}`;
   rangeEl.textContent = rangeText;
   noteEl.textContent = C.estimate.note;
 
@@ -1491,51 +1617,204 @@ function updateEstimate() {
     breakdownEl.innerHTML = est.breakdown.map(b => `
       <div class="breakdown-row">
         <span class="br-label">${b.label}</span>
-        <span class="br-value">${b.prefix || ''}$${b.low.toLocaleString()} â€“ $${b.high.toLocaleString()}</span>
+        <span class="br-value">${b.prefix || ''}$${b.low.toLocaleString()} – $${b.high.toLocaleString()}</span>
       </div>`).join('');
   }
 
   if (previewEl) {
-    previewEl.innerHTML = `<span class="selected">âœ“ ${rangeText}</span>`;
+    previewEl.innerHTML = `<span class="selected">✓ ${rangeText}</span>`;
   }
 }
 
-// â”€â”€ QUOTE SUMMARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — QUOTE SUMMARY (for lead capture form) —
 function updateQuoteSummary() {
   const el = document.getElementById('quoteSummary');
   if (!el) return;
 
+  const lines = buildSummaryLines();
+  el.innerHTML = lines.length ? lines.join('<br>') : 'Select your options above first';
+}
+
+// — SHARE SUMMARY (for share specs box) —
+function updateShareSummary() {
+  const el = document.getElementById('shareSpecsSummary');
+  if (!el) return;
+
+  const lines = buildSummaryLines();
+  el.innerHTML = lines.length ? lines.join('<br>') : 'Select your options above first';
+}
+
+// Shared function to build summary lines (fixes the "undefined" bug)
+function buildSummaryLines() {
   let lines = [];
 
   C.steps.forEach(step => {
     if (step.input.type === 'select' && state.answers[step.id]) {
       const opt = findOption(step.id, state.answers[step.id]);
-      lines.push(`${opt ? opt.icon : 'â€¢'} ${step.title}: <strong>${opt ? opt.label : state.answers[step.id]}</strong>`);
+      lines.push(`${opt ? opt.icon || '•' : '•'} ${step.title}: <strong>${opt ? opt.label : state.answers[step.id]}</strong>`);
+    }
+    if (step.input.type === 'multi_select' && state.answers[step.id] && state.answers[step.id].length) {
+      const labels = state.answers[step.id].map(v => {
+        const opt = findOption(step.id, v);
+        return opt ? opt.label : v;
+      });
+      lines.push(`📋 ${step.title}: <strong>${labels.join(', ')}</strong>`);
     }
     if (step.input.type === 'slider_group') {
       const vals = step.input.sliders.map(s => {
         const v = state.sliders[s.id];
         return v ? v.label : '';
       }).filter(Boolean);
-      if (vals.length) lines.push(`ðŸ“ ${step.title}: <strong>${vals.join(' Ã— ')}</strong>`);
+      if (vals.length) lines.push(`📏 ${step.title}: <strong>${vals.join(' × ')}</strong>`);
     }
     if (step.input.type === 'toggle_group') {
       const active = step.input.toggles.filter(t => state.toggles[t.id]);
       if (active.length) {
-        lines.push(`âž• Extras: ${active.map(t => t.icon + ' ' + t.label).join(', ')}`);
+        const labels = active.map(t => (t.icon || '') + ' ' + t.label).join(', ');
+        lines.push(`➕ Extras: <strong>${labels.trim()}</strong>`);
       }
     }
   });
 
   const est = calculateEstimate();
   if (est) {
-    lines.push(`ðŸ’° Estimate: <strong>$${est.low.toLocaleString()} â€“ $${est.high.toLocaleString()}</strong>`);
+    lines.push(`💰 Estimate: <strong>$${est.low.toLocaleString()} – $${est.high.toLocaleString()}</strong>`);
   }
 
-  el.innerHTML = lines.length ? lines.join('<br>') : 'Select your options above first';
+  return lines;
 }
 
-// â”€â”€ WARNINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — SHARE FUNCTIONS —
+function generateShareText() {
+  const header = (C.share && C.share.header) || C.header.headline;
+  let text = header + '\n';
+  text += '━'.repeat(30) + '\n\n';
+
+  C.steps.forEach(step => {
+    if (step.input.type === 'select' && state.answers[step.id]) {
+      const opt = findOption(step.id, state.answers[step.id]);
+      text += `${step.title}: ${opt ? opt.label : state.answers[step.id]}\n`;
+    }
+    if (step.input.type === 'multi_select' && state.answers[step.id] && state.answers[step.id].length) {
+      const labels = state.answers[step.id].map(v => {
+        const opt = findOption(step.id, v);
+        return opt ? opt.label : v;
+      });
+      text += `${step.title}: ${labels.join(', ')}\n`;
+    }
+    if (step.input.type === 'slider_group') {
+      const vals = step.input.sliders.map(s => {
+        const v = state.sliders[s.id];
+        return v ? `${s.label}: ${v.label}` : '';
+      }).filter(Boolean);
+      if (vals.length) text += vals.join(', ') + '\n';
+    }
+    if (step.input.type === 'toggle_group') {
+      const active = step.input.toggles.filter(t => state.toggles[t.id]).map(t => t.label);
+      if (active.length) text += `Extras: ${active.join(', ')}\n`;
+    }
+  });
+
+  const est = calculateEstimate();
+  if (est) {
+    text += `\n💰 Estimate: $${est.low.toLocaleString()} – $${est.high.toLocaleString()}\n`;
+    text += `(${C.estimate.note})\n`;
+  }
+
+  text += '\n— Powered by iTabs · itabs.ai';
+  return text;
+}
+
+function getSavedSharePref() {
+  try { return localStorage.getItem('itabs-share-pref'); } catch(e) { return null; }
+}
+
+function saveSharePref(method) {
+  try { localStorage.setItem('itabs-share-pref', method); } catch(e) {}
+}
+
+function handleShareClick() {
+  const saved = getSavedSharePref();
+  if (saved && (C.share && C.share.methods || ['copy','whatsapp','sms','email']).includes(saved)) {
+    executeShare(saved);
+  } else {
+    openShareDropdown(event);
+  }
+}
+
+function openShareDropdown(e) {
+  if (e) e.stopPropagation();
+  const dd = document.getElementById('shareDropdown');
+  dd.classList.toggle('show');
+}
+
+function executeShare(method) {
+  const text = generateShareText();
+
+  // Close dropdown
+  const dd = document.getElementById('shareDropdown');
+  if (dd) dd.classList.remove('show');
+
+  // Save preference
+  saveSharePref(method);
+
+  // Update button to show saved preference
+  const methodLabels = {
+    copy: { icon: '📋', label: 'Copy to clipboard' },
+    whatsapp: { icon: '📱', label: 'WhatsApp' },
+    sms: { icon: '💬', label: 'SMS' },
+    email: { icon: '📧', label: 'Email to myself' },
+  };
+  const info = methodLabels[method];
+  if (info) {
+    const btn = document.getElementById('shareMainBtn');
+    btn.innerHTML = `${info.icon} Share via ${info.label}`;
+  }
+
+  // Execute the method
+  switch (method) {
+    case 'copy':
+      navigator.clipboard.writeText(text).then(() => {
+        showShareToast('Copied to clipboard ✓');
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showShareToast('Copied to clipboard ✓');
+      });
+      break;
+
+    case 'whatsapp':
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      showShareToast('Opening WhatsApp...');
+      break;
+
+    case 'sms':
+      window.open(`sms:?body=${encodeURIComponent(text)}`, '_blank');
+      showShareToast('Opening SMS...');
+      break;
+
+    case 'email':
+      const subject = encodeURIComponent((C.share && C.share.header) || C.header.headline);
+      window.open(`mailto:?subject=${subject}&body=${encodeURIComponent(text)}`, '_blank');
+      showShareToast('Opening email...');
+      break;
+  }
+}
+
+function showShareToast(message) {
+  const toast = document.getElementById('shareToast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// — WARNINGS —
 function checkWarnings() {
   const answers = state.answers;
   C.steps.forEach((step, i) => {
@@ -1554,9 +1833,9 @@ function checkWarnings() {
   });
 }
 
-// â”€â”€ PROGRESS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — PROGRESS —
 function updateProgress() {
-  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (C.leadCapture && C.leadCapture.enabled ? 1 : 0);
+  const totalSections = C.steps.length + (C.estimate ? 1 : 0) + (hasLeadCapture ? 1 : 0);
   const completed = state.completedSections.size;
   const pct = (completed / totalSections) * 100;
   const fillEl = document.getElementById('progressFill');
@@ -1565,7 +1844,7 @@ function updateProgress() {
   if (textEl) textEl.textContent = `${completed} of ${totalSections}`;
 }
 
-// â”€â”€ LEAD SUBMISSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — LEAD SUBMISSION —
 async function submitLead() {
   const lc = C.leadCapture;
   const formData = {};
@@ -1579,7 +1858,7 @@ async function submitLead() {
   });
 
   if (missingRequired) {
-    alert('Just need the required fields filled in ðŸ‘');
+    alert('Just need the required fields filled in 👍');
     return;
   }
 
@@ -1605,13 +1884,17 @@ async function submitLead() {
   });
 
   const est = calculateEstimate();
-  const estText = est ? `$${est.low.toLocaleString()} â€“ $${est.high.toLocaleString()}` : 'Not calculated';
+  const estText = est ? `$${est.low.toLocaleString()} – $${est.high.toLocaleString()}` : 'Not calculated';
+
+  // Build email subject from config
+  const emailSubject = (lc.delivery.emailSubject || 'New Quote Enquiry')
+    .replace('{business.name}', C.business.name);
 
   try {
     if (lc.delivery.method === 'web3forms') {
       const payload = {
         access_key: lc.delivery.web3formsKey,
-        subject: lc.delivery.emailSubject.replace('{business.name}', C.business.name),
+        subject: emailSubject,
         from_name: `${C.business.name} Quote Widget`,
         to: lc.delivery.notifyEmail,
         message: `NEW QUOTE ENQUIRY\n==================\n${Object.entries(formData).map(([k,v]) => `${k}: ${v}`).join('\n')}\n\nSELECTIONS\n==================\n${selections}\nESTIMATE SHOWN: ${estText}`.trim(),
@@ -1630,7 +1913,6 @@ async function submitLead() {
     console.error('Submit error:', err);
   }
 
-  // Show success regardless (better UX)
   document.getElementById('leadFormContainer').style.display = 'none';
   document.getElementById('successMsg').style.display = 'block';
 
@@ -1638,115 +1920,22 @@ async function submitLead() {
   const sectionId = `section-${leadSectionIndex}`;
   document.getElementById(sectionId).classList.add('completed');
   state.completedSections.add(sectionId);
-  document.getElementById(sectionId + '-preview').innerHTML = '<span class="selected">âœ“ Sent!</span>';
+  document.getElementById(sectionId + '-preview').innerHTML = '<span class="selected">✓ Sent!</span>';
   updateProgress();
 }
 
-// â”€â”€ PREVIEW HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — PREVIEW HELPERS —
 function getPreview(step) {
   if (step.input.type === 'select' && state.answers[step.id]) {
     const opt = step.input.options.find(o => o.value === state.answers[step.id]);
-    return `<span class="selected">âœ“ ${opt ? opt.label : state.answers[step.id]}</span>`;
+    return `<span class="selected">✓ ${opt ? opt.label : state.answers[step.id]}</span>`;
   }
   return step.preview;
 }
 
-
-// ── SHARE FEATURE ──
-function generateShareText() {
-  const lines = [];
-  const emoji = C.share && C.share.tradeEmoji ? C.share.tradeEmoji : '📋';
-  const label = C.share && C.share.tradeLabel ? C.share.tradeLabel : 'ESTIMATE';
-  lines.push(emoji + ' ' + label);
-  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  lines.push('');
-  C.steps.forEach(function(step) {
-    if (step.input.type === 'select' && state.answers[step.id]) {
-      var opt = findOption(step.id, state.answers[step.id]);
-      lines.push(step.title + ': ' + (opt ? opt.label : state.answers[step.id]));
-    }
-    if (step.input.type === 'slider_group') {
-      step.input.sliders.forEach(function(s) {
-        if (state.sliders[s.id]) lines.push(s.label + ': ' + state.sliders[s.id].label);
-      });
-    }
-    if (step.input.type === 'toggle_group') {
-      var active = step.input.toggles.filter(function(t) { return state.toggles[t.id]; }).map(function(t) { return t.label; });
-      if (active.length) lines.push('Extras: ' + active.join(', '));
-    }
-  });
-  var est = calculateEstimate();
-  if (est) {
-    lines.push('');
-    lines.push('💰 Estimated range: $' + est.low.toLocaleString() + ' – $' + est.high.toLocaleString());
-    if (C.estimate.note) lines.push(C.estimate.note);
-  }
-  lines.push('');
-  lines.push('━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  lines.push('Built with iTabs — free interactive estimators');
-  if (C.share && C.share.hubUrl) lines.push(C.share.hubUrl);
-  return lines.join('\n');
-}
-
-function openShare() {
-  var est = calculateEstimate();
-  if (!est) { alert('Complete the sections above first to generate an estimate.'); return; }
-  var shareText = generateShareText();
-  document.getElementById('shareTextBox').textContent = shareText;
-  var subject = encodeURIComponent(((C.share && C.share.tradeLabel) || 'Estimate') + ' — Perth');
-  var body = encodeURIComponent(shareText);
-  document.getElementById('emailBtn').href = 'mailto:?subject=' + subject + '&body=' + body;
-  document.getElementById('whatsappBtn').href = 'https://wa.me/?text=' + encodeURIComponent(shareText);
-  document.getElementById('smsBtn').href = 'sms:?body=' + body;
-  var copyBtn = document.getElementById('copyBtn');
-  copyBtn.textContent = '📋 Copy to Clipboard';
-  copyBtn.className = 'share-action-btn copy';
-  document.getElementById('shareOverlay').classList.add('show');
-}
-
-function closeShare() { document.getElementById('shareOverlay').classList.remove('show'); }
-
-function copyEstimate() {
-  var shareText = generateShareText();
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(shareText).then(function() { showCopied(); });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = shareText; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); document.body.removeChild(ta); showCopied();
-  }
-}
-
-function showCopied() {
-  var btn = document.getElementById('copyBtn');
-  btn.textContent = '✅ Copied!'; btn.classList.add('copied');
-  setTimeout(function() { btn.textContent = '📋 Copy to Clipboard'; btn.classList.remove('copied'); }, 2500);
-}
-
-// â”€â”€ GO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// — GO —
 init();
 </script>
-
-<!-- Share Modal -->
-<div class="share-overlay" id="shareOverlay" onclick="if(event.target===this)closeShare()">
-  <div class="share-modal">
-    <div class="share-modal-header">
-      <h3>📤 Share Your Estimate</h3>
-      <button class="share-modal-close" onclick="closeShare()">✕</button>
-    </div>
-    <div class="share-text-box" id="shareTextBox"></div>
-    <div class="share-actions">
-      <button class="share-action-btn copy" id="copyBtn" onclick="copyEstimate()">📋 Copy to Clipboard</button>
-      <a class="share-action-btn email" id="emailBtn" href="#">✉️ Email to a Tradie</a>
-      <a class="share-action-btn whatsapp" id="whatsappBtn" href="#" target="_blank">💬 Send via WhatsApp</a>
-      <a class="share-action-btn sms" id="smsBtn" href="#">💬 Send via SMS</a>
-    </div>
-    <div class="share-itabs-footer">
-      Get your own estimate at <a href="https://boilermaker-innovator.github.io/itabs-quotes/" target="_blank">iTabs</a> — free interactive estimators for trades
-    </div>
-  </div>
-</div>
-
 
 </body>
 </html>
