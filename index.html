@@ -3,32 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iTabs Quotes — Ballpark Estimates for Perth Trades</title>
-<meta name="description" content="Get ballpark price estimates for fencing, paving, landscaping, electrical, plumbing and painting in Perth. Free, no sign-up.">
-<meta property="og:title" content="iTabs Quotes — Ballpark Estimates for Perth Trades">
-<meta property="og:description" content="Tap through to get a ballpark price for common trades jobs in Perth. Free, no sign-up.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://itabs.ai">
-  <title>iTabs — Free Interactive Quote Estimators for Perth Trades</title>
-<meta name="description" content="Get ballpark prices for fencing, electrical, plumbing, paving, landscaping and painting in Perth. Pick your options, see a price range, send specs to any tradie.">
+<title>iTabs — Send Complete Job Details in 60 Seconds</title>
+<meta name="description" content="Send complete job details to any tradie in 60 seconds. Fencing, electrical, plumbing, paving, landscaping and painting in Perth. Free, no sign-up.">
 <link rel="canonical" href="https://itabs.ai/">
 
 <!-- Open Graph (WhatsApp, Facebook, LinkedIn previews) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://itabs.ai/">
-<meta property="og:title" content="iTabs — Free Quote Estimators for Perth Trades">
-<meta property="og:description" content="Pick your options, see a ballpark price, send detailed specs to any tradie. Fencing, electrical, plumbing, paving, landscaping & painting.">
+<meta property="og:title" content="iTabs — Send Complete Job Details in 60 Seconds">
+<meta property="og:description" content="Send complete job details to any tradie in 60 seconds. Fast quotes, no back-and-forth. Fencing, electrical, plumbing, paving, landscaping & painting.">
 <meta property="og:image" content="https://itabs.ai/og-image.png">
 <meta property="og:locale" content="en_AU">
 
 <!-- Twitter/X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iTabs — Free Quote Estimators for Perth Trades">
-<meta name="twitter:description" content="Pick your options, see a ballpark price, send detailed specs to any tradie.">
+<meta name="twitter:title" content="iTabs — Send Complete Job Details in 60 Seconds">
+<meta name="twitter:description" content="Send complete job details to any tradie in 60 seconds. Fast quotes, no back-and-forth.">
 <meta name="twitter:image" content="https://itabs.ai/og-image.png">
 
-<!-- Favicon (inline SVG — no extra file needed) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23f59e0b'/><text x='50' y='68' font-size='55' font-weight='bold' font-style='italic' text-anchor='middle' fill='%230c1117' font-family='serif'>i</text></svg>">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -40,6 +35,8 @@
   --text-primary: #e8ecf1;
   --text-secondary: #8896a7;
   --text-muted: #5a6a7d;
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.15);
   --accent-green: #22c55e;
   --radius: 14px;
 }
@@ -54,15 +51,185 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ═══ HEADER ═══ */
+.itabs-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(12, 17, 23, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+.itabs-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.itabs-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.itabs-logo-badge {
+  width: 38px;
+  height: 38px;
+  background: var(--accent-amber);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--bg-main);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.itabs-logo:hover .itabs-logo-badge {
+  transform: scale(1.06);
+  box-shadow: 0 0 20px var(--accent-amber-glow);
+}
+
+.itabs-logo-text {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+
+.itabs-logo-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.itabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.itabs-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.itabs-nav a:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.itabs-nav a.active {
+  color: var(--accent-amber);
+}
+
+.itabs-nav .nav-cta {
+  color: var(--bg-main);
+  background: var(--accent-amber);
+  margin-left: 8px;
+  font-weight: 700;
+}
+
+.itabs-nav .nav-cta:hover {
+  background: #d97706;
+  color: var(--bg-main);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--accent-amber-glow);
+}
+
+.itabs-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--text-secondary);
+}
+
+.itabs-menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.itabs-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: rgba(12, 17, 23, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px 16px;
+  z-index: 999;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.itabs-mobile-nav.open {
+  display: flex;
+}
+
+.itabs-mobile-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.itabs-mobile-nav a:hover,
+.itabs-mobile-nav a.active {
+  color: var(--accent-amber);
+  background: var(--accent-amber-glow);
+}
+
+.itabs-mobile-nav .nav-cta {
+  color: var(--bg-main);
+  background: var(--accent-amber);
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .itabs-nav { display: none; }
+  .itabs-menu-btn { display: block; }
+  .itabs-logo-sub { display: none; }
+}
+
+/* ═══ PAGE CONTENT ═══ */
 .container {
   max-width: 520px;
   margin: 0 auto;
   padding: 20px 16px 40px;
+  padding-top: 80px;
 }
 
 .header {
   text-align: center;
-  padding: 40px 0 30px;
+  padding: 20px 0 30px;
 }
 
 .header-logo {
@@ -70,13 +237,7 @@ body {
   font-weight: 800;
   margin-bottom: 6px;
   letter-spacing: -0.5px;
-}
-
-.header-logo .logo-i {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; background: linear-gradient(135deg, #22c55e, #16a34a);
-  border-radius: 8px; color: #000; font-weight: 700; font-size: 1rem;
-  font-family: serif; font-style: italic; margin-right: 2px; vertical-align: middle;
+  display: none;
 }
 
 .header p {
@@ -84,6 +245,18 @@ body {
   font-size: 0.95rem;
   line-height: 1.5;
   margin-top: 8px;
+}
+
+.header .tagline {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.header .tagline .highlight {
+  color: var(--accent-amber);
 }
 
 .header .badge {
@@ -126,7 +299,7 @@ body {
   transition: all 0.2s;
 }
 .trade-card:hover {
-  border-color: var(--accent-green);
+  border-color: var(--accent-amber);
   background: var(--bg-hover);
   transform: translateY(-1px);
 }
@@ -149,7 +322,7 @@ body {
   flex-shrink: 0;
   transition: transform 0.2s;
 }
-.trade-card:hover .trade-arrow { transform: translateX(3px); color: var(--accent-green); }
+.trade-card:hover .trade-arrow { transform: translateX(3px); color: var(--accent-amber); }
 
 .trade-tag {
   display: inline-block;
@@ -163,16 +336,6 @@ body {
   letter-spacing: 0.3px;
   margin-left: 6px;
   vertical-align: middle;
-}
-
-/* ═══ COMING SOON ═══ */
-.coming-soon {
-  opacity: 0.5;
-  pointer-events: none;
-}
-.coming-soon .trade-tag {
-  background: rgba(136, 150, 167, 0.15);
-  color: var(--text-muted);
 }
 
 /* ═══ BOTTOM INFO ═══ */
@@ -196,24 +359,55 @@ body {
   line-height: 1.6;
 }
 
+.info-box a {
+  color: var(--accent-amber);
+  text-decoration: none;
+  font-weight: 600;
+}
+
 .footer {
   text-align: center;
   padding: 20px 0 10px;
   font-size: 0.75rem;
   color: var(--text-muted);
 }
-.footer a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
+.footer a { color: var(--accent-amber); text-decoration: none; font-weight: 600; }
 </style>
 </head>
 <body>
 
+<!-- ═══ HEADER ═══ -->
+<header class="itabs-header">
+  <div class="itabs-header-inner">
+    <a href="https://itabs.ai" class="itabs-logo">
+      <div class="itabs-logo-badge">iQ</div>
+      <div>
+        <div class="itabs-logo-text">iTabs</div>
+        <div class="itabs-logo-sub">Perth Trade Estimators</div>
+      </div>
+    </a>
+    <nav class="itabs-nav">
+      <a href="https://itabs.ai" class="active">Estimators</a>
+      <a href="https://itabs.ai/about.html">About</a>
+      <a href="https://itabs.ai/story.html">Story</a>
+    </nav>
+    <button class="itabs-menu-btn" onclick="document.getElementById('mobileNav').classList.toggle('open')" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+<div class="itabs-mobile-nav" id="mobileNav">
+  <a href="https://itabs.ai" class="active">Estimators</a>
+  <a href="https://itabs.ai/about.html">About</a>
+  <a href="https://itabs.ai/story.html">Story</a>
+</div>
+<!-- ═══ END HEADER ═══ -->
+
 <div class="container">
 
   <div class="header">
-    <div class="header-logo">
-      <span class="logo-i">i</span>Tabs Quotes
-    </div>
-    <p>Get a ballpark price for common trades jobs in Perth. Tap a trade to start — takes about 60 seconds.</p>
+    <div class="tagline">Send complete job details.<br><span class="highlight">Get quoted faster.</span></div>
+    <p>Tap through your options, send detailed specs to any tradie. Takes about 60 seconds.</p>
     <span class="badge">📍 Perth, WA — 2025/26 pricing</span>
   </div>
 
@@ -278,21 +472,20 @@ body {
   </div>
 
   <div class="info-box">
-    <h3>💡 How these estimates work</h3>
-    <p>These are ballpark ranges based on average Perth pricing from multiple sources. Your actual quote will depend on site conditions, materials, and the installer. Use these to understand roughly what things cost, then get 2–3 proper quotes to compare. Tap the <strong style="color:#22c55e;">ⓘ</strong> buttons inside each estimator for tips and local info.</p>
+    <h3>💡 How it works</h3>
+    <p>Tap through the options for your trade job. Each choice builds an itemised spec — the exact details a tradie needs to quote you. Send the same spec to multiple tradies and compare quotes that actually match. Tap the <strong style="color:var(--accent-amber);">ⓘ</strong> buttons inside each estimator for tips and local info.</p>
   </div>
 
   <div class="info-box">
     <h3>🔧 For tradies & developers</h3>
-    <p>iTabs is open source. One universal engine powers every estimator — you just write a config. Want one for your business? Check the <a href="quotes/builder.html" style="color:var(--accent-green);">Config Builder</a> or visit <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight" style="color:var(--accent-green);">GitHub</a>.</p>
+    <p>iTabs is open source. One universal engine powers every estimator — you just write a config. Want one for your business? Visit <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">GitHub</a> or <a href="https://itabs.ai/about.html">learn more</a>.</p>
   </div>
 
   <div class="footer">
-    Powered by <a href="https://itabs.ai">iTabs</a> · Built in Perth 🇦🇺 · <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">Open Source</a>
+    Built in Perth 🇦🇺 · <a href="https://itabs.ai/about.html">About</a> · <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">Open Source</a>
   </div>
 
 </div>
 
 </body>
 </html>
-
