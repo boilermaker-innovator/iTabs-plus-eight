@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About iTabs — The Bigger Picture</title>
+    <meta name="description" content="iTabs helps customers send complete job details to tradies in 60 seconds. Free, open-source interactive tools for Australian trades. Built by a Perth boilermaker with AI.">
+    <link rel="canonical" href="https://itabs.ai/about.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itabs.ai/about.html">
+    <meta property="og:title" content="About iTabs — The Bigger Picture">
+    <meta property="og:description" content="Free interactive tools that help customers send complete job details to any tradie in 60 seconds. No back-and-forth. Built in Perth.">
+    <meta property="og:image" content="https://itabs.ai/og-image.png">
+    <meta property="og:locale" content="en_AU">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About iTabs — The Bigger Picture">
+    <meta name="twitter:description" content="Free interactive tools that help customers send complete job details to any tradie in 60 seconds.">
+    <meta name="twitter:image" content="https://itabs.ai/og-image.png">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23f59e0b'/><text x='50' y='68' font-size='55' font-weight='bold' font-style='italic' text-anchor='middle' fill='%230c1117' font-family='serif'>i</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-main: #0c1117;
+            --bg-card: #151c25;
+            --bg-hover: #1a2332;
+            --border: #222d3a;
+            --text-primary: #f0f2f5;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.15);
+            --green: #22c55e;
+            --blue: #3b82f6;
+            --radius: 14px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(12, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-badge {
+            width: 36px;
+            height: 36px;
+            background: var(--amber);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--bg-main);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav-link {
+            color: var(--amber);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 18px;
+            border: 1px solid var(--amber);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--amber);
+            color: var(--bg-main);
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type { border-bottom: none; }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--amber-glow);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--amber);
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            color: var(--amber);
+        }
+
+        .hero-sub {
+            font-size: clamp(17px, 2.5vw, 20px);
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--amber);
+            color: var(--bg-main);
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--amber-glow);
+        }
+
+        /* ── SECTION HEADINGS ── */
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--amber);
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 4vw, 34px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* ── PROBLEM SECTION ── */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+
+        .problem-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .problem-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .problem-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── HOW IT WORKS ── */
+        .steps {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            transition: border-color 0.2s;
+        }
+
+        .step:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .step-num {
+            width: 44px;
+            height: 44px;
+            background: var(--amber);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--bg-main);
+            flex-shrink: 0;
+        }
+
+        .step-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .step-body p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── FOR WHO ── */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .audience-grid { grid-template-columns: 1fr; }
+        }
+
+        .audience-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+        }
+
+        .audience-card .card-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .audience-card.customer .card-label {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+        }
+
+        .audience-card.tradie .card-label {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+        }
+
+        .audience-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .benefit-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .benefit-list li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .benefit-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        .audience-card.customer .benefit-list li::before { color: var(--blue); }
+        .audience-card.tradie .benefit-list li::before { color: var(--green); }
+
+        /* ── i-BUTTON SECTION ── */
+        .i-section {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .i-section { flex-direction: column; }
+        }
+
+        .i-demo {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            background: var(--amber);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 28px;
+            font-style: italic;
+            font-family: Georgia, serif;
+            color: var(--bg-main);
+        }
+
+        .i-text p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .i-text p:last-child { margin-bottom: 0; }
+
+        .i-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .i-example-tag {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ── VISION ── */
+        .vision-points {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .vision-point {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .vision-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .vision-point h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .vision-point p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── ORIGIN ── */
+        .origin-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            margin-top: 32px;
+        }
+
+        .origin-box blockquote {
+            font-size: 18px;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--amber);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            border-left: 3px solid var(--amber);
+            padding-left: 16px;
+        }
+
+        .origin-box .attribution {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .origin-body {
+            margin-top: 20px;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .origin-body p { margin-bottom: 14px; }
+        .origin-body p:last-child { margin-bottom: 0; }
+
+        /* ── CTA ── */
+        .cta-section {
+            text-align: center;
+            padding: 80px 0 100px;
+        }
+
+        .cta-section .section-title {
+            margin-bottom: 12px;
+        }
+
+        .cta-section .section-desc {
+            margin: 0 auto 32px;
+            text-align: center;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .cta-btn.primary {
+            background: var(--amber);
+            color: var(--bg-main);
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--amber-glow);
+        }
+
+        .cta-btn.secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .cta-btn.secondary:hover {
+            border-color: var(--amber);
+            background: var(--bg-hover);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--amber);
+            text-decoration: none;
+        }
+
+        /* ── ANIMATIONS ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="https://itabs.ai" class="nav-logo">
+            <div class="logo-badge">iQ</div>
+            <span class="logo-text">iTabs</span>
+        </a>
+        <a href="https://itabs.ai" class="nav-link">Try the Estimators</a>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">📍 Perth, WA — Free &amp; Open Source</div>
+        <h1>Send complete job details.<br><span class="highlight">Get quoted faster.</span></h1>
+        <p class="hero-sub">iTabs helps customers give tradies the right information upfront — no long calls, no unnecessary site visits, no back-and-forth.</p>
+        <a href="https://itabs.ai" class="hero-cta">Try an Estimator →</a>
+    </section>
+
+    <!-- THE PROBLEM -->
+    <section class="fade-in">
+        <div class="section-label">The Problem</div>
+        <h2 class="section-title">Getting a trade quote shouldn't take a week</h2>
+        <p class="section-desc">Right now, getting quoted on a trade job is slow and frustrating for everyone involved.</p>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon">😐</div>
+                <h3>Customers don't know the options</h3>
+                <p>You need a fence but don't know Colorbond from aluminium slats. So you say "just a fence" and hope for the best.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">📞</div>
+                <h3>Tradies play 20 questions</h3>
+                <p>What type? How long? What height? Access? Removal? The tradie has to drag every detail out, one phone call or text at a time.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">🍎🍊</div>
+                <h3>Quotes don't compare</h3>
+                <p>One tradie quotes removal included, another doesn't. One includes gates, another charges extra. You can't compare apples to apples.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">⏳</div>
+                <h3>Everyone wastes time</h3>
+                <p>A job that could've been quoted from an email takes three calls, a site visit, and a week of back-and-forth.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="fade-in">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Complete job details in 60 seconds</h2>
+        <p class="section-desc">Tap through the options, learn as you go, send the same detailed spec to any tradie.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3>Tap through your options</h3>
+                    <p>Choose materials, sizes, extras, and site conditions. Each option is explained in plain language so you know what you're picking and why it matters.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3>Send complete specs</h3>
+                    <p>Every choice you make builds an itemised job spec — the exact same details a tradie needs to give you a price. Share it via WhatsApp, SMS, email, or just copy it.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3>Get quoted faster</h3>
+                    <p>Tradies get everything upfront. No chasing details. Many jobs can be quoted straight from the spec without a site visit. Same spec to multiple tradies means you can actually compare quotes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE i-BUTTON -->
+    <section class="fade-in">
+        <div class="section-label">The Differentiator</div>
+        <h2 class="section-title">Learn while you choose</h2>
+        <p class="section-desc">Every option comes with a little amber <strong style="color:var(--amber)">ⓘ</strong> button. Tap it and learn — right when you need to know.</p>
+
+        <div class="i-section">
+            <div class="i-demo">i</div>
+            <div class="i-text">
+                <p>Most people have never bought a fence or hired an electrician before. They don't know what questions to ask or what the options mean. iTabs explains things in context — right next to the choice it relates to.</p>
+                <p>By the time you're done, you haven't just built a job spec. You actually understand what you're asking for.</p>
+                <div class="i-examples">
+                    <span class="i-example-tag">Why Colorbond costs more near the coast</span>
+                    <span class="i-example-tag">What the Dividing Fences Act means</span>
+                    <span class="i-example-tag">When you need a building permit</span>
+                    <span class="i-example-tag">Which gate hinges handle Perth wind</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="fade-in">
+        <div class="section-label">Who It's For</div>
+        <h2 class="section-title">Better for customers. Better for tradies.</h2>
+
+        <div class="audience-grid">
+            <div class="audience-card customer">
+                <div class="card-label">Customers</div>
+                <h3>Know what you're asking for</h3>
+                <ul class="benefit-list">
+                    <li>See all the options laid out clearly</li>
+                    <li>Learn what matters without googling</li>
+                    <li>Send the same spec to multiple tradies</li>
+                    <li>Compare quotes that actually match</li>
+                    <li>No sign-up, no app, completely free</li>
+                </ul>
+            </div>
+            <div class="audience-card tradie">
+                <div class="card-label">Tradies</div>
+                <h3>Get the details upfront</h3>
+                <ul class="benefit-list">
+                    <li>Complete job specs, not "how much for a fence?"</li>
+                    <li>Customer already understands the options</li>
+                    <li>Quote from the spec — often no site visit needed</li>
+                    <li>Less time educating, more time building</li>
+                    <li>Get your own branded version free</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE BIGGER PICTURE -->
+    <section class="fade-in">
+        <div class="section-label">The Bigger Picture</div>
+        <h2 class="section-title">Where this is going</h2>
+        <p class="section-desc">iTabs started with fencing estimators in Perth. The vision is bigger.</p>
+
+        <div class="vision-points">
+            <div class="vision-point">
+                <div class="vision-icon">📂</div>
+                <div>
+                    <h3>One engine, infinite trades</h3>
+                    <p>Fencing, electrical, plumbing, paving, landscaping, painting — each estimator is just a config file. Adding a new trade is adding a new config, not building new software.</p>
+                </div>
+            </div>
+            <div class="vision-point">
+                <div class="vision-icon">🌏</div>
+                <div>
+                    <h3>Open source — copy it, improve it</h3>
+                    <p>The code is on GitHub. There's a SKILL.md file that lets any developer or AI generate new trade estimators from scratch. The more people use it, the better it gets.</p>
+                </div>
+            </div>
+            <div class="vision-point">
+                <div class="vision-icon">🤖</div>
+                <div>
+                    <h3>Ready for AI agents</h3>
+                    <p>As AI starts helping people plan and price home improvements, iTabs' structured data means agents can read, compare, and present options without scraping messy websites.</p>
+                </div>
+            </div>
+            <div class="vision-point">
+                <div class="vision-icon">🏘️</div>
+                <div>
+                    <h3>Property managers &amp; real estate</h3>
+                    <p>Anyone who coordinates trades regularly — rental maintenance, property prep for sale, renovation projects — can use iTabs to spec jobs consistently and get faster turnaround.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ORIGIN STORY -->
+    <section class="fade-in">
+        <div class="section-label">The Origin</div>
+        <h2 class="section-title">Built by a boilermaker, not a dev team</h2>
+
+        <div class="origin-box">
+            <blockquote>"I'm a tradesman from Perth. I saw this problem every day — customers who didn't know what to ask for, and tradies wasting hours extracting basic information."</blockquote>
+            <div class="attribution">— Jon, iTabs founder</div>
+            <div class="origin-body">
+                <p>No coding background. No tech team. Just conversations with AI — describing what was needed, testing demos, shipping real tools that real businesses use today.</p>
+                <p>iTabs isn't a startup chasing funding. It's a tool built by someone who understood the problem because he lived it. The goal is simple: help people give tradies the right information, and get on with the job.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section fade-in">
+        <h2 class="section-title">Try it yourself</h2>
+        <p class="section-desc">Six trades live now. Free, no sign-up. Pick one and tap through — you'll see how it works in about 60 seconds.</p>
+        <div class="cta-buttons">
+            <a href="https://itabs.ai" class="cta-btn primary">Try the Estimators →</a>
+            <a href="https://itabs.ai/story.html" class="cta-btn secondary">Read the Full Story</a>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <div class="page">
+        Built in Perth, WA · <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">Open Source on GitHub</a> · <a href="https://itabs.ai">itabs.ai</a>
+    </div>
+</footer>
+
+<script>
+    // Scroll-triggered fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
