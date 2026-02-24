@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iTabs | The Story</title>
+
+    <!-- Open Graph / LinkedIn / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="iTabs — The Story">
+    <meta property="og:description" content="Free, open-source interactive quote estimators for Australian trades. Built by a boilermaker with AI. Learn while you choose.">
+    <meta property="og:url" content="https://itabs.ai/story.html">
+    <meta property="og:site_name" content="iTabs">
+    <meta property="og:image" content="https://itabs.ai/og-story.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="iTabs — The Story">
+    <meta name="twitter:description" content="Free, open-source interactive quote estimators for Australian trades. Built by a boilermaker with AI.">
+    <meta name="twitter:image" content="https://itabs.ai/og-story.png">
+
+    <!-- General Meta -->
+    <meta name="description" content="iTabs: free, open-source interactive quote estimators for Australian trades businesses. Customers learn while they choose. Built by a Perth boilermaker using AI.">
+
+    <!-- Favicon (inline SVG data URI so no extra file needed) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%233b82f6'/><text x='50' y='68' font-size='55' font-weight='bold' font-style='italic' text-anchor='middle' fill='white' font-family='serif'>i</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --i-button: #f59e0b;
+            --i-button-hover: #d97706;
+            --card-radius: 16px;
+            --transition: 0.2s ease;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-segment.active {
+            background: var(--text-primary);
+        }
+
+        .progress-segment.viewed {
+            background: var(--text-primary);
+        }
+
+        /* Header */
+        .header {
+            padding: 48px 16px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .channel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            font-style: italic;
+            color: white;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .channel-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Cards Container */
+        .cards-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card {
+            position: absolute;
+            inset: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .card.prev {
+            transform: translateX(-100%);
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+        }
+
+        /* Hero visual area */
+        .card-hero {
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-emoji {
+            font-size: 72px;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card-number {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-headline {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .card-summary {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        /* i-Buttons */
+        .i-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .i-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background var(--transition);
+            font-family: inherit;
+        }
+
+        .i-button:hover, .i-button:active {
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .i-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--i-button);
+            color: #000;
+            font-size: 12px;
+            font-weight: 700;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Navigation */
+        .nav-left, .nav-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            z-index: 50;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-left { left: 0; }
+        .nav-right { right: 0; }
+
+        /* Footer */
+        .footer {
+            padding: 12px 16px 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .swipe-hint.hidden {
+            opacity: 0;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: 20px 20px 0 0;
+            max-width: 430px;
+            width: 100%;
+            max-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 12px;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-title span:first-child {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .type-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: var(--bg-tertiary);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container" id="progress"></div>
+
+        <div class="header">
+            <div class="channel-avatar">i</div>
+            <div class="header-info">
+                <div class="channel-name">iTabs</div>
+                <div class="subtitle">The Story — Swipe to explore →</div>
+            </div>
+        </div>
+
+        <div class="cards-wrapper" id="cardsWrapper">
+            <div class="nav-left" id="navLeft"></div>
+            <div class="nav-right" id="navRight"></div>
+            <div class="swipe-hint" id="swipeHint">← Swipe or tap edges →</div>
+        </div>
+
+        <div class="footer">
+            <a href="https://boilermaker-innovator.github.io/itabs-quotes/" rel="noopener noreferrer" target="_blank" class="footer-link btn-primary">🛠️ Try the Estimators</a>
+            <a href="https://github.com/boilermaker-innovator/itabs-quotes" rel="noopener noreferrer" target="_blank" class="footer-link btn-secondary">⭐ GitHub</a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span id="modalTerm"></span>
+                    <span class="type-badge" id="modalType"></span>
+                </div>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content" id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORY_DATA = {
+            title: "iTabs — The Story",
+            cards: [
+                {
+                    headline: "The Problem Nobody Talks About",
+                    summary: "Every year, Australians waste millions of hours playing phone tag with tradies for basic pricing. \"How much for a fence?\" gets a vague answer. The tradie wastes time on unqualified leads. The customer has no idea what they actually need. Everyone loses.",
+                    heroGradient: ["#1e3a5f", "#0f1c2e"],
+                    heroEmoji: "🤷",
+                    iButtons: [
+                        {type: "why-it-matters", term: "The Real Cost", content: "Pricing opacity in the trades industry doesn't just waste time — it erodes trust. Customers feel ripped off because they can't compare, and tradies field dozens of tyre-kicker enquiries that go nowhere. A Perth fencing job might get 5-10 quote requests where only 1-2 convert."},
+                        {type: "context", term: "Cost of Living", content: "With Australia's cost of living crisis, people need to budget accurately before committing to home improvements. But without transparent pricing tools, they can't plan or compare — leading to either overpaying or abandoning needed work entirely."}
+                    ]
+                },
+                {
+                    headline: "What If Customers Could Self-Price?",
+                    summary: "iTabs is a free, open-source interactive estimator that lets customers build their own ballpark quote — choosing materials, dimensions, extras — while learning why things cost what they cost. No phone calls. No awkward conversations. Just clarity.",
+                    heroGradient: ["#1e3a5f", "#2d1b4e"],
+                    heroEmoji: "💡",
+                    iButtons: [
+                        {type: "definition", term: "Ballpark Estimator", content: "iTabs generates indicative pricing to start the conversation, not a binding quote. It helps customers understand scope and budget before they contact a tradie, so the first real conversation is productive — not exploratory."},
+                        {type: "context", term: "Self-Service Trend", content: "Just like online banking replaced branch visits and self-checkout changed retail, trades customers increasingly want to research and price jobs themselves before picking up the phone. iTabs brings this self-service model to the trades industry."}
+                    ]
+                },
+                {
+                    headline: "The Secret Sauce: Learn While You Choose",
+                    summary: "Every option has a blue ⓘ button. Tap it and you learn — why Colorbond costs more near the coast, what the Dividing Fences Act means for your shared boundary, which gate hinges last in Perth's wind. People make better decisions when they learn while they choose.",
+                    heroGradient: ["#1a3a2a", "#0f2e1c"],
+                    heroEmoji: "🔵",
+                    iButtons: [
+                        {type: "definition", term: "i-Buttons", content: "The core iTabs concept: contextual education embedded directly in the decision-making interface. Instead of linking to help pages or FAQs, the relevant information appears right where and when you need it — next to the choice it relates to."},
+                        {type: "context", term: "Dividing Fences Act", content: "WA's Dividing Fences Act 1961 governs shared boundary fences between neighbours. Many customers don't know their rights or obligations. iTabs explains this in context — right when they're choosing a boundary fence — not buried in a government PDF."},
+                        {type: "why-it-matters", content: "Contextual education changes behaviour. When customers understand WHY coastal-rated materials cost more, they don't push back on price — they appreciate the recommendation. This means fewer disputes, better reviews, and higher-quality leads for the tradie."}
+                    ]
+                },
+                {
+                    headline: "Built by a Boilermaker, Not a Developer",
+                    summary: "Jon's a tradesman from Perth who saw this problem every day. No coding background. No tech team. Just conversations with Claude — describing what he needed, iterating on working demos, shipping real tools. This is vibe coding in action.",
+                    heroGradient: ["#3a2a1a", "#2e1c0f"],
+                    heroEmoji: "🔧",
+                    iButtons: [
+                        {type: "definition", term: "Vibe Coding", content: "Building software through natural language conversations with AI instead of writing code manually. You describe what you want, the AI generates it, you test it, refine it, and ship it. No CS degree required — just clear thinking about the problem you're solving."},
+                        {type: "context", term: "Claude by Anthropic", content: "Claude is Anthropic's AI assistant. Jon builds iTabs through conversational sessions on claude.ai — planning architecture, building features, debugging issues, and deploying to production, all through natural language dialogue rather than traditional coding."},
+                        {type: "why-it-matters", content: "If a boilermaker can build and ship a working product used by real businesses, the barrier to software creation has fundamentally changed. Domain experts who understand the actual problem can now build solutions directly, without waiting for a developer to interpret their needs."}
+                    ]
+                },
+                {
+                    headline: "Zero Dependencies. Runs Anywhere.",
+                    summary: "Each iTabs estimator is a single HTML file. No frameworks, no build tools, no npm install. Drop it on any website, open it in a browser, embed it in an iframe. A tradie can host it on their $10/month Wix site. That's the point.",
+                    heroGradient: ["#1a1a3a", "#0f0f2e"],
+                    heroEmoji: "📄",
+                    iButtons: [
+                        {type: "definition", term: "Zero Dependencies", content: "The entire widget — HTML structure, CSS styling, JavaScript engine, pricing logic, and lead capture — lives in one file. No React, no Node.js, no package manager. It works in any browser on any device with no setup. This makes it universally deployable by anyone."},
+                        {type: "context", term: "Config-Driven", content: "Each estimator is powered by a WIDGET_CONFIG JavaScript object that defines sections, options, pricing rules, and educational content. Change the config, change the widget. The universal engine reads any valid config and renders a complete interactive estimator."},
+                        {type: "why-it-matters", content: "Most software requires technical knowledge to deploy and maintain. iTabs flips this — a tradie's web designer can copy-paste a single file and it just works. No API keys, no server costs, no maintenance. This is what makes free open-source distribution viable."}
+                    ]
+                },
+                {
+                    headline: "Tradies Get Better Leads",
+                    summary: "When a customer uses iTabs, they generate a detailed specification — not just \"I want a fence\" but exactly which materials, dimensions, gates, and extras they need, with a ballpark budget. The tradie gets a pre-qualified, educated customer ready to commit.",
+                    heroGradient: ["#2a1a3a", "#1c0f2e"],
+                    heroEmoji: "📋",
+                    iButtons: [
+                        {type: "context", term: "Shareable Quotes", content: "Customers can copy their itemised estimate to clipboard or share via WhatsApp/SMS to any tradie. The summary includes every selection, pricing breakdown, and iTabs branding — turning every shared quote into organic marketing for the platform."},
+                        {type: "why-it-matters", content: "Traditional leads convert at roughly 10-20%. When a customer arrives with a detailed spec and realistic budget expectations, conversion rates jump dramatically. The tradie spends less time educating and more time quoting and building."},
+                        {type: "definition", term: "Customer-Pull Model", content: "Instead of pushing the tool to tradies (who resist change), iTabs focuses on customers. When tradies start receiving detailed, well-formatted specs from customers using iTabs, they naturally want to get involved. Demand creates adoption."}
+                    ]
+                },
+                {
+                    headline: "Open Source. Copy It. Improve It.",
+                    summary: "iTabs is free and open source on GitHub. There's a SKILL.md file that lets any developer (or AI) generate new trade-specific estimators from scratch. Fencing, painting, paving, electrical — the community builds what it needs.",
+                    heroGradient: ["#1a3a1a", "#0f2e0f"],
+                    heroEmoji: "🌱",
+                    iButtons: [
+                        {type: "definition", term: "SKILL.md", content: "A single markdown file containing everything needed to generate an iTabs estimator: the config schema, engine architecture, pricing logic, and examples. Give it to any AI coding assistant and it can produce a complete working widget for any trade."},
+                        {type: "context", term: "Open Source Philosophy", content: "Like QR codes, iTabs succeeds when it's everywhere — not when it's locked behind subscriptions. More copies means more customers learning while choosing, more tradies getting better leads, and more people contributing improvements back to the project."},
+                        {type: "why-it-matters", content: "The open-source approach means iTabs can scale without Jon needing to build every estimator himself. A Perth electrician, a Melbourne plumber, a Sydney landscaper — anyone can create or commission an iTabs widget for their trade using the SKILL.md and an AI assistant."}
+                    ]
+                },
+                {
+                    headline: "Ready for the Agentic Web",
+                    summary: "As AI agents start browsing and acting on behalf of users, iTabs is already machine-readable. The structured configs, llms.txt files, and SKILL.md approach mean AI agents can discover, understand, and interact with iTabs widgets natively.",
+                    heroGradient: ["#1a2a3a", "#0f1c2e"],
+                    heroEmoji: "🤖",
+                    iButtons: [
+                        {type: "definition", term: "Agentic Web", content: "The emerging paradigm where AI agents browse the web, fill forms, compare options, and take actions on behalf of users. Instead of humans clicking through websites, AI agents do the legwork — and they need structured, machine-readable interfaces to work with."},
+                        {type: "context", term: "llms.txt", content: "A proposed web standard (like robots.txt) that tells AI agents what a website offers and how to interact with it. iTabs widgets include llms.txt files that describe available estimators, their capabilities, and how agents can use them programmatically."},
+                        {type: "why-it-matters", content: "Most trade websites are designed for human eyeballs — AI agents can't extract pricing or options from a gallery of fence photos. iTabs' structured configs are inherently machine-readable, positioning it perfectly for a future where AI agents help customers plan and price home improvements."}
+                    ]
+                },
+                {
+                    headline: "Try It. Build On It. Join In.",
+                    summary: "Live demos are running now with fencing estimators for multiple Perth businesses. The code is on GitHub. The SKILL.md is ready. Whether you're a tradie, a developer, or just someone who thinks pricing should be transparent — there's a seat at the table.",
+                    heroGradient: ["#1e3a5f", "#3a1e5f"],
+                    heroEmoji: "🚀",
+                    iButtons: [
+                        {type: "context", term: "Live Demos", content: "Working estimators are deployed right now: Fosters Fencing, Skilled Fencing, Smoothline, and Gateworld — each with different pricing models demonstrating the engine's flexibility. From per-metre sliders to per-unit gate selectors, it handles diverse trade pricing structures."},
+                        {type: "related", term: "Get Involved", content: "Star the repo: github.com/boilermaker-innovator/itabs-quotes — Fork it and build an estimator for your trade — Use the SKILL.md with any AI assistant to generate new widgets — Join the conversation and help shape what comes next."},
+                        {type: "why-it-matters", content: "iTabs isn't a startup chasing funding. It's a tool built by a tradesman who saw a problem and decided to fix it — with AI as his coding partner. The vision is simple: information clarity everywhere. The more people who use it, copy it, and improve it, the closer we get."}
+                    ]
+                }
+            ]
+        };
+
+        // App State
+        let currentCard = 0;
+        const totalCards = STORY_DATA.cards.length;
+
+        // DOM Elements
+        const progress = document.getElementById('progress');
+        const cardsWrapper = document.getElementById('cardsWrapper');
+        const navLeft = document.getElementById('navLeft');
+        const navRight = document.getElementById('navRight');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTerm = document.getElementById('modalTerm');
+        const modalType = document.getElementById('modalType');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+        const swipeHint = document.getElementById('swipeHint');
+
+        function init() {
+            // Create progress segments
+            for (let i = 0; i < totalCards; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'progress-segment';
+                progress.appendChild(segment);
+            }
+
+            // Create cards
+            STORY_DATA.cards.forEach((card, index) => {
+                const cardEl = createCard(card, index);
+                cardsWrapper.insertBefore(cardEl, navLeft);
+            });
+
+            // Set initial state
+            updateCard(0);
+
+            // Event listeners
+            navLeft.addEventListener('click', () => navigate(-1));
+            navRight.addEventListener('click', () => navigate(1));
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // Touch swipe
+            let touchStartX = 0;
+            cardsWrapper.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+            cardsWrapper.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    navigate(diff > 0 ? 1 : -1);
+                }
+            });
+
+            [navLeft, navRight].forEach(el => {
+                el.addEventListener('click', () => {
+                    swipeHint.classList.add('hidden');
+                }, { once: true });
+            });
+        }
+
+        function createCard(card, index) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.dataset.index = index;
+
+            const [gradStart, gradEnd] = card.heroGradient;
+
+            let iButtonsHTML = '';
+            if (card.iButtons && card.iButtons.length > 0) {
+                const buttons = card.iButtons.map(btn => {
+                    const label = btn.term || (btn.type === 'why-it-matters' ? 'Why it matters' : btn.type);
+                    return `<button class="i-button" data-type="${btn.type}" data-term="${btn.term || ''}" data-content="${encodeURIComponent(btn.content)}">
+                        <span class="i-icon">i</span>
+                        ${label}
+                    </button>`;
+                }).join('');
+                iButtonsHTML = `<div class="i-buttons">${buttons}</div>`;
+            }
+
+            cardEl.innerHTML = `
+                <div class="card-content">
+                    <div class="card-hero" style="background: linear-gradient(135deg, ${gradStart}, ${gradEnd});">
+                        <span class="hero-emoji">${card.heroEmoji}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-number">${index + 1} of ${totalCards}</div>
+                        <h2 class="card-headline">${card.headline}</h2>
+                        <p class="card-summary">${card.summary}</p>
+                        ${iButtonsHTML}
+                    </div>
+                </div>
+            `;
+
+            cardEl.querySelectorAll('.i-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(
+                        btn.dataset.term || getTypeLabel(btn.dataset.type),
+                        btn.dataset.type,
+                        decodeURIComponent(btn.dataset.content)
+                    );
+                });
+            });
+
+            return cardEl;
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'definition': 'Definition',
+                'context': 'Context',
+                'why-it-matters': 'Why It Matters',
+                'related': 'Related'
+            };
+            return labels[type] || type;
+        }
+
+        function navigate(direction) {
+            const newIndex = currentCard + direction;
+            if (newIndex >= 0 && newIndex < totalCards) {
+                updateCard(newIndex);
+            }
+        }
+
+        function updateCard(index) {
+            const cards = document.querySelectorAll('.card');
+            const segments = document.querySelectorAll('.progress-segment');
+
+            cards.forEach((card, i) => {
+                card.classList.remove('active', 'prev');
+                if (i === index) {
+                    card.classList.add('active');
+                } else if (i < index) {
+                    card.classList.add('prev');
+                }
+            });
+
+            segments.forEach((seg, i) => {
+                seg.classList.remove('active', 'viewed');
+                if (i === index) {
+                    seg.classList.add('active');
+                } else if (i < index) {
+                    seg.classList.add('viewed');
+                }
+            });
+
+            currentCard = index;
+        }
+
+        function openModal(term, type, content) {
+            modalTerm.textContent = term;
+            modalType.textContent = getTypeLabel(type);
+            modalContent.textContent = content;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        init();
+    </script>
+</body>
+</html>
