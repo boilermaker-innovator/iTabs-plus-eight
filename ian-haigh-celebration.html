@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iTabs | Celebrating Ian Haigh 🎉</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Celebrating Ian Haigh 🎉">
+    <meta property="og:description" content="Ian Haigh is building a brand new Automations & Integrations team at Guesty. Swipe through to celebrate!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itabs.ai/ian">
+    <meta property="og:image" content="https://itabs.ai/og/ian-banner.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="iTabs">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Celebrating Ian Haigh 🎉">
+    <meta name="twitter:description" content="Ian Haigh is building a brand new Automations & Integrations team at Guesty. Swipe through to celebrate!">
+    <meta name="twitter:image" content="https://itabs.ai/og/ian-banner.png">
+    <meta name="description" content="An interactive iTabs celebrating Ian Haigh's new Automations & Integrations team at Guesty.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #3b82f6;
+            --i-button: #f59e0b;
+            --card-radius: 16px;
+            --transition: 0.2s ease;
+            --celebration: #10b981;
+            --gold: #f59e0b;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-primary);
+        }
+
+        .progress-container {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-segment.active { background: var(--gold); }
+        .progress-segment.viewed { background: var(--text-primary); }
+
+        .header {
+            padding: 48px 16px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .channel-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--celebration), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .header-info { flex: 1; }
+        .channel-name { font-size: 14px; font-weight: 600; }
+        .video-title { font-size: 12px; color: var(--text-secondary); }
+
+        .cards-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card {
+            position: absolute;
+            inset: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+        .card.prev { transform: translateX(-100%); }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+        }
+
+        .card-hero {
+            width: 100%;
+            height: 100px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-hero .hero-emoji {
+            font-size: 48px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            animation: confetti-fall linear forwards;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card-number {
+            font-size: 12px;
+            color: var(--celebration);
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-headline {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .card-headline .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--celebration));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-summary {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .i-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            padding-bottom: 4px;
+        }
+
+        .i-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+
+        .i-button:hover { background: var(--i-button); color: #000; }
+
+        .i-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: var(--i-button);
+            color: #000;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            font-style: italic;
+            flex-shrink: 0;
+        }
+
+        .nav-left, .nav-right {
+            position: absolute;
+            top: 0;
+            height: 100px;
+            width: 30%;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .nav-left { left: 0; }
+        .nav-right { right: 0; }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            color: rgba(255,255,255,0.6);
+            font-size: 22px;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-arrow.left { left: 24px; }
+        .nav-arrow.right { right: 24px; }
+
+        .nav-arrow.hidden { opacity: 0; }
+
+        .footer {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .connect-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #0077b5, #005885);
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all var(--transition);
+        }
+
+        .connect-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 119, 181, 0.4);
+        }
+
+        .itabs-badge {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 4px 0 8px;
+            flex-shrink: 0;
+        }
+
+        .itabs-badge a { color: var(--accent); text-decoration: none; }
+
+        .swipe-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 13px;
+            animation: fadeInOut 3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .swipe-hint.hidden { display: none; }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: 20px 20px 0 0;
+            max-width: 430px;
+            width: 100%;
+            max-height: 60vh;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active .modal { transform: translateY(0); }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .modal-title { display: flex; align-items: center; gap: 8px; }
+        .modal-title span:first-child { font-weight: 600; }
+
+        .type-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(60vh - 60px);
+        }
+
+        .modal-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container" id="progress"></div>
+        
+        <div class="header">
+            <div class="channel-avatar">🎉</div>
+            <div class="header-info">
+                <div class="channel-name">Celebrating Ian Haigh</div>
+                <div class="video-title">Snr. Director of Customer Experience @ Guesty</div>
+            </div>
+        </div>
+
+        <div class="cards-wrapper" id="cardsWrapper">
+            <div class="nav-left" id="navLeft"></div>
+            <div class="nav-right" id="navRight"></div>
+        </div>
+
+        <div class="footer">
+            <a href="https://www.linkedin.com/in/ian-haigh-208b2b/" target="_blank" class="connect-button">
+                🔗 Connect on LinkedIn
+            </a>
+        </div>
+        <div class="itabs-badge">Built with ❤️ using <a href="https://itabs.ai" target="_blank">iTabs</a></div>
+
+        <div class="swipe-hint" id="swipeHint">← Swipe or tap to navigate →</div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span id="modalTerm"></span>
+                    <span class="type-badge" id="modalType"></span>
+                </div>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content" id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CELEBRATION_DATA = {
+            cards: [
+                {
+                    emoji: "🎉",
+                    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    headline: "Go Ian! <span class='highlight'>Big Moves</span> Happening",
+                    summary: "Your brother is smashing it! Ian Haigh, Senior Director of Customer Experience at Guesty, just announced he's building an entirely new Automations & Integrations team from the ground up.",
+                    label: "PROUD MOMENT",
+                    iButtons: [
+                        {type: "context", term: "Guesty", content: "Guesty is a leading property management platform that helps hospitality businesses manage their operations. They serve property managers, hospitality brands, and enterprise clients across the globe."},
+                        {type: "why-it-matters", content: "Building a brand new team from scratch is a huge vote of confidence from the company. It means Ian has demonstrated the leadership and vision to be trusted with defining the direction of a whole new department."}
+                    ]
+                },
+                {
+                    emoji: "🚀",
+                    gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                    headline: "Building a <span class='highlight'>New Team</span> From Scratch",
+                    summary: "Ian's launching a brand new Automations & Integrations team at Guesty. He's hiring two key roles: a CX Automations and Project Lead, and an Automation and Integration Engineer. This is leadership in action!",
+                    label: "THE OPPORTUNITY",
+                    iButtons: [
+                        {type: "definition", term: "CX Automations", content: "Customer Experience Automations — building automated systems and workflows that improve how customers interact with and are supported by a company. This includes things like automated onboarding, smart routing, and proactive support triggers."},
+                        {type: "context", term: "The Roles", content: "Ian is hiring two positions: a CX Automations and Project Lead to drive strategy and manage projects, and an Automation and Integration Engineer to build the technical systems. Both roles are based in Metro Cebu (Hybrid)."}
+                    ]
+                },
+                {
+                    emoji: "💡",
+                    gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                    headline: "Latest Tech, <span class='highlight'>Real Impact</span>",
+                    summary: "Ian's pitching this as an opportunity to work with cutting-edge technology while making a visible difference. The focus on automations and integrations means his team will be streamlining operations across the entire customer experience.",
+                    label: "THE VISION",
+                    iButtons: [
+                        {type: "why-it-matters", content: "Automation and integration engineering is one of the hottest areas in tech right now. Companies that nail their CX automation see massive improvements in customer satisfaction and operational efficiency. Ian's positioning his team right at the centre of this."},
+                        {type: "definition", term: "Integration Engineering", content: "The practice of connecting different software systems so they work together seamlessly. In a CX context, this means connecting support tools, CRM systems, communication platforms, and internal databases to create unified customer experiences."}
+                    ]
+                },
+                {
+                    emoji: "🏆",
+                    gradient: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)",
+                    headline: "Senior Director <span class='highlight'>Energy</span> 💪",
+                    summary: "Senior Director of Customer Experience is a seriously impressive title. Ian's not just managing — he's directing the strategic vision of how an entire company engages with its customers, and now expanding that scope with a whole new team.",
+                    label: "CAREER MILESTONE",
+                    iButtons: [
+                        {type: "context", term: "Leadership Level", content: "Senior Director typically sits just below VP level in most tech companies. It means Ian is responsible for large-scale strategy, team building, budget allocation, and cross-functional leadership. Building a new team is often a stepping stone to VP."},
+                        {type: "why-it-matters", content: "Getting the green light to build a new team is one of the strongest signals of trust from a company. It means the executive team believes in Ian's vision and is investing real resources to make it happen. That's massive!"}
+                    ]
+                },
+                {
+                    emoji: "👨‍👩‍👦",
+                    gradient: "linear-gradient(135deg, #10b981 0%, #3b82f6 100%)",
+                    headline: "Family <span class='highlight'>Pride</span> 🇦🇺",
+                    summary: "From all of us in Australia — we're proud of you, Ian! Watching you grow, lead, and now build something brand new is incredible. Keep smashing it, brother! 🎊",
+                    label: "FROM THE FAMILY",
+                    iButtons: [
+                        {type: "context", term: "Family", content: "This iTabs was built by Jon, Ian's brother, using AI-powered tools from Australia. Because when your brother is out there making big moves, you celebrate it! 🎉"},
+                        {type: "why-it-matters", content: "Family support matters. Whether you're building teams in tech or working shutdowns in the mines, backing each other up is what it's all about. Go Ian! 🙌"}
+                    ]
+                }
+            ]
+        };
+
+        let currentCard = 0;
+        const totalCards = CELEBRATION_DATA.cards.length;
+
+        const progress = document.getElementById('progress');
+        const cardsWrapper = document.getElementById('cardsWrapper');
+        const navLeft = document.getElementById('navLeft');
+        const navRight = document.getElementById('navRight');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTerm = document.getElementById('modalTerm');
+        const modalType = document.getElementById('modalType');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+        const swipeHint = document.getElementById('swipeHint');
+
+        function init() {
+            for (let i = 0; i < totalCards; i++) {
+                const segment = document.createElement('div');
+                segment.className = 'progress-segment';
+                progress.appendChild(segment);
+            }
+
+            CELEBRATION_DATA.cards.forEach((card, index) => {
+                const cardEl = createCard(card, index);
+                cardsWrapper.insertBefore(cardEl, navLeft);
+            });
+
+            updateCard(0);
+
+            navLeft.addEventListener('click', () => navigate(-1));
+            navRight.addEventListener('click', () => navigate(1));
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') navigate(-1);
+                if (e.key === 'ArrowRight') navigate(1);
+                if (e.key === 'Escape') closeModal();
+            });
+
+            // Swipe detection — only triggers on HORIZONTAL swipes, ignores vertical scrolling
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let swiping = false;
+
+            cardsWrapper.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                swiping = false;
+            }, { passive: true });
+
+            cardsWrapper.addEventListener('touchmove', (e) => {
+                if (swiping) return;
+                const diffX = Math.abs(e.touches[0].clientX - touchStartX);
+                const diffY = Math.abs(e.touches[0].clientY - touchStartY);
+                // If moving more horizontally than vertically, it's a swipe
+                if (diffX > 10 && diffX > diffY * 1.5) {
+                    swiping = true;
+                }
+            }, { passive: true });
+
+            cardsWrapper.addEventListener('touchend', (e) => {
+                if (!swiping) return;
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    navigate(diff > 0 ? 1 : -1);
+                }
+            });
+
+            [navLeft, navRight].forEach(el => {
+                el.addEventListener('click', () => swipeHint.classList.add('hidden'), { once: true });
+            });
+        }
+
+        function createConfetti(container) {
+            const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#ec4899'];
+            for (let i = 0; i < 20; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.top = '-10px';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (2 + Math.random() * 3) + 's';
+                c.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(c);
+            }
+        }
+
+        function createCard(card, index) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.dataset.index = index;
+
+            let iButtonsHTML = '';
+            if (card.iButtons && card.iButtons.length > 0) {
+                const buttons = card.iButtons.map(btn => {
+                    const label = btn.term || (btn.type === 'why-it-matters' ? 'Why it matters' : btn.type);
+                    return `<button class="i-button" data-type="${btn.type}" data-term="${btn.term || ''}" data-content="${encodeURIComponent(btn.content)}">
+                        <span class="i-icon">i</span>
+                        ${label}
+                    </button>`;
+                }).join('');
+                iButtonsHTML = `<div class="i-buttons">${buttons}</div>`;
+            }
+
+            cardEl.innerHTML = `
+                <div class="card-content">
+                    <div class="card-hero" style="background: ${card.gradient};">
+                        <div class="confetti-container"></div>
+                        <span class="nav-arrow left ${index === 0 ? 'hidden' : ''}">‹</span>
+                        <span class="hero-emoji">${card.emoji}</span>
+                        <span class="nav-arrow right ${index === totalCards - 1 ? 'hidden' : ''}">›</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-number">${card.label} — ${index + 1} of ${totalCards}</div>
+                        <h2 class="card-headline">${card.headline}</h2>
+                        <p class="card-summary">${card.summary}</p>
+                        ${iButtonsHTML}
+                    </div>
+                </div>
+            `;
+
+            if (index === 0 || index === totalCards - 1) {
+                createConfetti(cardEl.querySelector('.confetti-container'));
+            }
+
+            cardEl.querySelectorAll('.i-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(
+                        btn.dataset.term || getTypeLabel(btn.dataset.type),
+                        btn.dataset.type,
+                        decodeURIComponent(btn.dataset.content)
+                    );
+                });
+            });
+
+            return cardEl;
+        }
+
+        function getTypeLabel(type) {
+            return { 'definition': 'Definition', 'context': 'Context', 'why-it-matters': 'Why It Matters', 'related': 'Related' }[type] || type;
+        }
+
+        function navigate(direction) {
+            const newIndex = currentCard + direction;
+            if (newIndex >= 0 && newIndex < totalCards) updateCard(newIndex);
+        }
+
+        function updateCard(index) {
+            document.querySelectorAll('.card').forEach((card, i) => {
+                card.classList.remove('active', 'prev');
+                if (i === index) card.classList.add('active');
+                else if (i < index) card.classList.add('prev');
+            });
+
+            document.querySelectorAll('.progress-segment').forEach((seg, i) => {
+                seg.classList.remove('active', 'viewed');
+                if (i === index) seg.classList.add('active');
+                else if (i < index) seg.classList.add('viewed');
+            });
+
+            currentCard = index;
+        }
+
+        function openModal(term, type, content) {
+            modalTerm.textContent = term;
+            modalType.textContent = getTypeLabel(type);
+            modalContent.textContent = content;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        init();
+    </script>
+</body>
+</html>
