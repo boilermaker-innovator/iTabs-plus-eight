@@ -180,21 +180,64 @@
             overflow: hidden;
         }
 
-        /* Hero visual area */
+        /* Hero visual area — smaller */
         .card-hero {
             width: 100%;
-            aspect-ratio: 16/9;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            user-select: none;
         }
 
         .hero-emoji {
-            font-size: 72px;
+            font-size: 48px;
             filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
         }
+
+        /* Nav arrows inside hero */
+        .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 24px;
+            pointer-events: none;
+            transition: color 0.2s ease;
+            z-index: 10;
+        }
+
+        .hero-arrow-left {
+            left: 14px;
+        }
+
+        .hero-arrow-right {
+            right: 14px;
+        }
+
+        .card-hero:hover .hero-arrow {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .hero-arrow.hidden {
+            opacity: 0;
+        }
+
+        /* Click zones inside hero only */
+        .hero-nav-left, .hero-nav-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .hero-nav-left { left: 0; }
+        .hero-nav-right { right: 0; }
 
         .card-body {
             padding: 20px;
@@ -270,25 +313,11 @@
             flex-shrink: 0;
         }
 
-        /* Navigation */
-        .nav-left, .nav-right {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 30%;
-            z-index: 50;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .nav-left { left: 0; }
-        .nav-right { right: 0; }
-
         /* Footer */
         .footer {
             padding: 12px 16px 24px;
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         .footer-link {
@@ -296,13 +325,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 14px;
+            gap: 6px;
+            padding: 14px 8px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             text-decoration: none;
             transition: background var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
         }
 
         .btn-primary {
@@ -323,21 +355,13 @@
             background: var(--bg-tertiary);
         }
 
-        /* Swipe Hint */
-        .swipe-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 13px;
-            color: var(--text-secondary);
-            opacity: 0.7;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
+        .btn-skill {
+            background: var(--i-button);
+            color: #000;
         }
 
-        .swipe-hint.hidden {
-            opacity: 0;
+        .btn-skill:hover {
+            background: var(--i-button-hover);
         }
 
         /* Modal */
@@ -430,6 +454,30 @@
             line-height: 1.7;
             color: var(--text-secondary);
         }
+
+        /* Download toast */
+        .download-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--i-button);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 300;
+            white-space: nowrap;
+        }
+
+        .download-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -440,21 +488,21 @@
             <div class="channel-avatar">i</div>
             <div class="header-info">
                 <div class="channel-name">iTabs</div>
-                <div class="subtitle">The Story — Swipe to explore →</div>
+                <div class="subtitle">The Story — Tap arrows to navigate →</div>
             </div>
         </div>
 
         <div class="cards-wrapper" id="cardsWrapper">
-            <div class="nav-left" id="navLeft"></div>
-            <div class="nav-right" id="navRight"></div>
-            <div class="swipe-hint" id="swipeHint">← Swipe or tap edges →</div>
         </div>
 
         <div class="footer">
-            <a href="https://itabs.ai" class="footer-link btn-primary">🛠️ Try the Estimators</a>
-            <a href="about.html" class="footer-link btn-secondary">📖 About</a>
+            <a href="https://itabs.ai" class="footer-link btn-primary">🛠️ Estimators</a>
+            <button class="footer-link btn-skill" id="getSkillBtn">⚡ Get Skill</button>
         </div>
     </div>
+
+    <!-- Download toast -->
+    <div class="download-toast" id="downloadToast">✓ SKILL.md downloaded</div>
 
     <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay">
@@ -576,72 +624,203 @@
             ]
         };
 
+        // SKILL.md content for download
+        const SKILL_MD_CONTENT = `---
+name: itabs-quote-estimator
+description: Create interactive iTabs quote estimators for trades and services. Use when someone wants to build an interactive pricing widget with contextual education (i-buttons), progressive disclosure, and customer self-service quoting. Works for any trade — fencing, painting, electrical, plumbing, landscaping, paving, and more.
+---
+
+# iTabs Quote Estimator
+
+Build interactive, mobile-first quote estimators that educate customers while they choose. Each option includes contextual i-buttons that explain WHY things cost what they cost.
+
+## Core Concept: Progressive Disclosure
+
+iTabs uses layered information delivery:
+- **Layer 1 — The Option**: What the customer sees and selects
+- **Layer 2 — The i-Button**: Tap to reveal context, definitions, reasoning
+- **Layer 3 — The Detail**: Deep explanations for those who want them
+
+The customer chooses their own depth. Experts skip through. Beginners tap every button. Same tool, different experience.
+
+## Architecture
+
+Each estimator is a **single HTML file** with zero dependencies:
+- No frameworks (no React, no Vue, no Angular)
+- No build tools (no npm, no webpack)
+- No external APIs
+- Works in any browser, any device, any hosting
+
+Powered by a WIDGET_CONFIG JavaScript object that defines sections, options, pricing rules, and i-button educational content.
+
+## WIDGET_CONFIG Schema
+
+\\\`\\\`\\\`javascript
+const WIDGET_CONFIG = {
+  business: {
+    name: "Business Name",
+    phone: "0400 000 000",
+    email: "info@business.com.au",
+    website: "https://business.com.au",
+    primaryColor: "#3b82f6",
+    accentColor: "#f59e0b"
+  },
+  estimator: {
+    title: "Fencing Quote Estimator",
+    subtitle: "Get a ballpark estimate in 60 seconds",
+    disclaimer: "Indicative pricing only. Final quote may vary.",
+    sections: [
+      {
+        id: "material",
+        title: "Choose Your Material",
+        type: "single-select",
+        options: [
+          {
+            id: "colorbond",
+            label: "Colorbond Steel",
+            description: "Durable, low maintenance",
+            pricePerUnit: 95,
+            unit: "per metre",
+            iButton: {
+              term: "Why Colorbond?",
+              type: "why-it-matters",
+              content: "Colorbond handles coastal salt air without rusting, needs zero painting, and comes in 22 colours. Higher upfront cost but lower lifetime cost than timber."
+            }
+          }
+        ]
+      },
+      {
+        id: "length",
+        title: "Fence Length",
+        type: "slider",
+        min: 5,
+        max: 100,
+        step: 1,
+        defaultValue: 20,
+        unit: "metres",
+        iButton: {
+          term: "How to Measure",
+          type: "definition",
+          content: "Measure along the boundary line. Include gate openings. If unsure, use Google Maps measure tool."
+        }
+      }
+    ]
+  }
+};
+\\\`\\\`\\\`
+
+## i-Button Content Types
+
+| Type | When to Use | Example |
+|------|-------------|---------|
+| definition | Explaining a term or concept | "H4 Treatment: A preservative process..." |
+| context | Regulations, local conditions | "WA's Dividing Fences Act 1961..." |
+| why-it-matters | Why this choice affects price/quality | "Coastal-rated materials prevent..." |
+| related | Links, further resources | "Learn more at council website..." |
+
+Every option should have at least one i-button. The educational content is what differentiates iTabs from a basic calculator.
+
+## Pricing Logic
+
+- **Base price**: pricePerUnit x quantity
+- **Multipliers**: height, access difficulty, soil type
+- **Add-ons**: gates, posts, removal of old fence
+- **GST**: Always include, always show separately
+
+Display both total and per-unit breakdown so customers can compare quotes.
+
+## Output Requirements
+
+- Single self-contained HTML file
+- Mobile-first responsive (max-width: 430px centered)
+- Dark mode default
+- Running total visible at all times
+- Share/copy quote summary button
+- Business contact details and CTA
+- All CSS and JS inline (only external: Google Fonts)
+
+## Generating for a New Trade
+
+1. Identify the key decision points — What does the customer choose?
+2. Research pricing for your region
+3. Write i-button content — explain WHY, not just WHAT
+4. Structure the config following the schema above
+5. Test with real scenarios
+
+The educational content is what makes iTabs different. Invest time here.
+
+## Philosophy
+
+- Information meets people where they are
+- Customers learn while they choose
+- Trust is built through transparency
+- The tool should work for the least technical user
+- Open source: copy it, improve it, share it
+
+Built by a Perth boilermaker using AI. No CS degree required.
+
+Learn more: https://itabs.ai
+GitHub: https://github.com/boilermaker-innovator
+`;
+
         // App State
         let currentCard = 0;
         const totalCards = STORY_DATA.cards.length;
 
         // DOM Elements
-        const progress = document.getElementById('progress');
         const cardsWrapper = document.getElementById('cardsWrapper');
-        const navLeft = document.getElementById('navLeft');
-        const navRight = document.getElementById('navRight');
+        const progress = document.getElementById('progress');
         const modalOverlay = document.getElementById('modalOverlay');
         const modalTerm = document.getElementById('modalTerm');
         const modalType = document.getElementById('modalType');
         const modalContent = document.getElementById('modalContent');
         const modalClose = document.getElementById('modalClose');
-        const swipeHint = document.getElementById('swipeHint');
+        const getSkillBtn = document.getElementById('getSkillBtn');
+        const downloadToast = document.getElementById('downloadToast');
 
         function init() {
-            // Create progress segments
             for (let i = 0; i < totalCards; i++) {
                 const segment = document.createElement('div');
                 segment.className = 'progress-segment';
                 progress.appendChild(segment);
             }
 
-            // Create cards
             STORY_DATA.cards.forEach((card, index) => {
                 const cardEl = createCard(card, index);
-                cardsWrapper.insertBefore(cardEl, navLeft);
+                cardsWrapper.appendChild(cardEl);
             });
 
-            // Set initial state
             updateCard(0);
 
-            // Event listeners
-            navLeft.addEventListener('click', () => navigate(-1));
-            navRight.addEventListener('click', () => navigate(1));
             modalClose.addEventListener('click', closeModal);
             modalOverlay.addEventListener('click', (e) => {
                 if (e.target === modalOverlay) closeModal();
             });
 
-            // Keyboard navigation
+            getSkillBtn.addEventListener('click', downloadSkill);
+
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') navigate(-1);
                 if (e.key === 'ArrowRight') navigate(1);
                 if (e.key === 'Escape') closeModal();
             });
 
-            // Touch swipe
-            let touchStartX = 0;
-            cardsWrapper.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-            });
-            cardsWrapper.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const diff = touchStartX - touchEndX;
-                if (Math.abs(diff) > 50) {
-                    navigate(diff > 0 ? 1 : -1);
-                }
-            });
+            // Swipe on hero areas only — handled per card in createCard
+        }
 
-            [navLeft, navRight].forEach(el => {
-                el.addEventListener('click', () => {
-                    swipeHint.classList.add('hidden');
-                }, { once: true });
-            });
+        function downloadSkill() {
+            const blob = new Blob([SKILL_MD_CONTENT], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SKILL.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            downloadToast.classList.add('show');
+            setTimeout(() => downloadToast.classList.remove('show'), 2500);
         }
 
         function createCard(card, index) {
@@ -650,6 +829,9 @@
             cardEl.dataset.index = index;
 
             const [gradStart, gradEnd] = card.heroGradient;
+
+            const showLeftArrow = index > 0;
+            const showRightArrow = index < totalCards - 1;
 
             let iButtonsHTML = '';
             if (card.iButtons && card.iButtons.length > 0) {
@@ -666,7 +848,11 @@
             cardEl.innerHTML = `
                 <div class="card-content">
                     <div class="card-hero" style="background: linear-gradient(135deg, ${gradStart}, ${gradEnd});">
+                        <span class="hero-arrow hero-arrow-left ${showLeftArrow ? '' : 'hidden'}">‹</span>
                         <span class="hero-emoji">${card.heroEmoji}</span>
+                        <span class="hero-arrow hero-arrow-right ${showRightArrow ? '' : 'hidden'}">›</span>
+                        <div class="hero-nav-left"></div>
+                        <div class="hero-nav-right"></div>
                     </div>
                     <div class="card-body">
                         <div class="card-number">${index + 1} of ${totalCards}</div>
@@ -677,6 +863,31 @@
                 </div>
             `;
 
+            // Nav clicks on hero only
+            cardEl.querySelector('.hero-nav-left').addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigate(-1);
+            });
+            cardEl.querySelector('.hero-nav-right').addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigate(1);
+            });
+
+            // Swipe on hero only
+            const hero = cardEl.querySelector('.card-hero');
+            let touchStartX = 0;
+            hero.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+            hero.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    navigate(diff > 0 ? 1 : -1);
+                }
+            });
+
+            // i-button clicks
             cardEl.querySelectorAll('.i-button').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -714,20 +925,14 @@
 
             cards.forEach((card, i) => {
                 card.classList.remove('active', 'prev');
-                if (i === index) {
-                    card.classList.add('active');
-                } else if (i < index) {
-                    card.classList.add('prev');
-                }
+                if (i === index) card.classList.add('active');
+                else if (i < index) card.classList.add('prev');
             });
 
             segments.forEach((seg, i) => {
                 seg.classList.remove('active', 'viewed');
-                if (i === index) {
-                    seg.classList.add('active');
-                } else if (i < index) {
-                    seg.classList.add('viewed');
-                }
+                if (i === index) seg.classList.add('active');
+                else if (i < index) seg.classList.add('viewed');
             });
 
             currentCard = index;
