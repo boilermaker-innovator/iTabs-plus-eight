@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iTabs | 30 Years of Business Advice in 13 Minutes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+```
+    :root {
+        --bg-primary: #0a0a0a;
+        --bg-secondary: #1a1a1a;
+        --bg-tertiary: #2a2a2a;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --i-button: #f59e0b;
+        --i-button-hover: #d97706;
+        --card-radius: 16px;
+        --transition: 0.2s ease;
+    }
+
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 430px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background: var(--bg-primary);
+    }
+
+    /* Progress Bar */
+    .progress-container {
+        display: flex;
+        gap: 4px;
+        padding: 12px 16px 8px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+    }
+
+    .progress-segment {
+        flex: 1;
+        height: 3px;
+        background: rgba(255,255,255,0.3);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .progress-segment.active {
+        background: var(--text-primary);
+    }
+
+    .progress-segment.viewed {
+        background: var(--text-primary);
+    }
+
+    /* Header */
+    .header {
+        padding: 48px 16px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .channel-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--bg-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .header-info {
+        flex: 1;
+    }
+
+    .channel-name {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .video-title {
+        font-size: 12px;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Cards Container */
+    .cards-wrapper {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card {
+        position: absolute;
+        inset: 0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .card.active {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    .card.prev {
+        transform: translateX(-100%);
+    }
+
+    .card-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-secondary);
+        border-radius: var(--card-radius);
+        overflow: hidden;
+    }
+
+    .card-thumbnail {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--bg-tertiary);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .timestamp-badge {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(0,0,0,0.8);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background var(--transition);
+        text-decoration: none;
+        color: var(--text-primary);
+    }
+
+    .timestamp-badge:hover {
+        background: var(--accent);
+    }
+
+    .card-body {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-number {
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-headline {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+
+    .card-summary {
+        font-size: 16px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        flex: 1;
+    }
+
+    /* i-Buttons */
+    .i-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .i-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg-tertiary);
+        border: none;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all var(--transition);
+    }
+
+    .i-button:hover {
+        background: var(--i-button);
+        color: #000;
+    }
+
+    .i-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--i-button);
+        color: #000;
+        font-size: 12px;
+        font-weight: 700;
+        font-style: italic;
+        flex-shrink: 0;
+    }
+
+    /* Navigation */
+    .nav-left, .nav-right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 30%;
+        z-index: 50;
+        cursor: pointer;
+    }
+
+    .nav-left { left: 0; }
+    .nav-right { right: 0; }
+
+    /* Footer */
+    .footer {
+        padding: 12px 16px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .watch-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #ff0000;
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all var(--transition);
+    }
+
+    .watch-button:hover {
+        background: #cc0000;
+        transform: scale(1.02);
+    }
+
+    /* Swipe Hint */
+    .swipe-hint {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--text-secondary);
+        animation: fadeInOut 3s ease forwards;
+        pointer-events: none;
+        z-index: 200;
+    }
+
+    .swipe-hint.hidden { display: none; }
+
+    @keyframes fadeInOut {
+        0% { opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    /* Modal */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .modal {
+        background: var(--bg-secondary);
+        border-radius: 20px 20px 0 0;
+        width: 100%;
+        max-width: 430px;
+        max-height: 60vh;
+        padding: 24px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .modal-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-title span:first-child {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .type-badge {
+        font-size: 11px;
+        background: var(--bg-tertiary);
+        padding: 4px 10px;
+        border-radius: 10px;
+        color: var(--i-button);
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .modal-close {
+        background: var(--bg-tertiary);
+        border: none;
+        color: var(--text-primary);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-body {
+        overflow-y: auto;
+        max-height: 40vh;
+    }
+
+    .modal-content {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text-secondary);
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container" id="progress"></div>
+
+```
+    <div class="header">
+        <div class="channel-avatar" id="channelAvatar"></div>
+        <div class="header-info">
+            <div class="channel-name" id="channelName"></div>
+            <div class="video-title" id="videoTitle"></div>
+        </div>
+    </div>
+
+    <div class="cards-wrapper" id="cardsWrapper">
+        <div class="nav-left" id="navLeft"></div>
+        <div class="nav-right" id="navRight"></div>
+    </div>
+
+    <div class="swipe-hint" id="swipeHint">← Swipe or tap to navigate →</div>
+
+    <div class="footer">
+        <a class="watch-button" id="watchButton" href="#" target="_blank">
+            ▶ Watch Full Video
+        </a>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span id="modalTerm"></span>
+                <span class="type-badge" id="modalType"></span>
+            </div>
+            <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // VIDEO DATA
+    // ============================================
+    const VIDEO_DATA = {
+        title: "30 Years of Business Advice in 13 Minutes",
+        videoId: "0-LAT4HjWPo",
+        channelName: "Chamath Palihapitiya",
+        cards: [
+            {
+                headline: "Never Stop — Ditch the Objectives",
+                summary: "People frame life as a series of objectives, but the problem is once you meet enough of them, you think you've 'made it' and stop. The people who thrive — like Buffett at 95 — are committed to learning and process, not ticking boxes.",
+                timestamp: "0:00",
+                timestampSeconds: 0,
+                iButtons: [
+                    {type: "context", term: "Warren Buffett", content: "Warren Buffett, 95 years old in 2025, served as CEO of Berkshire Hathaway for nearly 60 years before announcing a succession plan. A living example of someone who never stopped."},
+                    {type: "why-it-matters", content: "Chamath admits that chasing titles — director, VP, SVP, GP — made him a caricature of himself. Objectives pulled him away from who he actually was. The lesson: optimise for the process of learning, not the destination."}
+                ]
+            },
+            {
+                headline: "Debt Destroys Optionality",
+                summary: "If you want to live a life of process rather than objectives, you need boundary conditions. The most critical: avoid debt. Debt forces you to chase money, stop learning, and stop taking risks — it makes you seek short-term objectives with decades of consequences.",
+                timestamp: "1:31",
+                timestampSeconds: 91,
+                iButtons: [
+                    {type: "why-it-matters", content: "Debt isn't just a financial problem — it's a psychological one. It creates urgency around money that crowds out risk-taking, learning, and long-term thinking. It puts you on someone else's timeline."},
+                    {type: "context", term: "Social Media Trap", content: "Chamath warns that younger generations are especially vulnerable: fake lifestyles on social media trick people into spending beyond their means, creating debt cycles oriented around status and money."}
+                ]
+            },
+            {
+                headline: "Manage Life With Humility",
+                summary: "Being humble means being extremely truthful about how things actually are today. That honesty lets you see reality clearly, share truth with others, and build genuine solidarity with the people around you.",
+                timestamp: "2:41",
+                timestampSeconds: 161,
+                iButtons: [
+                    {type: "definition", term: "Humility", content: "In Chamath's framing, humility isn't self-deprecation — it's radical honesty about your current situation. It's the ability to say 'this is where things actually stand' without ego distorting the picture."},
+                    {type: "why-it-matters", content: "Humility is what makes authentic connection possible. When you're honest about reality, other people can actually trust and align with you — both in business and personal relationships."}
+                ]
+            },
+            {
+                headline: "Surround Yourself With Youth",
+                summary: "Younger people see the world through completely different biases and frameworks. Spending time with them is an early warning system for the future — everything you know is stuck in a moment in time and will decay in relevance.",
+                timestamp: "3:03",
+                timestampSeconds: 183,
+                iButtons: [
+                    {type: "why-it-matters", content: "Chamath admits that the more time he spends with younger people, the more he realises his own knowledge has an expiry date. Their perspective isn't just 'nice to have' — it's essential for staying relevant."},
+                    {type: "context", term: "Knowledge Decay", content: "The idea that expertise has a half-life. What worked 10 years ago may be actively wrong today. Younger generations naturally operate on newer assumptions and mental models."}
+                ]
+            },
+            {
+                headline: "Preserve Optionality at All Costs",
+                summary: "The single most actionable takeaway: preserve optionality in business, negotiations, and life. Find win-wins. This preserves relationships, egos, and emotions — and prevents you from blowing yourself up by doing something stupid.",
+                timestamp: "5:01",
+                timestampSeconds: 301,
+                iButtons: [
+                    {type: "definition", term: "Optionality", content: "The ability to choose between multiple paths without being locked in. In business and life, having options means you can adapt, pivot, and seize opportunities as they emerge rather than being trapped by past decisions."},
+                    {type: "why-it-matters", content: "Optionality forces you to listen more, talk less, and stay subdued. It's a framework that minimises catastrophic mistakes while keeping doors open for future opportunities."}
+                ]
+            },
+            {
+                headline: "Honesty is the Foundation of Love",
+                summary: "The most important relationship lesson: your partner must 100% have your back, and that only happens through complete, raw, unfiltered honesty. Having gone through a divorce, Chamath says the missing ingredient was naming things — good and bad — openly.",
+                timestamp: "6:23",
+                timestampSeconds: 383,
+                iButtons: [
+                    {type: "why-it-matters", content: "Chamath describes his divorce as 'almost like a death in the family.' What was missing wasn't love — it was the willingness to be completely transparent. His second marriage is built on that foundation and it changed everything."},
+                    {type: "context", term: "Co-founder Metaphor", content: "Chamath calls a spouse your 'co-founder' — framing marriage as a partnership that requires the same radical transparency and alignment you'd need in a business venture."}
+                ]
+            },
+            {
+                headline: "Be Where the Fish Are",
+                summary: "If you're young and ambitious, get to the centre of your industry. Tech? Silicon Valley. Finance? New York or London. Politics? Washington DC. There is no shortcut. And once there, optimise for opportunity — not compensation.",
+                timestamp: "7:33",
+                timestampSeconds: 453,
+                iButtons: [
+                    {type: "context", term: "Broadway Metaphor", content: "Chamath calls this 'being on Broadway' — physically placing yourself at the epicentre of your chosen field where talent, deals, and opportunities concentrate. Remote work doesn't replace proximity to power."},
+                    {type: "why-it-matters", content: "When an opportunity opens up to work with people smarter than you on something that could be a rocket ship, you just jump on. Optimising for salary over opportunity is the mistake Chamath sees young people making repeatedly."}
+                ]
+            },
+            {
+                headline: "The Mouse That Treads Water",
+                summary: "In an experiment, mice normally drowned in about 4 minutes. But mice that were rescued once and then put back in survived for 60 hours. The brain unlocked extraordinary resilience. In business, unlike athletics, there's no shelf life on that resilience.",
+                timestamp: "9:07",
+                timestampSeconds: 547,
+                iButtons: [
+                    {type: "context", term: "Curt Richter Experiment", content: "This is a reference to the 'hope experiment' conducted by psychologist Curt Richter in the 1950s at Johns Hopkins. It demonstrated that the belief in rescue — hope — dramatically extended the survival capacity of rats in water."},
+                    {type: "why-it-matters", content: "The point isn't physical toughness — it's mental. Once you've been through a crucible moment and survived, your brain unlocks capacity you didn't know existed. And in business, unlike sport, you can keep accessing that for decades."}
+                ]
+            },
+            {
+                headline: "Status is a Trap — Ignore It",
+                summary: "Status is completely manufactured and irrelevant. It's a hook that society puts into you so it can pull you back. The more you chase lists, clubs, and invitations, the more beholden you become to people who don't have your best interests at heart.",
+                timestamp: "11:00",
+                timestampSeconds: 660,
+                iButtons: [
+                    {type: "why-it-matters", content: "Chamath says he learned this the hard way — contorting himself to be on lists, in clubs, invited to events. All of it was contrived. Divorcing yourself from status is what he calls a 'superpower' — it frees you to operate on your own terms."},
+                    {type: "definition", term: "External Validation", content: "When your sense of worth depends on recognition from others — titles, awards, social media followers, club memberships — you hand control of your self-image to people who may not care about you at all."}
+                ]
+            }
+        ]
+    };
+    // ============================================
+    // END VIDEO DATA
+    // ============================================
+
+    // App State
+    let currentCard = 0;
+    const totalCards = VIDEO_DATA.cards.length;
+
+    // DOM Elements
+    const progress = document.getElementById('progress');
+    const channelAvatar = document.getElementById('channelAvatar');
+    const channelName = document.getElementById('channelName');
+    const videoTitle = document.getElementById('videoTitle');
+    const cardsWrapper = document.getElementById('cardsWrapper');
+    const navLeft = document.getElementById('navLeft');
+    const navRight = document.getElementById('navRight');
+    const watchButton = document.getElementById('watchButton');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTerm = document.getElementById('modalTerm');
+    const modalType = document.getElementById('modalType');
+    const modalContent = document.getElementById('modalContent');
+    const modalClose = document.getElementById('modalClose');
+    const swipeHint = document.getElementById('swipeHint');
+
+    // Initialize
+    function init() {
+        channelAvatar.textContent = VIDEO_DATA.channelName.charAt(0).toUpperCase();
+        channelName.textContent = VIDEO_DATA.channelName;
+        videoTitle.textContent = VIDEO_DATA.title;
+        document.title = `iTabs | ${VIDEO_DATA.title}`;
+        watchButton.href = `https://www.youtube.com/watch?v=${VIDEO_DATA.videoId}`;
+
+        for (let i = 0; i < totalCards; i++) {
+            const segment = document.createElement('div');
+            segment.className = 'progress-segment';
+            progress.appendChild(segment);
+        }
+
+        VIDEO_DATA.cards.forEach((card, index) => {
+            const cardEl = createCard(card, index);
+            cardsWrapper.insertBefore(cardEl, navLeft);
+        });
+
+        updateCard(0);
+
+        navLeft.addEventListener('click', () => navigate(-1));
+        navRight.addEventListener('click', () => navigate(1));
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+            if (e.key === 'Escape') closeModal();
+        });
+
+        let touchStartX = 0;
+        cardsWrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        cardsWrapper.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                navigate(diff > 0 ? 1 : -1);
+            }
+        });
+
+        [navLeft, navRight].forEach(el => {
+            el.addEventListener('click', () => {
+                swipeHint.classList.add('hidden');
+            }, { once: true });
+        });
+    }
+
+    function createCard(card, index) {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card';
+        cardEl.dataset.index = index;
+
+        const thumbnailUrl = `https://img.youtube.com/vi/${VIDEO_DATA.videoId}/maxresdefault.jpg`;
+        const timestampUrl = `https://www.youtube.com/watch?v=${VIDEO_DATA.videoId}&t=${card.timestampSeconds}s`;
+
+        let iButtonsHTML = '';
+        if (card.iButtons && card.iButtons.length > 0) {
+            const buttons = card.iButtons.map(btn => {
+                const label = btn.term || (btn.type === 'why-it-matters' ? 'Why it matters' : btn.type);
+                return `<button class="i-button" data-type="${btn.type}" data-term="${btn.term || ''}" data-content="${encodeURIComponent(btn.content)}">
+                    <span class="i-icon">i</span>
+                    ${label}
+                </button>`;
+            }).join('');
+            iButtonsHTML = `<div class="i-buttons">${buttons}</div>`;
+        }
+
+        cardEl.innerHTML = `
+            <div class="card-content">
+                <div class="card-thumbnail">
+                    <img src="${thumbnailUrl}" alt="Video thumbnail" onerror="this.style.display='none'">
+                    <a href="${timestampUrl}" target="_blank" class="timestamp-badge">▶ ${card.timestamp}</a>
+                </div>
+                <div class="card-body">
+                    <div class="card-number">Key Point ${index + 1} of ${totalCards}</div>
+                    <h2 class="card-headline">${card.headline}</h2>
+                    <p class="card-summary">${card.summary}</p>
+                    ${iButtonsHTML}
+                </div>
+            </div>
+        `;
+
+        cardEl.querySelectorAll('.i-button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openModal(
+                    btn.dataset.term || getTypeLabel(btn.dataset.type),
+                    btn.dataset.type,
+                    decodeURIComponent(btn.dataset.content)
+                );
+            });
+        });
+
+        return cardEl;
+    }
+
+    function getTypeLabel(type) {
+        const labels = {
+            'definition': 'Definition',
+            'context': 'Context',
+            'why-it-matters': 'Why It Matters',
+            'related': 'Related'
+        };
+        return labels[type] || type;
+    }
+
+    function navigate(direction) {
+        const newIndex = currentCard + direction;
+        if (newIndex >= 0 && newIndex < totalCards) {
+            updateCard(newIndex);
+        }
+    }
+
+    function updateCard(index) {
+        const cards = document.querySelectorAll('.card');
+        const segments = document.querySelectorAll('.progress-segment');
+
+        cards.forEach((card, i) => {
+            card.classList.remove('active', 'prev');
+            if (i === index) {
+                card.classList.add('active');
+            } else if (i < index) {
+                card.classList.add('prev');
+            }
+        });
+
+        segments.forEach((seg, i) => {
+            seg.classList.remove('active', 'viewed');
+            if (i === index) {
+                seg.classList.add('active');
+            } else if (i < index) {
+                seg.classList.add('viewed');
+            }
+        });
+
+        currentCard = index;
+    }
+
+    function openModal(term, type, content) {
+        modalTerm.textContent = term;
+        modalType.textContent = getTypeLabel(type);
+        modalContent.textContent = content;
+        modalOverlay.classList.add('active');
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+    }
+
+    init();
+</script>
+
+</body>
+</html>
