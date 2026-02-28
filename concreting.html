@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How much will my concrete cost? | Perth Concreting Price Guide</title>
+<meta name="description" content="Free concreting quote estimator for Perth. Driveways, patios, shed slabs, paths & pool surrounds. Get a ballpark price in 60 seconds.">
+<meta name="theme-color" content="#3b82f6">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#3b82f6;--primary-hover:#2563eb;--secondary:#1d4ed8;
+  --bg:#0c1117;--card:#151c25;--card-hover:#1a2332;--card-active:#1e2a3a;
+  --border:#222d3a;--text:#e8ecf1;--muted:#8896a7;--dim:#5a6a7d;
+  --success:#22c55e;--error:#ef4444;--info:#3b82f6;
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --radius:14px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:16px 16px 100px}
+
+/* Header */
+.header{text-align:center;padding:32px 0 24px}
+.header-icon{font-size:48px;margin-bottom:12px}
+.header h1{font-size:1.6rem;font-weight:800;line-height:1.2;margin-bottom:8px}
+.header p{color:var(--muted);font-size:0.9rem}
+.badge{display:inline-block;margin-top:12px;padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:100px;font-size:0.75rem;color:var(--muted)}
+
+/* Accordion */
+.step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.step.active{border-color:var(--primary)}
+.step.completed{border-color:var(--success)}
+.step-header{display:flex;align-items:center;justify-content:space-between;padding:16px;cursor:pointer;user-select:none;gap:12px}
+.step-number{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;background:var(--border);color:var(--muted);transition:all .2s}
+.step.active .step-number{background:var(--primary);color:#fff}
+.step.completed .step-number{background:var(--success);color:#fff}
+.step-title{flex:1;font-weight:600;font-size:0.95rem}
+.step-selection{font-size:0.8rem;color:var(--muted);max-width:140px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step-chevron{color:var(--dim);transition:transform .2s;flex-shrink:0}
+.step.active .step-chevron{transform:rotate(180deg)}
+.step-body{display:none;padding:0 16px 16px}
+.step.active .step-body{display:block}
+
+/* i-button */
+.hint-toggle{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:100px;font-size:0.8rem;color:var(--primary);cursor:pointer;margin-bottom:14px;transition:all .2s}
+.hint-toggle:hover{background:rgba(59,130,246,0.2)}
+.hint-panel{display:none;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
+.hint-panel.open{display:block}
+.hint-panel h4{font-size:0.85rem;font-weight:700;margin-bottom:10px;color:var(--primary)}
+
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:8px}
+.compare-table th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600}
+.compare-table td{padding:8px 6px;border-bottom:1px solid rgba(34,45,58,0.5);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.hint-footer{font-size:0.8rem;color:var(--muted);margin-top:8px;font-style:italic}
+
+/* Tip cards */
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
+.tip-card .tip-icon{font-size:1.1rem;margin-bottom:4px}
+.tip-card .tip-title{font-weight:700;font-size:0.82rem;margin-bottom:4px}
+.tip-card .tip-text{font-size:0.8rem;color:var(--muted);line-height:1.5}
+.key-point{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.15);border-radius:10px;padding:12px;margin-bottom:8px}
+.key-point .kp-label{font-weight:700;font-size:0.82rem;margin-bottom:4px}
+.key-point .kp-text{font-size:0.8rem;color:var(--muted);line-height:1.5}
+
+/* Select cards */
+.options-grid{display:grid;gap:8px}
+.options-grid.cols-2{grid-template-columns:1fr 1fr}
+.option-card{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;position:relative}
+.option-card:hover{border-color:var(--dim);background:var(--card-hover)}
+.option-card.selected{border-color:var(--primary);background:rgba(59,130,246,0.08)}
+.option-icon{font-size:1.5rem;margin-bottom:6px}
+.option-label{font-weight:700;font-size:0.9rem;margin-bottom:2px}
+.option-desc{font-size:0.78rem;color:var(--muted);line-height:1.4}
+.option-price{font-family:var(--mono);font-size:0.75rem;color:var(--primary);margin-top:6px}
+.option-tag{position:absolute;top:-8px;right:10px;background:var(--primary);color:#fff;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase}
+
+/* Slider */
+.slider-group{padding:8px 0}
+.slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.slider-label span{font-size:0.85rem;font-weight:600}
+.slider-value{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--primary)}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:var(--border);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--primary);cursor:pointer;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--primary)}
+.slider-labels{display:flex;justify-content:space-between;margin-top:6px}
+.slider-labels span{font-size:0.7rem;color:var(--dim)}
+
+/* Toggle group */
+.toggle-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.toggle-item:hover{border-color:var(--dim)}
+.toggle-item.on{border-color:var(--primary);background:rgba(59,130,246,0.06)}
+.toggle-left{display:flex;align-items:center;gap:10px}
+.toggle-icon{font-size:1.2rem}
+.toggle-label{font-weight:600;font-size:0.88rem}
+.toggle-desc{font-size:0.75rem;color:var(--muted)}
+.toggle-switch{width:44px;height:24px;border-radius:12px;background:var(--border);position:relative;flex-shrink:0;transition:background .2s}
+.toggle-item.on .toggle-switch{background:var(--primary)}
+.toggle-switch::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s}
+.toggle-item.on .toggle-switch::after{transform:translateX(20px)}
+
+/* Estimate */
+.estimate-section{background:var(--card);border:2px solid var(--primary);border-radius:var(--radius);padding:20px;margin-top:16px}
+.estimate-label{font-size:0.85rem;color:var(--muted);margin-bottom:4px}
+.estimate-price{font-family:var(--mono);font-size:2rem;font-weight:800;color:var(--primary);margin-bottom:4px}
+.estimate-note{font-size:0.75rem;color:var(--dim);margin-bottom:16px}
+.breakdown{border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.breakdown-row{display:flex;justify-content:space-between;padding:6px 0;font-size:0.82rem}
+.breakdown-row .br-label{color:var(--muted)}
+.breakdown-row .br-value{font-family:var(--mono);font-weight:600}
+.breakdown-row.total{border-top:1px solid var(--border);margin-top:8px;padding-top:10px;font-weight:700;font-size:0.9rem}
+.breakdown-row.total .br-label{color:var(--text)}
+.breakdown-row.total .br-value{color:var(--primary)}
+
+/* Lead capture */
+.lead-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px}
+.lead-section h3{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.lead-section p{font-size:0.82rem;color:var(--muted);margin-bottom:16px}
+.lead-section input,.lead-section textarea{width:100%;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:0.9rem;margin-bottom:10px;outline:none;transition:border-color .2s}
+.lead-section input:focus,.lead-section textarea:focus{border-color:var(--primary)}
+.lead-section textarea{resize:vertical;min-height:80px}
+.btn-primary{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:12px;font-family:var(--font);font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-copy{width:100%;padding:14px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:12px;font-family:var(--font);font-size:0.9rem;font-weight:600;cursor:pointer;margin-top:8px;transition:all .2s}
+.btn-copy:hover{border-color:var(--primary);color:var(--primary)}
+
+/* Footer */
+.footer{text-align:center;padding:24px 0;font-size:0.7rem;color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">🏗️</div>
+    <h1>How much will my concrete cost?</h1>
+    <p>Answer a few questions and get a ballpark price in 60 seconds. No login. No spam. Just numbers.</p>
+    <div class="badge">Free estimator · Perth metro · Updated 2026</div>
+  </div>
+
+  <!-- Step 1: Project Type -->
+  <div class="step active" data-step="project_type">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">1</div>
+      <div class="step-title">What are you concreting?</div>
+      <div class="step-selection" id="sel-project_type"></div>
+      <div class="step-chevron">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="hint-toggle" onclick="toggleHint(this)">ℹ️ Help me decide</div>
+      <div class="hint-panel">
+        <h4>Which project type is right for you?</h4>
+        <table class="compare-table">
+          <tr><th>Project</th><th>Typical Size</th><th>Cost Range</th></tr>
+          <tr><td>Driveway</td><td>40–80 m²</td><td>$60–$150/m²</td></tr>
+          <tr><td>Patio/Alfresco</td><td>15–40 m²</td><td>$75–$150/m²</td></tr>
+          <tr><td>Shed Slab</td><td>18–60 m²</td><td>$65–$100/m²</td></tr>
+          <tr><td>Paths</td><td>10–30 m²</td><td>$70–$120/m²</td></tr>
+          <tr><td>Pool Surround</td><td>20–50 m²</td><td>$80–$160/m²</td></tr>
+          <tr><td>Crossover</td><td>12–25 m²</td><td>$75–$130/m²</td></tr>
+        </table>
+        <div class="hint-footer">Prices are guide only — your actual quote depends on site access, ground prep, and finish chosen.</div>
+      </div>
+      <div class="options-grid cols-2">
+        <div class="option-card" onclick="selectOption('project_type','driveway',this)">
+          <div class="option-tag">Most Popular</div>
+          <div class="option-icon">🚗</div>
+          <div class="option-label">Driveway</div>
+          <div class="option-desc">Single or double car. New or replacement.</div>
+          <div class="option-price">From $60/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('project_type','patio',this)">
+          <div class="option-icon">🪑</div>
+          <div class="option-label">Patio / Alfresco</div>
+          <div class="option-desc">Outdoor entertaining area.</div>
+          <div class="option-price">From $75/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('project_type','shed_slab',this)">
+          <div class="option-icon">🏚️</div>
+          <div class="option-label">Shed Slab</div>
+          <div class="option-desc">Flat pad for shed or workshop.</div>
+          <div class="option-price">From $65/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('project_type','paths',this)">
+          <div class="option-icon">🚶</div>
+          <div class="option-label">Paths</div>
+          <div class="option-desc">Footpaths, side access, garden paths.</div>
+          <div class="option-price">From $70/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('project_type','pool',this)">
+          <div class="option-icon">🏊</div>
+          <div class="option-label">Pool Surround</div>
+          <div class="option-desc">Non-slip finish around the pool.</div>
+          <div class="option-price">From $80/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('project_type','crossover',this)">
+          <div class="option-icon">🛣️</div>
+          <div class="option-label">Crossover</div>
+          <div class="option-desc">Verge/kerb crossing to your driveway.</div>
+          <div class="option-price">From $75/m²</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Concrete Finish -->
+  <div class="step" data-step="finish">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">2</div>
+      <div class="step-title">What finish?</div>
+      <div class="step-selection" id="sel-finish"></div>
+      <div class="step-chevron">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="hint-toggle" onclick="toggleHint(this)">ℹ️ Compare finishes</div>
+      <div class="hint-panel">
+        <h4>Concrete finish comparison</h4>
+        <table class="compare-table">
+          <tr><th>Finish</th><th>Look</th><th>Maintenance</th><th>Cost</th></tr>
+          <tr><td>Plain (broom)</td><td>Simple, clean</td><td>Very low</td><td>$</td></tr>
+          <tr><td>Coloured</td><td>Tinted to match</td><td>Low</td><td>$$</td></tr>
+          <tr><td>Exposed aggregate</td><td>Pebble texture</td><td>Low</td><td>$$$</td></tr>
+          <tr><td>Liquid limestone</td><td>Natural stone feel</td><td>Low</td><td>$$$</td></tr>
+          <tr><td>Stamped/Stencilled</td><td>Pattern pressed in</td><td>Medium</td><td>$$$$</td></tr>
+          <tr><td>Polished</td><td>Glossy, smooth</td><td>Medium</td><td>$$$$</td></tr>
+        </table>
+        <div class="hint-footer">Liquid limestone is very popular in Perth — it stays cool underfoot in summer and looks great around pools.</div>
+      </div>
+      <div class="options-grid cols-2">
+        <div class="option-card" onclick="selectOption('finish','plain',this)">
+          <div class="option-icon">🪨</div>
+          <div class="option-label">Plain / Broom</div>
+          <div class="option-desc">Standard grey finish. Practical and affordable.</div>
+          <div class="option-price">Base price</div>
+        </div>
+        <div class="option-card" onclick="selectOption('finish','coloured',this)">
+          <div class="option-icon">🎨</div>
+          <div class="option-label">Coloured</div>
+          <div class="option-desc">Tinted concrete to match your home.</div>
+          <div class="option-price">+$15–25/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('finish','exposed',this)">
+          <div class="option-tag">Popular</div>
+          <div class="option-icon">✨</div>
+          <div class="option-label">Exposed Aggregate</div>
+          <div class="option-desc">Decorative pebble surface. Slip-resistant.</div>
+          <div class="option-price">+$30–50/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('finish','limestone',this)">
+          <div class="option-icon">🏖️</div>
+          <div class="option-label">Liquid Limestone</div>
+          <div class="option-desc">Cool underfoot. Perth favourite.</div>
+          <div class="option-price">+$20–40/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('finish','stamped',this)">
+          <div class="option-icon">🧱</div>
+          <div class="option-label">Stamped / Stencilled</div>
+          <div class="option-desc">Brick, stone, or tile pattern pressed in.</div>
+          <div class="option-price">+$40–70/m²</div>
+        </div>
+        <div class="option-card" onclick="selectOption('finish','polished',this)">
+          <div class="option-icon">💎</div>
+          <div class="option-label">Polished</div>
+          <div class="option-desc">Glossy, modern look. Great indoors.</div>
+          <div class="option-price">+$50–80/m²</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Area Size -->
+  <div class="step" data-step="area_sqm">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">3</div>
+      <div class="step-title">How big is the area?</div>
+      <div class="step-selection" id="sel-area_sqm"></div>
+      <div class="step-chevron">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="hint-toggle" onclick="toggleHint(this)">ℹ️ How to measure</div>
+      <div class="hint-panel">
+        <div class="tip-card">
+          <div class="tip-icon">📐</div>
+          <div class="tip-title">Measuring your area</div>
+          <div class="tip-text">Multiply length × width in metres. A standard double driveway is roughly 5m wide × 10m long = 50m². For odd shapes, break it into rectangles and add them up.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📱</div>
+          <div class="tip-title">Use Google Maps</div>
+          <div class="tip-text">Open Google Maps on desktop, right-click your property and select "Measure distance." Click around the area to get a rough measurement — it's surprisingly accurate.</div>
+        </div>
+        <div class="key-point">
+          <div class="kp-label">📏 Common sizes</div>
+          <div class="kp-text">Single driveway: 30–40m² · Double driveway: 50–80m² · Patio: 15–30m² · Shed slab (6×9): 54m² · Path (1m wide, 15m long): 15m²</div>
+        </div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-label">
+          <span>Total area</span>
+          <span class="slider-value" id="area-display">40 m²</span>
+        </div>
+        <input type="range" min="10" max="150" value="40" step="5" id="area-slider" oninput="updateSlider('area_sqm',this.value)">
+        <div class="slider-labels">
+          <span>10 m²</span>
+          <span>80 m²</span>
+          <span>150 m²</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Thickness -->
+  <div class="step" data-step="thickness">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">4</div>
+      <div class="step-title">How thick?</div>
+      <div class="step-selection" id="sel-thickness"></div>
+      <div class="step-chevron">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="hint-toggle" onclick="toggleHint(this)">ℹ️ Which thickness do I need?</div>
+      <div class="hint-panel">
+        <div class="tip-card">
+          <div class="tip-icon">🏠</div>
+          <div class="tip-title">100mm — Standard residential</div>
+          <div class="tip-text">Fine for patios, paths, shed slabs, and light vehicle driveways. This is what most Perth homes use.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🚗</div>
+          <div class="tip-title">125mm — Heavy residential</div>
+          <div class="tip-text">Good for driveways with regular vehicle use, caravan parking, or if you want extra durability. Worth the small uplift.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🚛</div>
+          <div class="tip-title">150mm+ — Heavy duty</div>
+          <div class="tip-text">Required for commercial use, heavy vehicles, or council crossovers. Your concreter will advise if you need this.</div>
+        </div>
+        <div class="key-point">
+          <div class="kp-label">⚠️ Don't skimp on thickness</div>
+          <div class="kp-text">A 100mm driveway that cracks from heavy use costs more to fix than getting 125mm upfront. If in doubt, go thicker — the material cost difference is small compared to the labour.</div>
+        </div>
+      </div>
+      <div class="options-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="option-card" onclick="selectOption('thickness','100mm',this)">
+          <div class="option-label">100mm</div>
+          <div class="option-desc">Standard</div>
+          <div class="option-price">Base price</div>
+        </div>
+        <div class="option-card" onclick="selectOption('thickness','125mm',this)">
+          <div class="option-tag">Recommended</div>
+          <div class="option-label">125mm</div>
+          <div class="option-desc">Heavy resi</div>
+          <div class="option-price">+10%</div>
+        </div>
+        <div class="option-card" onclick="selectOption('thickness','150mm',this)">
+          <div class="option-label">150mm</div>
+          <div class="option-desc">Heavy duty</div>
+          <div class="option-price">+25%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: Extras -->
+  <div class="step" data-step="extras">
+    <div class="step-header" onclick="toggleStep(this)">
+      <div class="step-number">5</div>
+      <div class="step-title">Any extras?</div>
+      <div class="step-selection" id="sel-extras"></div>
+      <div class="step-chevron">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="hint-toggle" onclick="toggleHint(this)">ℹ️ What might I need?</div>
+      <div class="hint-panel">
+        <div class="key-point">
+          <div class="kp-label">🏗️ Old concrete removal</div>
+          <div class="kp-text">If you're replacing an existing driveway or slab, it needs to be demolished and disposed of. This adds $60–$90/m² depending on thickness and access. Some concreters include this in their quote, others don't — always ask.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🌊</div>
+          <div class="tip-title">Drainage</div>
+          <div class="tip-text">Perth's sandy soil drains well, but driveways and patios still need proper fall (slope) to avoid puddles. If your site is flat or slopes toward the house, you may need drainage channels — budget around $80–$150 per linear metre.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">📋</div>
+          <div class="tip-title">Council permits</div>
+          <div class="tip-text">Crossovers almost always need council approval. Some councils also require permits for large slabs near boundaries. Check with your local council before starting — your concreter should know the rules for your area.</div>
+        </div>
+      </div>
+      <div class="toggle-item" onclick="toggleExtra('removal',this)">
+        <div class="toggle-left">
+          <div class="toggle-icon">🗑️</div>
+          <div>
+            <div class="toggle-label">Remove existing concrete</div>
+            <div class="toggle-desc">Demolish & dispose of old slab</div>
+          </div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="toggle-item" onclick="toggleExtra('excavation',this)">
+        <div class="toggle-left">
+          <div class="toggle-icon">⛏️</div>
+          <div>
+            <div class="toggle-label">Site excavation</div>
+            <div class="toggle-desc">Level & compact the ground</div>
+          </div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="toggle-item" onclick="toggleExtra('reinforcing',this)">
+        <div class="toggle-left">
+          <div class="toggle-icon">🔩</div>
+          <div>
+            <div class="toggle-label">Extra reinforcing</div>
+            <div class="toggle-desc">Steel mesh or rebar upgrade</div>
+          </div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="toggle-item" onclick="toggleExtra('drainage',this)">
+        <div class="toggle-left">
+          <div class="toggle-icon">🌊</div>
+          <div>
+            <div class="toggle-label">Drainage channel</div>
+            <div class="toggle-desc">Strip drain along edge</div>
+          </div>
+        </div>
+        <div class="toggle-switch"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estimate -->
+  <div class="estimate-section" id="estimate" style="display:none">
+    <div class="estimate-label">Your ballpark price</div>
+    <div class="estimate-price" id="estimate-price">—</div>
+    <div class="estimate-note">Supply & install · incl. GST · Perth metro · Prices based on 2026 averages</div>
+    <div class="breakdown" id="breakdown"></div>
+    <div style="margin-top:16px">
+      <div class="tip-card">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-title">How accurate is this?</div>
+        <div class="tip-text">This is a rough guide based on average Perth pricing in 2026. Your actual quote depends on site access, soil conditions, reinforcing requirements, and the concreter. Always get at least 2-3 quotes.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💡</div>
+        <div class="tip-title">Pro tip</div>
+        <div class="tip-text">When you contact a concreter, mention your project type, area size, desired finish, and any access issues (narrow side gate, steep slope). A photo of the site helps them quote faster and more accurately.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lead Capture -->
+  <div class="lead-section" id="lead" style="display:none">
+    <h3>Ready to quote?</h3>
+    <p>Copy your estimate summary and send it to a local concreter for an accurate quote.</p>
+    <button class="btn-primary" onclick="copySummary()">📋 Copy Estimate Summary</button>
+    <div id="copy-confirm" style="text-align:center;color:var(--success);font-size:0.85rem;margin-top:8px;display:none">✓ Copied to clipboard — paste into an email or message to a concreter</div>
+  </div>
+
+  <div class="footer">
+    Estimates are approximate. Final pricing confirmed after site inspection.<br>
+    Prices based on Perth metro area averages, 2026.
+  </div>
+</div>
+
+<script>
+// State
+const state = {
+  project_type: null,
+  finish: null,
+  area_sqm: 40,
+  thickness: null,
+  extras: { removal: false, excavation: false, reinforcing: false, drainage: false }
+};
+
+const labels = {
+  project_type: { driveway:'Driveway', patio:'Patio/Alfresco', shed_slab:'Shed Slab', paths:'Paths', pool:'Pool Surround', crossover:'Crossover' },
+  finish: { plain:'Plain/Broom', coloured:'Coloured', exposed:'Exposed Aggregate', limestone:'Liquid Limestone', stamped:'Stamped', polished:'Polished' },
+  thickness: { '100mm':'100mm', '125mm':'125mm', '150mm':'150mm' }
+};
+
+// Pricing
+const basePrices = {
+  driveway:   { low: 60, high: 85 },
+  patio:      { low: 75, high: 100 },
+  shed_slab:  { low: 65, high: 85 },
+  paths:      { low: 70, high: 95 },
+  pool:       { low: 80, high: 110 },
+  crossover:  { low: 75, high: 100 }
+};
+
+const finishUplifts = {
+  plain:     { low: 0, high: 0 },
+  coloured:  { low: 15, high: 25 },
+  exposed:   { low: 30, high: 50 },
+  limestone: { low: 20, high: 40 },
+  stamped:   { low: 40, high: 70 },
+  polished:  { low: 50, high: 80 }
+};
+
+const thicknessMultiplier = { '100mm': 1.0, '125mm': 1.10, '150mm': 1.25 };
+
+const extraCosts = {
+  removal:     { low: 60, high: 90, label: 'Old concrete removal', type: 'per_sqm' },
+  excavation:  { low: 15, high: 30, label: 'Site excavation', type: 'per_sqm' },
+  reinforcing: { low: 8, high: 15, label: 'Extra reinforcing', type: 'per_sqm' },
+  drainage:    { low: 400, high: 800, label: 'Drainage channel', type: 'fixed' }
+};
+
+function selectOption(step, value, el) {
+  state[step] = value;
+  // Update UI
+  el.parentElement.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  // Update selection text
+  document.getElementById('sel-' + step).textContent = labels[step][value];
+  // Mark completed and open next
+  const stepEl = el.closest('.step');
+  stepEl.classList.remove('active');
+  stepEl.classList.add('completed');
+  const next = stepEl.nextElementSibling;
+  if (next && next.classList.contains('step')) {
+    next.classList.add('active');
+  }
+  recalculate();
+}
+
+function updateSlider(step, value) {
+  state.area_sqm = parseInt(value);
+  document.getElementById('area-display').textContent = value + ' m²';
+  document.getElementById('sel-area_sqm').textContent = value + ' m²';
+  recalculate();
+}
+
+function toggleExtra(id, el) {
+  state.extras[id] = !state.extras[id];
+  el.classList.toggle('on');
+  const count = Object.values(state.extras).filter(Boolean).length;
+  document.getElementById('sel-extras').textContent = count > 0 ? count + ' selected' : '';
+  recalculate();
+}
+
+function toggleStep(headerEl) {
+  const step = headerEl.parentElement;
+  if (step.classList.contains('active')) {
+    step.classList.remove('active');
+  } else {
+    // Don't close others — just open this one
+    step.classList.add('active');
+  }
+}
+
+function toggleHint(el) {
+  const panel = el.nextElementSibling;
+  panel.classList.toggle('open');
+  el.textContent = panel.classList.contains('open') ? '✕ Close' : 'ℹ️ Help me decide';
+}
+
+function recalculate() {
+  if (!state.project_type || !state.finish || !state.thickness) {
+    document.getElementById('estimate').style.display = 'none';
+    document.getElementById('lead').style.display = 'none';
+    return;
+  }
+
+  const area = state.area_sqm;
+  const base = basePrices[state.project_type];
+  const finish = finishUplifts[state.finish];
+  const thickMult = thicknessMultiplier[state.thickness];
+
+  // Base + finish per sqm
+  let lowPerSqm = (base.low + finish.low) * thickMult;
+  let highPerSqm = (base.high + finish.high) * thickMult;
+
+  let totalLow = lowPerSqm * area;
+  let totalHigh = highPerSqm * area;
+
+  // Build breakdown
+  let rows = [];
+  rows.push({ label: labels.project_type[state.project_type] + ' (' + area + ' m²)', low: base.low * thickMult * area, high: base.high * thickMult * area });
+  if (finish.low > 0 || finish.high > 0) {
+    rows.push({ label: labels.finish[state.finish] + ' finish', low: finish.low * thickMult * area, high: finish.high * thickMult * area });
+  }
+
+  // Extras
+  Object.keys(state.extras).forEach(id => {
+    if (state.extras[id]) {
+      const ex = extraCosts[id];
+      let eLow, eHigh;
+      if (ex.type === 'per_sqm') {
+        eLow = ex.low * area;
+        eHigh = ex.high * area;
+      } else {
+        eLow = ex.low;
+        eHigh = ex.high;
+      }
+      totalLow += eLow;
+      totalHigh += eHigh;
+      rows.push({ label: ex.label, low: eLow, high: eHigh });
+    }
+  });
+
+  // Minimum
+  const minimum = 1500;
+  if (totalLow < minimum) totalLow = minimum;
+  if (totalHigh < minimum) totalHigh = minimum;
+
+  // Round
+  totalLow = Math.round(totalLow / 10) * 10;
+  totalHigh = Math.round(totalHigh / 10) * 10;
+
+  // Display
+  document.getElementById('estimate-price').textContent = '$' + totalLow.toLocaleString() + ' – $' + totalHigh.toLocaleString();
+
+  let breakdownHTML = '';
+  rows.forEach(r => {
+    breakdownHTML += '<div class="breakdown-row"><span class="br-label">' + r.label + '</span><span class="br-value">$' + Math.round(r.low).toLocaleString() + ' – $' + Math.round(r.high).toLocaleString() + '</span></div>';
+  });
+  breakdownHTML += '<div class="breakdown-row total"><span class="br-label">Total estimate</span><span class="br-value">$' + totalLow.toLocaleString() + ' – $' + totalHigh.toLocaleString() + '</span></div>';
+  document.getElementById('breakdown').innerHTML = breakdownHTML;
+
+  document.getElementById('estimate').style.display = 'block';
+  document.getElementById('lead').style.display = 'block';
+}
+
+function copySummary() {
+  let summary = '🏗️ CONCRETING ESTIMATE\n';
+  summary += '========================\n\n';
+  summary += 'Project: ' + labels.project_type[state.project_type] + '\n';
+  summary += 'Finish: ' + labels.finish[state.finish] + '\n';
+  summary += 'Area: ' + state.area_sqm + ' m²\n';
+  summary += 'Thickness: ' + state.thickness + '\n';
+  
+  const activeExtras = Object.keys(state.extras).filter(k => state.extras[k]);
+  if (activeExtras.length > 0) {
+    summary += 'Extras: ' + activeExtras.map(k => extraCosts[k].label).join(', ') + '\n';
+  }
+  
+  summary += '\nEstimate: ' + document.getElementById('estimate-price').textContent + '\n';
+  summary += '(Supply & install, incl. GST, Perth metro, 2026 prices)\n\n';
+  summary += 'This is a ballpark estimate. Please provide an accurate quote for my specific site.\n';
+
+  navigator.clipboard.writeText(summary).then(() => {
+    document.getElementById('copy-confirm').style.display = 'block';
+    setTimeout(() => { document.getElementById('copy-confirm').style.display = 'none'; }, 4000);
+  });
+}
+
+// Auto-mark area slider step as completed when user interacts
+document.getElementById('area-slider').addEventListener('change', function() {
+  const stepEl = this.closest('.step');
+  stepEl.classList.add('completed');
+  document.getElementById('sel-area_sqm').textContent = state.area_sqm + ' m²';
+});
+</script>
+</body>
+</html>
