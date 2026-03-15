@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>iTabs | Perth Limestone Co</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --bg: #0a0a0f; --card: #12121a; --surface: #1e1e2e;
+            --text: #ffffff; --muted: #9090b0;
+            --accent: #c8a054; --cyan: #06b6d4; --i-btn: #f59e0b;
+            --radius: 16px; --ease: 0.2s ease;
+        }
+        html, body { height: 100%; overflow: hidden; background: var(--bg); }
+        body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.5; }
+
+        /* ── SLIDER ───────────────────────────── */
+        .container { max-width: 430px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; position: relative; }
+
+        .progress-bar { display: flex; gap: 4px; padding: 12px 16px 8px; position: absolute; top: 0; left: 0; right: 0; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); }
+        .seg { flex: 1; height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; transition: background var(--ease); }
+        .seg.viewed { background: rgba(255,255,255,0.55); }
+        .seg.active { background: var(--accent); }
+
+        .cards-wrap { flex: 1; position: relative; overflow: hidden; }
+        .card { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; transform: translateX(100%); transition: all 0.3s ease; pointer-events: none; }
+        .card.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .card.prev { opacity: 0; transform: translateX(-100%); }
+
+        /* ── HERO with image ──────────────────── */
+        .card-hero {
+            padding: 52px 20px 20px;
+            min-height: 42%;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            position: relative; overflow: hidden; cursor: pointer;
+        }
+        .hero-img {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            transition: transform 0.4s ease;
+        }
+        .card-hero:active .hero-img { transform: scale(1.03); }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.82) 100%);
+        }
+        /* fallback gradients if image fails */
+        .fb-stone   { background-color: #44403c; }
+        .fb-amber   { background-color: #78350f; }
+        .fb-cyan    { background-color: #164e63; }
+        .fb-green   { background-color: #14532d; }
+        .fb-cta     { background-color: #7c6a52; }
+
+        .card-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 8px; position: relative; z-index: 1; }
+        .card-headline { font-size: clamp(20px, 5vw, 26px); font-weight: 700; line-height: 1.25; position: relative; z-index: 1; }
+        .card-headline em { font-style: normal; color: #fcd34d; }
+
+        /* Photo tap hint */
+        .photo-hint {
+            position: absolute; bottom: 14px; right: 14px; z-index: 2;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+            padding: 4px 10px; font-size: 11px; color: rgba(255,255,255,0.8);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .photo-count { font-weight: 700; color: var(--accent); }
+
+        /* ── CARD BODY ────────────────────────── */
+        .card-body { flex: 1; background: var(--card); padding: 18px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .card-summary { font-size: 15px; color: var(--muted); line-height: 1.65; }
+        .analogy-box { background: var(--surface); border-left: 3px solid var(--cyan); border-radius: 8px; padding: 12px 14px; }
+        .analogy-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
+        .analogy-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+        .i-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+        .i-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--i-btn); cursor: pointer; transition: all var(--ease); }
+        .i-btn:active { background: rgba(245,158,11,0.25); transform: scale(0.96); }
+        .i-dot { width: 16px; height: 16px; background: var(--i-btn); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #000; flex-shrink: 0; }
+
+        .cta-btn { display: block; width: 100%; padding: 16px; background: linear-gradient(135deg, #c8a054, #a07838); border: none; border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; transition: opacity 0.2s; }
+        .cta-btn:active { opacity: 0.85; }
+        .cta-note { font-size: 12px; color: var(--muted); text-align: center; }
+
+        /* ── NAV ──────────────────────────────── */
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 24px; background: var(--card); border-top: 1px solid rgba(255,255,255,0.06); }
+        .nav-btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--ease); }
+        .nav-btn:disabled { opacity: 0.2; cursor: default; }
+        .nav-btn:not(:disabled):active { background: rgba(255,255,255,0.15); transform: scale(0.94); }
+        .counter { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+        /* ── i-button INFO MODAL ──────────────── */
+        .info-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+        .info-overlay.open { opacity: 1; pointer-events: all; }
+        .info-sheet { width: 100%; max-width: 430px; margin: 0 auto; background: var(--surface); border-radius: 20px 20px 0 0; padding: 20px; transform: translateY(100%); transition: transform 0.3s ease; }
+        .info-overlay.open .info-sheet { transform: translateY(0); }
+        .info-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 16px; }
+        .info-term { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+        .info-type { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--i-btn); margin-bottom: 12px; }
+        .info-content { font-size: 14px; color: var(--muted); line-height: 1.7; }
+        .info-close { margin-top: 20px; width: 100%; padding: 12px; background: rgba(255,255,255,0.08); border: none; border-radius: 10px; color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+
+        /* ── LIGHTBOX ─────────────────────────── */
+        .lightbox { position: fixed; inset: 0; background: #000; z-index: 400; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .lightbox.open { opacity: 1; pointer-events: all; }
+        .lb-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; position: absolute; top: 0; left: 0; right: 0; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent); }
+        .lb-title { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+        .lb-close { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .lb-imgs { flex: 1; display: flex; align-items: center; overflow: hidden; position: relative; }
+        .lb-img { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.35s; }
+        .lb-img.active { opacity: 1; }
+        .lb-bottom { padding: 16px 18px 32px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); position: absolute; bottom: 0; left: 0; right: 0; }
+        .lb-caption { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 12px; text-align: center; }
+        .lb-dots { display: flex; justify-content: center; gap: 6px; }
+        .lb-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s; }
+        .lb-dot.active { background: var(--accent); }
+        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 22px; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .lb-nav.prev { left: 14px; }
+        .lb-nav.next { right: 14px; }
+        .lb-nav:disabled { opacity: 0.2; }
+
+        /* ── QUOTE POPUP ──────────────────────── */
+        .quote-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .quote-overlay.open { opacity: 1; pointer-events: all; }
+        .quote-sheet { width: 100%; max-width: 480px; max-height: 92vh; background: #F4EFE6; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); overflow: hidden; }
+        .quote-overlay.open .quote-sheet { transform: translateY(0); }
+        .q-topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 12px; background: #2E2A24; flex-shrink: 0; }
+        .q-top-title { font-family: 'Instrument Serif', serif; font-size: 1.05rem; color: #FEFCF8; font-weight: 400; }
+        .q-close { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.12); border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .q-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px 16px 80px; }
+        .q-body::-webkit-scrollbar { display: none; }
+
+        .q-step { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 10px; overflow: hidden; border: 1px solid #e8e4dd; }
+        .q-hdr { display: flex; align-items: center; padding: 13px 15px; gap: 10px; cursor: pointer; }
+        .q-num { width: 28px; height: 28px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82rem; flex-shrink: 0; transition: all 0.2s; }
+        .q-step.done .q-num, .q-step.open .q-num { background: #7C6A52; color: white; }
+        .q-step-title { font-weight: 600; font-size: 0.88rem; color: #333; }
+        .q-step-val { margin-left: auto; font-size: 0.75rem; color: #888; white-space: nowrap; }
+        .q-bdy { display: none; padding: 0 15px 14px; }
+        .q-step.open .q-bdy { display: block; }
+
+        .q-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+        .q-opts.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+        .q-opt { display: flex; align-items: flex-start; gap: 8px; padding: 10px 11px; border: 2px solid #e8e4dd; border-radius: 9px; cursor: pointer; transition: all 0.2s; }
+        .q-opt:hover { border-color: #C2A67D; }
+        .q-opt.sel { border-color: #7C6A52; background: rgba(124,106,82,0.06); }
+        .q-radio { width: 17px; height: 17px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+        .q-opt.sel .q-radio { border-color: #7C6A52; }
+        .q-opt.sel .q-radio::after { content:''; width:8px; height:8px; background:#7C6A52; border-radius:50%; display:block; }
+        .q-opt-icon { font-size: 1.1rem; flex-shrink: 0; }
+        .q-opt-name { font-weight: 600; font-size: 0.83rem; color: #333; }
+        .q-opt-price { font-size: 0.72rem; font-weight: 700; color: #7C6A52; margin-top: 2px; }
+        .q-opt-desc { font-size: 0.72rem; color: #888; margin-top: 1px; }
+
+        .q-sl-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .q-sl-row input[type=range] { flex: 1; accent-color: #7C6A52; }
+        .q-sl-val { font-weight: 700; font-size: 1rem; color: #7C6A52; min-width: 58px; text-align: right; }
+
+        .q-toggles { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
+        .q-tog { display: flex; align-items: center; gap: 10px; padding: 10px 11px; border: 2px solid #e8e4dd; border-radius: 9px; cursor: pointer; transition: all 0.2s; }
+        .q-tog.on { border-color: #7C6A52; background: rgba(124,106,82,0.06); }
+        .q-tog-icon { font-size: 1.1rem; flex-shrink: 0; }
+        .q-tog-info { flex: 1; }
+        .q-tog-label { font-weight: 600; font-size: 0.83rem; color: #333; }
+        .q-tog-cost { font-size: 0.72rem; color: #888; }
+        .q-sw { width: 40px; height: 23px; background: #ddd; border-radius: 12px; position: relative; flex-shrink: 0; transition: background 0.2s; }
+        .q-tog.on .q-sw { background: #7C6A52; }
+        .q-knob { position: absolute; width: 17px; height: 17px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .q-tog.on .q-knob { transform: translateX(17px); }
+
+        .q-btn { width: 100%; padding: 13px; border: none; border-radius: 9px; background: #7C6A52; color: white; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; margin-top: 6px; }
+
+        .q-estimate { background: #fff; border-radius: 12px; border: 1px solid #e8e4dd; padding: 16px; margin-bottom: 10px; text-align: center; }
+        .q-est-label { font-size: 0.72rem; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+        .q-est-range { font-size: 2rem; font-weight: 800; color: #2E2A24; font-family: 'DM Sans', sans-serif; line-height: 1.1; }
+        .q-est-range span { color: #7C6A52; }
+        .q-est-note { font-size: 0.72rem; color: #aaa; margin-top: 5px; }
+
+        .q-bd { background: #fff; border-radius: 12px; border: 1px solid #e8e4dd; overflow: hidden; margin-bottom: 10px; }
+        .q-bd-title { font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.05em; padding: 9px 14px; border-bottom: 1px solid #f0ece6; }
+        .q-bd-row { display: flex; justify-content: space-between; padding: 7px 14px; border-bottom: 1px solid #f8f5f0; font-size: 0.8rem; }
+        .q-bd-row:last-child { border-bottom: none; }
+        .q-bd-key { color: #666; }
+        .q-bd-val { font-weight: 700; color: #2E2A24; }
+
+        .q-lead { background: #fff; border-radius: 12px; border: 2px dashed #C2A67D; padding: 16px; margin-bottom: 10px; }
+        .q-lead h3 { font-family: 'Instrument Serif', serif; font-size: 1rem; margin-bottom: 4px; color: #2E2A24; }
+        .q-lead p { font-size: 0.78rem; color: #888; margin-bottom: 12px; }
+        .q-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; background: #FEFCF8; margin-bottom: 8px; color: #333; }
+        .q-submit { width: 100%; padding: 14px; border: none; border-radius: 9px; background: linear-gradient(135deg, #7C6A52, #5a4e3c); color: white; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+
+        .q-success { text-align: center; padding: 28px 16px; }
+        .q-success-icon { font-size: 3rem; margin-bottom: 12px; }
+        .q-success-msg { font-size: 1.1rem; font-weight: 700; color: #2E2A24; margin-bottom: 6px; }
+        .q-success-sub { font-size: 0.82rem; color: #888; line-height: 1.6; }
+        .q-disclaimer { font-size: 0.7rem; color: #aaa; text-align: center; margin-top: 4px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<!-- ── SLIDER ──────────────────────────────── -->
+<div class="container">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="cards-wrap" id="cardsWrap"></div>
+    <div class="nav">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">←</button>
+        <span class="counter" id="counter">1 / 5</span>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">→</button>
+    </div>
+</div>
+
+<!-- ── i-button INFO MODAL ─────────────────── -->
+<div class="info-overlay" id="infoOverlay" onclick="if(event.target===this)closeInfo()">
+    <div class="info-sheet">
+        <div class="info-handle"></div>
+        <div class="info-term" id="infoTerm"></div>
+        <div class="info-type" id="infoType"></div>
+        <div class="info-content" id="infoContent"></div>
+        <button class="info-close" onclick="closeInfo()">Close</button>
+    </div>
+</div>
+
+<!-- ── LIGHTBOX ────────────────────────────── -->
+<div class="lightbox" id="lightbox">
+    <div class="lb-top">
+        <div class="lb-title" id="lbTitle"></div>
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+    </div>
+    <div class="lb-imgs" id="lbImgs"></div>
+    <button class="lb-nav prev" id="lbPrev" onclick="lbNav(-1)">‹</button>
+    <button class="lb-nav next" id="lbNext" onclick="lbNav(1)">›</button>
+    <div class="lb-bottom">
+        <div class="lb-caption" id="lbCaption"></div>
+        <div class="lb-dots" id="lbDots"></div>
+    </div>
+</div>
+
+<!-- ── QUOTE POPUP ────────────────────────── -->
+<div class="quote-overlay" id="quoteOverlay" onclick="if(event.target===this)closeQuote()">
+    <div class="quote-sheet">
+        <div class="q-topbar">
+            <div class="q-top-title">Perth Limestone Co — Quick Estimate</div>
+            <button class="q-close" onclick="closeQuote()">✕</button>
+        </div>
+        <div class="q-body" id="quoteBody"></div>
+    </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CARD DATA  —  swap image URLs for live client
+// ══════════════════════════════════════════════
+const cards = [
+  {
+    tag: '01 / Perth Limestone Co',
+    headline: 'Built to last. <em>Limestone done right.</em>',
+    fallback: 'fb-stone',
+    images: [
+      { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', caption: 'Feature limestone retaining wall' },
+      { url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80', caption: 'Premium residential stonework' },
+      { url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80', caption: 'Finished garden project' }
+    ],
+    summary: 'We supply and install limestone walls, paving, edging and steps across Perth metro. Family-run, engineering-compliant, and backed by decades of local experience.',
+    analogy: null,
+    iButtons: [
+      { label: 'Why limestone?', type: 'why-it-matters', term: 'Limestone in Perth', content: 'Limestone is Perth\'s most popular hard landscaping material. Naturally coastal-friendly, lasts 50+ years, and looks great from day one. No render, no paint, no fuss.' }
+    ]
+  },
+  {
+    tag: '02 / What We Do',
+    headline: 'Walls, paving, edging <em>& steps.</em>',
+    fallback: 'fb-amber',
+    images: [
+      { url: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', caption: 'Alfresco limestone paving' },
+      { url: 'https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=800&q=80', caption: 'Garden edging and borders' },
+      { url: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80', caption: 'Landscaped entry steps' }
+    ],
+    summary: 'Every limestone project handled end-to-end — from site inspection and engineering to laying, sealing and clean-up.',
+    analogy: null,
+    iButtons: [
+      { label: 'Walls', type: 'definition', term: 'Limestone Walls', content: 'Retaining, boundary and feature walls. We work to engineering specs and arrange council compliance for walls over 500mm.' },
+      { label: 'Paving', type: 'definition', term: 'Limestone Paving', content: 'Alfresco areas, pool surrounds, driveways and pathways. Sealed and finished to a premium standard.' },
+      { label: 'Steps', type: 'definition', term: 'Limestone Steps', content: 'Entry steps, garden steps and feature staircases — all made to measure on site.' }
+    ]
+  },
+  {
+    tag: '03 / Why Limestone',
+    headline: 'Looks great. <em>Outlasts everything.</em>',
+    fallback: 'fb-cyan',
+    images: [
+      { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', caption: 'Natural limestone texture — coastal grade' },
+      { url: 'https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=800&q=80', caption: 'Reconstituted limestone — uniform finish' }
+    ],
+    summary: 'Limestone outperforms timber sleepers, concrete blocks and most alternatives — especially in Perth\'s sandy coastal conditions.',
+    analogy: { title: 'Quick comparison', text: 'Timber sleepers last 15–25 years. Concrete needs rendering. Limestone goes in natural, looks premium, and still looks good in 50 years.' },
+    iButtons: [
+      { label: 'Coastal performance', type: 'context', term: 'Limestone Near the Coast', content: 'Within 2km of the coast? We use marine-grade mortar and 7MPa blocks — designed for Perth\'s salt-air environment. No extra cost in the quote.' }
+    ]
+  },
+  {
+    tag: '04 / How It Works',
+    headline: 'From enquiry to <em>finished job.</em>',
+    fallback: 'fb-green',
+    images: [
+      { url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80', caption: 'Site inspection — we check everything first' },
+      { url: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80', caption: 'Professional installation crew' }
+    ],
+    summary: 'Simple 3-step process: get a ballpark estimate online, we visit your site to confirm scope, then we get the job done — on time, on budget.',
+    analogy: null,
+    iButtons: [
+      { label: 'Free site visit', type: 'context', term: 'Free Site Inspection', content: 'Every job starts with a free site visit. We check access, soil conditions, drainage, and engineering requirements before quoting — no surprises.' },
+      { label: 'Permits & engineering', type: 'context', term: 'Engineering & Permits', content: 'Walls over 500mm typically need a building permit and engineering sign-off in WA. We handle all of this for you — included in your quote.' }
+    ]
+  },
+  {
+    tag: '05 / Get a Quote',
+    headline: 'Know your <em>ballpark price</em> in 60 seconds.',
+    fallback: 'fb-cta',
+    images: [
+      { url: 'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?w=800&q=80', caption: 'Completed limestone project — Perth' },
+      { url: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80', caption: 'Garden feature wall and paving' }
+    ],
+    summary: 'Answer 5 quick questions and get an instant estimate. No sign-up, no spam — just a number you can work with.',
+    analogy: null,
+    iButtons: [],
+    cta: true
+  }
+];
+
+// ══════════════════════════════════════════════
+// SLIDER ENGINE
+// ══════════════════════════════════════════════
+let cur = 0;
+const total = cards.length;
+
+function initSlider() {
+    const bar = document.getElementById('progressBar');
+    const wrap = document.getElementById('cardsWrap');
+    cards.forEach((c, i) => {
+        const seg = document.createElement('div');
+        seg.className = 'seg' + (i === 0 ? ' active' : '');
+        bar.appendChild(seg);
+        wrap.appendChild(buildCard(c, i));
+    });
+    document.getElementById('counter').textContent = '1 / ' + total;
+    document.getElementById('prevBtn').disabled = true;
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') navigate(1);
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'Escape') { closeInfo(); closeLightbox(); closeQuote(); }
+    });
+    let sx = 0;
+    const cw = document.getElementById('cardsWrap');
+    cw.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    cw.addEventListener('touchend', e => { if (Math.abs(sx - e.changedTouches[0].clientX) > 50) navigate(sx > e.changedTouches[0].clientX ? 1 : -1); });
+}
+
+function buildCard(c, idx) {
+    const el = document.createElement('div');
+    el.className = 'card' + (idx === 0 ? ' active' : '');
+
+    const imgUrl = c.images && c.images[0] ? c.images[0].url : '';
+    const imgCount = c.images ? c.images.length : 0;
+
+    const hintHTML = imgCount > 0
+        ? `<div class="photo-hint">📷 <span class="photo-count">${imgCount}</span> photo${imgCount > 1 ? 's' : ''} — tap to view</div>`
+        : '';
+
+    const analogyHTML = c.analogy
+        ? `<div class="analogy-box"><div class="analogy-title">${c.analogy.title}</div><div class="analogy-text">${c.analogy.text}</div></div>`
+        : '';
+
+    const iBtnsHTML = c.iButtons && c.iButtons.length
+        ? `<div class="i-buttons">${c.iButtons.map(b => `<button class="i-btn" data-term="${b.term}" data-type="${b.type}" data-content="${encodeURIComponent(b.content)}"><span class="i-dot">i</span>${b.label}</button>`).join('')}</div>`
+        : '';
+
+    const ctaHTML = c.cta
+        ? `<button class="cta-btn" id="openQuoteBtn_${idx}">🪨 Get a Quote →</button><p class="cta-note">Free · No sign-up · 60 seconds</p>`
+        : '';
+
+    el.innerHTML = `
+        <div class="card-hero" data-card-idx="${idx}">
+            <div class="hero-img ${c.fallback}" style="${imgUrl ? 'background-image:url(' + imgUrl + ')' : ''}"></div>
+            <div class="hero-overlay"></div>
+            <div class="card-tag">${c.tag}</div>
+            <h2 class="card-headline">${c.headline}</h2>
+            ${hintHTML}
+        </div>
+        <div class="card-body">
+            <p class="card-summary">${c.summary}</p>
+            ${analogyHTML}
+            ${iBtnsHTML}
+            ${ctaHTML}
+        </div>`;
+
+    // Hero tap → lightbox
+    el.querySelector('.card-hero').addEventListener('click', () => openLightbox(idx));
+
+    // i-buttons
+    el.querySelectorAll('.i-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            openInfo(btn.dataset.term, btn.dataset.type, decodeURIComponent(btn.dataset.content));
+        });
+    });
+
+    // CTA
+    const ctaBtn = el.querySelector(`#openQuoteBtn_${idx}`);
+    if (ctaBtn) ctaBtn.addEventListener('click', e => { e.stopPropagation(); openQuote(); });
+
+    return el;
+}
+
+function navigate(dir) {
+    const next = cur + dir;
+    if (next >= 0 && next < total) {
+        document.querySelectorAll('.card').forEach((c, i) => {
+            c.classList.remove('active', 'prev');
+            if (i === next) c.classList.add('active');
+            else if (i < next) c.classList.add('prev');
+        });
+        document.querySelectorAll('.seg').forEach((s, i) => {
+            s.classList.remove('active', 'viewed');
+            if (i === next) s.classList.add('active');
+            else if (i < next) s.classList.add('viewed');
+        });
+        cur = next;
+        document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+        document.getElementById('prevBtn').disabled = cur === 0;
+        document.getElementById('nextBtn').disabled = cur === total - 1;
+    }
+}
+
+// ── INFO MODAL ─────────────────────────────
+function openInfo(term, type, content) {
+    const labels = { definition: 'Definition', context: 'Context', 'why-it-matters': 'Why It Matters', related: 'Related' };
+    document.getElementById('infoTerm').textContent = term;
+    document.getElementById('infoType').textContent = labels[type] || type;
+    document.getElementById('infoContent').textContent = content;
+    document.getElementById('infoOverlay').classList.add('open');
+}
+function closeInfo() { document.getElementById('infoOverlay').classList.remove('open'); }
+
+// ── LIGHTBOX ───────────────────────────────
+let lbCardIdx = 0, lbPhotoIdx = 0;
+
+function openLightbox(cardIdx) {
+    const c = cards[cardIdx];
+    if (!c.images || !c.images.length) return;
+    lbCardIdx = cardIdx;
+    lbPhotoIdx = 0;
+
+    document.getElementById('lbTitle').textContent = c.tag;
+
+    const imgsEl = document.getElementById('lbImgs');
+    imgsEl.innerHTML = '';
+    c.images.forEach((img, i) => {
+        const d = document.createElement('div');
+        d.className = 'lb-img' + (i === 0 ? ' active' : '');
+        d.style.backgroundImage = 'url(' + img.url + ')';
+        imgsEl.appendChild(d);
+    });
+
+    const dotsEl = document.getElementById('lbDots');
+    dotsEl.innerHTML = '';
+    c.images.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'lb-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => lbGoTo(i);
+        dotsEl.appendChild(dot);
+    });
+
+    document.getElementById('lbCaption').textContent = c.images[0].caption || '';
+    updateLbNav();
+    document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+function lbNav(dir) { lbGoTo(lbPhotoIdx + dir); }
+
+function lbGoTo(idx) {
+    const c = cards[lbCardIdx];
+    if (idx < 0 || idx >= c.images.length) return;
+    document.querySelectorAll('.lb-img').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.lb-dot').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+    });
+    document.getElementById('lbCaption').textContent = c.images[idx].caption || '';
+    lbPhotoIdx = idx;
+    updateLbNav();
+}
+
+function updateLbNav() {
+    const c = cards[lbCardIdx];
+    document.getElementById('lbPrev').disabled = lbPhotoIdx === 0;
+    document.getElementById('lbNext').disabled = lbPhotoIdx === c.images.length - 1;
+    const show = c.images.length > 1;
+    document.getElementById('lbPrev').style.display = show ? 'flex' : 'none';
+    document.getElementById('lbNext').style.display = show ? 'flex' : 'none';
+    document.getElementById('lbDots').style.display = show ? 'flex' : 'none';
+}
+
+// Swipe in lightbox
+let lbSx = 0;
+document.getElementById('lbImgs').addEventListener('touchstart', e => { lbSx = e.touches[0].clientX; }, { passive: true });
+document.getElementById('lbImgs').addEventListener('touchend', e => { if (Math.abs(lbSx - e.changedTouches[0].clientX) > 40) lbNav(lbSx > e.changedTouches[0].clientX ? 1 : -1); });
+
+// ══════════════════════════════════════════════
+// QUOTE ENGINE
+// ══════════════════════════════════════════════
+const Q = { svc: null, qty: 20, supply: null, cond: null, extras: new Set(), step: 1 };
+const bases = {
+    walls:  { low:120, high:220, unit:'m²',    label:'Limestone Walls' },
+    paving: { low:85,  high:160, unit:'m²',    label:'Limestone Paving' },
+    edging: { low:40,  high:75,  unit:'m',     label:'Garden Edging' },
+    steps:  { low:250, high:500, unit:'steps', label:'Limestone Steps' }
+};
+const supplyM = { install:1.0, supply:0.45, unsure:1.0 };
+const condM   = { easy:1.0, moderate:1.12, hard:1.22, unknown:1.0 };
+const extCfg  = {
+    removal:  { type:'per', lo:15,  hi:30,   label:'Material removal' },
+    sealer:   { type:'per', lo:10,  hi:20,   label:'Sealer coating' },
+    engineer: { type:'fix', lo:500, hi:1500, label:'Engineer cert' },
+    delivery: { type:'fix', lo:150, hi:400,  label:'Long distance delivery' }
+};
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString('en-AU'); }
+
+function calcQuote() {
+    const b = bases[Q.svc || 'paving'];
+    const sm = supplyM[Q.supply] || 1, cm = condM[Q.cond] || 1;
+    let lo = b.low * Q.qty * sm * cm, hi = b.high * Q.qty * sm * cm;
+    const rows = [{ name: b.label + ' (' + Q.qty + ' ' + b.unit + ')', lo: b.low * Q.qty, hi: b.high * Q.qty }];
+    if (sm !== 1) rows.push({ name: 'Supply only adjustment', lo: (sm-1)*b.low*Q.qty, hi: (sm-1)*b.high*Q.qty });
+    if (cm !== 1) rows.push({ name: 'Site conditions', lo: (cm-1)*b.low*Q.qty*sm, hi: (cm-1)*b.high*Q.qty*sm });
+    Q.extras.forEach(eid => {
+        const ex = extCfg[eid]; let eLo = 0, eHi = 0;
+        if (ex.type === 'per') { eLo = ex.lo * Q.qty; eHi = ex.hi * Q.qty; }
+        if (ex.type === 'fix') { eLo = ex.lo; eHi = ex.hi; }
+        lo += eLo; hi += eHi;
+        rows.push({ name: ex.label, lo: eLo, hi: eHi });
+    });
+    lo = Math.round(Math.max(lo, 500) / 50) * 50;
+    hi = Math.round(Math.max(hi, 500) / 50) * 50;
+    return { lo, hi, rows, range: fmt(lo) + ' – ' + fmt(hi) };
+}
+
+function renderQuote() {
+    const svcOpts = [
+        { val:'walls',  icon:'🪨', name:'Limestone Walls',  price:'$120–$220/m²' },
+        { val:'paving', icon:'🏡', name:'Limestone Paving', price:'$85–$160/m²' },
+        { val:'edging', icon:'🌿', name:'Garden Edging',    price:'$40–$75/m' },
+        { val:'steps',  icon:'🪜', name:'Limestone Steps',  price:'$250–$500/step' }
+    ];
+    const supplyOpts = [
+        { val:'install', icon:'✅', name:'Supply & Install', desc:'We handle everything' },
+        { val:'supply',  icon:'📦', name:'Supply Only',      desc:'Materials delivered' },
+        { val:'unsure',  icon:'🤷', name:'Not sure',         desc:'We can advise' }
+    ];
+    const condOpts = [
+        { val:'easy',     icon:'✅', name:'Easy',      desc:'Flat, clear access' },
+        { val:'moderate', icon:'⚠️', name:'Moderate',  desc:'Some slope or tight access' },
+        { val:'hard',     icon:'🔧', name:'Difficult', desc:'Steep or poor access' },
+        { val:'unknown',  icon:'🤷', name:'Not sure',  desc:'Need a site visit' }
+    ];
+    const extList = [
+        { eid:'removal',  icon:'🗑️', name:'Remove existing material', cost:'+$15–$30/m²' },
+        { eid:'sealer',   icon:'💧', name:'Sealer / waterproof coating', cost:'+$10–$20/m²' },
+        { eid:'engineer', icon:'📋', name:'Engineer cert (walls)', cost:'+$500–$1,500' },
+        { eid:'delivery', icon:'🚛', name:'Long distance delivery', cost:'+$150–$400' }
+    ];
+
+    const svcLabel = Q.svc ? bases[Q.svc].label : '';
+    const supplyLabel = Q.supply ? supplyOpts.find(o=>o.val===Q.supply)?.name : '';
+    const condLabel = Q.cond ? condOpts.find(o=>o.val===Q.cond)?.name : '';
+    const sizeUnit = Q.svc ? bases[Q.svc].unit : 'm²';
+
+    let html = '';
+
+    // S1
+    html += `<div class="q-step ${Q.step===1?'open':'done'}" id="qs1">
+      <div class="q-hdr" data-g="1"><div class="q-num">1</div><div class="q-step-title">What type of work?</div><div class="q-step-val">${svcLabel}</div></div>
+      <div class="q-bdy"><div class="q-opts">${svcOpts.map(o=>`
+        <div class="q-opt${Q.svc===o.val?' sel':''}" data-svc="${o.val}">
+          <div class="q-radio"></div><span class="q-opt-icon">${o.icon}</span>
+          <div><div class="q-opt-name">${o.name}</div><div class="q-opt-price">${o.price}</div></div>
+        </div>`).join('')}</div></div>
+    </div>`;
+
+    if (Q.step >= 2) html += `<div class="q-step ${Q.step===2?'open':'done'}" id="qs2">
+      <div class="q-hdr" data-g="2"><div class="q-num">2</div><div class="q-step-title">Project size</div><div class="q-step-val">${Q.step>2?Q.qty+' '+sizeUnit:''}</div></div>
+      <div class="q-bdy">
+        <div class="q-sl-row"><input type="range" id="qSl" min="5" max="100" step="5" value="${Q.qty}"><div class="q-sl-val"><span id="qSlV">${Q.qty}</span> ${sizeUnit}</div></div>
+        <button class="q-btn" id="qN2">Next →</button>
+      </div>
+    </div>`;
+
+    if (Q.step >= 3) html += `<div class="q-step ${Q.step===3?'open':'done'}" id="qs3">
+      <div class="q-hdr" data-g="3"><div class="q-num">3</div><div class="q-step-title">Supply or install?</div><div class="q-step-val">${supplyLabel}</div></div>
+      <div class="q-bdy"><div class="q-opts g2">${supplyOpts.map(o=>`
+        <div class="q-opt${Q.supply===o.val?' sel':''}" data-sup="${o.val}">
+          <div class="q-radio"></div><div><div class="q-opt-icon">${o.icon}</div><div class="q-opt-name">${o.name}</div><div class="q-opt-desc">${o.desc}</div></div>
+        </div>`).join('')}</div></div>
+    </div>`;
+
+    if (Q.step >= 4) html += `<div class="q-step ${Q.step===4?'open':'done'}" id="qs4">
+      <div class="q-hdr" data-g="4"><div class="q-num">4</div><div class="q-step-title">Site conditions</div><div class="q-step-val">${condLabel}</div></div>
+      <div class="q-bdy"><div class="q-opts g2">${condOpts.map(o=>`
+        <div class="q-opt${Q.cond===o.val?' sel':''}" data-cond="${o.val}">
+          <div class="q-radio"></div><div><div class="q-opt-icon">${o.icon}</div><div class="q-opt-name">${o.name}</div><div class="q-opt-desc">${o.desc}</div></div>
+        </div>`).join('')}</div></div>
+    </div>`;
+
+    if (Q.step >= 5) html += `<div class="q-step ${Q.step===5?'open':'done'}" id="qs5">
+      <div class="q-hdr" data-g="5"><div class="q-num">5</div><div class="q-step-title">Extras</div><div class="q-step-val">${Q.extras.size?Q.extras.size+' added':'Optional'}</div></div>
+      <div class="q-bdy">
+        <div class="q-toggles">${extList.map(e=>`
+          <div class="q-tog${Q.extras.has(e.eid)?' on':''}" data-eid="${e.eid}">
+            <span class="q-tog-icon">${e.icon}</span>
+            <div class="q-tog-info"><div class="q-tog-label">${e.name}</div><div class="q-tog-cost">${e.cost}</div></div>
+            <div class="q-sw"><div class="q-knob"></div></div>
+          </div>`).join('')}
+        </div>
+        <button class="q-btn" id="qGE">See My Estimate →</button>
+      </div>
+    </div>`;
+
+    if (Q.step >= 6) {
+        const r = calcQuote();
+        html += `<div class="q-estimate">
+          <div class="q-est-label">Your ballpark estimate</div>
+          <div class="q-est-range"><span>${fmt(r.lo)}</span> – <span>${fmt(r.hi)}</span></div>
+          <div class="q-est-note">Supply & install · Perth metro · incl. GST</div>
+        </div>
+        <div class="q-bd">
+          <div class="q-bd-title">Breakdown</div>
+          ${r.rows.map(row=>`<div class="q-bd-row"><span class="q-bd-key">${row.name}</span><span class="q-bd-val">${fmt(row.lo)} – ${fmt(row.hi)}</span></div>`).join('')}
+        </div>
+        <div class="q-lead" id="qLeadGate">
+          <h3>Want a confirmed quote?</h3>
+          <p>Leave your details — we'll be in touch within 24 hours.</p>
+          <input class="q-input" id="qN" type="text" placeholder="Your name *">
+          <input class="q-input" id="qP" type="tel" placeholder="Phone number *">
+          <input class="q-input" id="qE" type="email" placeholder="Email (optional)">
+          <input class="q-input" id="qS" type="text" placeholder="Suburb (optional)">
+          <button class="q-submit" id="qSub">📩 Send My Quote Request</button>
+        </div>
+        <p class="q-disclaimer">Estimates are approximate 2025/26 Perth prices for guidance only.</p>`;
+    }
+
+    document.getElementById('quoteBody').innerHTML = html;
+    attachQuoteListeners();
+    document.getElementById('quoteBody').scrollTop = 0;
+}
+
+function attachQuoteListeners() {
+    const body = document.getElementById('quoteBody');
+
+    body.querySelectorAll('.q-hdr').forEach(h => {
+        h.addEventListener('click', () => { const g = parseInt(h.dataset.g); if (g < Q.step) { Q.step = g; renderQuote(); }});
+    });
+    body.querySelectorAll('[data-svc]').forEach(o => {
+        o.addEventListener('click', () => { Q.svc = o.dataset.svc; Q.step = 2; renderQuote(); });
+    });
+    const sl = body.querySelector('#qSl');
+    if (sl) sl.addEventListener('input', () => { Q.qty = parseInt(sl.value); const v = body.querySelector('#qSlV'); if(v) v.textContent = sl.value; });
+    const n2 = body.querySelector('#qN2');
+    if (n2) n2.addEventListener('click', () => { Q.step = 3; renderQuote(); });
+    body.querySelectorAll('[data-sup]').forEach(o => {
+        o.addEventListener('click', () => { Q.supply = o.dataset.sup; Q.step = 4; renderQuote(); });
+    });
+    body.querySelectorAll('[data-cond]').forEach(o => {
+        o.addEventListener('click', () => { Q.cond = o.dataset.cond; Q.step = 5; renderQuote(); });
+    });
+    body.querySelectorAll('.q-tog').forEach(t => {
+        t.addEventListener('click', () => {
+            const eid = t.dataset.eid;
+            if (Q.extras.has(eid)) { Q.extras.delete(eid); t.classList.remove('on'); }
+            else { Q.extras.add(eid); t.classList.add('on'); }
+        });
+    });
+    const ge = body.querySelector('#qGE');
+    if (ge) ge.addEventListener('click', () => { Q.step = 6; renderQuote(); });
+
+    const sub = body.querySelector('#qSub');
+    if (sub) sub.addEventListener('click', () => {
+        const name = body.querySelector('#qN')?.value.trim();
+        const phone = body.querySelector('#qP')?.value.trim();
+        if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+        const r = calcQuote();
+        const extArr = []; Q.extras.forEach(e => extArr.push(extCfg[e].label));
+        const msg = ['--- CUSTOMER ---','Name: '+name,'Phone: '+phone,'Email: '+(body.querySelector('#qE')?.value||'Not provided'),'Suburb: '+(body.querySelector('#qS')?.value||'Not provided'),'','--- PROJECT ---','Service: '+(Q.svc?bases[Q.svc].label:'Not selected'),'Quantity: '+Q.qty+' '+(Q.svc?bases[Q.svc].unit:'m²'),'Supply: '+({install:'Supply & Install',supply:'Supply Only',unsure:'Not sure'}[Q.supply]||'Not selected'),'Conditions: '+({easy:'Easy',moderate:'Moderate',hard:'Difficult',unknown:'Not sure'}[Q.cond]||'Not selected'),'Extras: '+(extArr.join(', ')||'None'),'','--- ESTIMATE ---',r.range].join('\n');
+        fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'99a11c15-5c61-4765-99c5-673adec64b16',subject:'New Limestone Enquiry — '+name+' | Perth Limestone Co',from_name:name,replyto:body.querySelector('#qE')?.value||'',to:'responses@itabs.ai',message:msg})}).catch(e=>console.error(e));
+        document.getElementById('quoteBody').innerHTML = `<div class="q-success"><div class="q-success-icon">✅</div><div class="q-success-msg">Quote request sent!</div><div class="q-success-sub">We'll be in touch within 24 hours.<br><br><strong style="color:#2E2A24">Perth Limestone Co</strong><br><a href="tel:0400000000" style="color:#7C6A52;font-weight:700;font-size:1.1rem;text-decoration:none">0400 000 000</a></div></div>`;
+    });
+}
+
+function openQuote() {
+    Q.svc=null; Q.qty=20; Q.supply=null; Q.cond=null; Q.extras.clear(); Q.step=1;
+    renderQuote();
+    document.getElementById('quoteOverlay').classList.add('open');
+}
+function closeQuote() { document.getElementById('quoteOverlay').classList.remove('open'); }
+
+// Boot
+initSlider();
+</script>
+</body>
+</html>
