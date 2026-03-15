@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iTabs — With Widget Popup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0d0d0d;
+  --white:#f8f6f1;
+  --stone:#d6d3ce;
+  --gold:#c8a054;
+  --gold-dim:#8a6a30;
+  --hi-vis:#f5c518;
+  --dark:#1a1814;
+  --mid:#2e2b26;
+  --muted:#6b6760;
+  --border:#2e2b26;
+  --radius:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ──────────────────────────── */
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;
+  background:rgba(13,13,13,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{
+  width:34px;height:34px;background:var(--gold);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:18px;color:#000;letter-spacing:.05em
+}
+.nav-logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.08em;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-link{padding:7px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--stone);text-decoration:none;transition:all .2s}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,0.07)}
+.nav-link.active{color:var(--white)}
+.nav-cta{
+  padding:8px 18px;background:var(--gold);border-radius:7px;
+  font-size:13px;font-weight:700;color:#000;text-decoration:none;
+  transition:opacity .2s;
+}
+.nav-cta:hover{opacity:.88}
+
+/* ── HERO ──────────────────────────── */
+.hero{
+  min-height:90vh;display:flex;flex-direction:column;justify-content:center;
+  padding:80px 28px 60px;position:relative;overflow:hidden
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,160,84,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,160,84,0.06) 0%, transparent 50%);
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(200,160,84,0.12);border:1px solid rgba(200,160,84,0.3);
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;
+  color:var(--gold);margin-bottom:28px;width:fit-content
+}
+.hero-badge-dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
+.hero-headline{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,10vw,96px);
+  line-height:0.95;letter-spacing:.02em;
+  margin-bottom:24px;position:relative;z-index:1
+}
+.hero-headline em{color:var(--gold);font-style:normal}
+.hero-sub{
+  font-size:clamp(16px,2vw,19px);color:var(--stone);
+  max-width:520px;line-height:1.6;margin-bottom:36px;
+  position:relative;z-index:1
+}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.btn-primary{
+  padding:14px 28px;background:var(--gold);border-radius:8px;
+  font-size:15px;font-weight:700;color:#000;text-decoration:none;
+  transition:all .2s;display:inline-block
+}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-secondary{
+  padding:14px 28px;background:transparent;border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;font-size:15px;font-weight:500;color:var(--stone);
+  text-decoration:none;transition:all .2s;display:inline-block
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--white)}
+
+.hero-stats{
+  display:flex;gap:32px;margin-top:52px;padding-top:32px;
+  border-top:1px solid var(--border);position:relative;z-index:1
+}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:.03em}
+.stat-label{font-size:12px;color:var(--muted);margin-top:-2px}
+
+/* ── SECTION LABELS ──────────────── */
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:16px
+}
+
+/* ── DEMO STRIP ──────────────────── */
+.demo-strip{
+  background:var(--dark);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);padding:60px 28px
+}
+.demo-inner{max-width:960px;margin:0 auto}
+.demo-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+.demo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,6vw,56px);line-height:1;letter-spacing:.03em}
+.demo-title em{color:var(--gold);font-style:normal}
+.demo-sub{font-size:14px;color:var(--muted);max-width:320px;text-align:right}
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.demo-card{
+  background:var(--mid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;cursor:pointer;transition:all .25s;text-decoration:none;display:block
+}
+.demo-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.demo-card-icon{font-size:28px;margin-bottom:12px}
+.demo-card-name{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--white)}
+.demo-card-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.demo-card-badge{
+  display:inline-block;margin-top:10px;font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(200,160,84,0.15);color:var(--gold);
+  border-radius:4px;padding:2px 8px
+}
+.demo-card.showcase{
+  grid-column:span 3;
+  background:linear-gradient(135deg,rgba(200,160,84,0.1),rgba(200,160,84,0.04));
+  border-color:rgba(200,160,84,0.3);
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px
+}
+.demo-card.showcase:hover{border-color:var(--gold)}
+.showcase-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.showcase-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.03em;margin-bottom:6px}
+.showcase-desc{font-size:13px;color:var(--muted)}
+.showcase-arrow{font-size:32px;color:var(--gold);flex-shrink:0}
+
+/* ── FOR TRADIES ─────────────────── */
+.tradies-section{padding:80px 28px;max-width:960px;margin:0 auto}
+.tradies-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.tradies-left{}
+.tradies-tag{
+  display:inline-block;background:var(--hi-vis);color:#000;
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:4px;padding:3px 10px;margin-bottom:20px
+}
+.tradies-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,64px);line-height:.95;letter-spacing:.02em;margin-bottom:20px}
+.tradies-headline em{color:var(--gold);font-style:normal}
+.tradies-body{font-size:15px;color:var(--stone);line-height:1.7;margin-bottom:28px}
+.offer-box{
+  background:var(--dark);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 24px;margin-bottom:24px
+}
+.offer-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px}
+.offer-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.offer-item:last-child{margin-bottom:0}
+.offer-check{color:var(--gold);font-size:14px;flex-shrink:0;margin-top:2px}
+.offer-text{font-size:13px;color:var(--stone);line-height:1.5}
+.offer-price{
+  display:flex;align-items:baseline;gap:8px;margin-top:16px;
+  padding-top:16px;border-top:1px solid var(--border)
+}
+.price-val{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);letter-spacing:.02em}
+.price-desc{font-size:12px;color:var(--muted);line-height:1.4}
+
+.tradies-right{
+  background:var(--dark);border:1px solid var(--border);border-radius:14px;
+  padding:28px;display:flex;flex-direction:column;gap:16px
+}
+.preview-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.preview-phone{
+  background:var(--black);border-radius:24px;border:8px solid var(--mid);
+  aspect-ratio:9/16;max-width:220px;margin:0 auto;
+  overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5)
+}
+.phone-notch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:100px;height:24px;background:var(--mid);border-radius:0 0 16px 16px;z-index:10
+}
+.phone-screen{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#1a2332 0%,#0c1117 100%);
+  display:flex;flex-direction:column;
+}
+.phone-hero{flex:1;background:linear-gradient(160deg,#44403c,#1c1917);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.phone-tag{font-size:7px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:4px}
+.phone-headline{font-size:13px;font-weight:700;color:#fff;line-height:1.2}
+.phone-headline span{color:#fcd34d}
+.phone-img-hint{font-size:8px;color:rgba(255,255,255,0.5);margin-top:6px}
+.phone-body{background:#12121a;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.phone-text{font-size:8px;color:#9090b0;line-height:1.5}
+.phone-ibtn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);
+  border-radius:12px;padding:3px 8px;font-size:7px;color:#f59e0b;
+  width:fit-content
+}
+.phone-cta{
+  background:linear-gradient(135deg,#c8a054,#a07838);border-radius:7px;
+  padding:8px;font-size:9px;font-weight:700;color:#fff;text-align:center;margin-top:4px
+}
+.form-preview{background:var(--mid);border:1px solid var(--border);border-radius:8px;padding:14px}
+.form-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.form-fields{display:flex;flex-direction:column;gap:7px}
+.fake-input{
+  background:var(--black);border:1px solid var(--border);border-radius:6px;
+  padding:8px 12px;font-size:12px;color:var(--muted)
+}
+.fake-input.filled{color:var(--stone)}
+.fake-btn{
+  background:var(--gold);border-radius:6px;padding:10px;
+  font-size:13px;font-weight:700;color:#000;text-align:center;margin-top:4px
+}
+
+/* ── ENQUIRY FORM ────────────────── */
+.enquiry-section{
+  background:var(--dark);border-top:1px solid var(--border);
+  padding:80px 28px
+}
+.enquiry-inner{max-width:600px;margin:0 auto;text-align:center}
+.enquiry-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,60px);letter-spacing:.02em;margin-bottom:12px}
+.enquiry-sub{font-size:15px;color:var(--muted);margin-bottom:36px}
+.enquiry-form{
+  background:var(--mid);border:1px solid var(--border);border-radius:14px;
+  padding:28px;text-align:left
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field-label{font-size:12px;font-weight:600;color:var(--stone);margin-bottom:5px;display:block}
+.field-input{
+  width:100%;padding:11px 14px;background:var(--black);border:1px solid var(--border);
+  border-radius:7px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);
+  outline:none;transition:border-color .2s
+}
+.field-input:focus{border-color:var(--gold)}
+.field-input::placeholder{color:var(--muted)}
+select.field-input option{background:var(--black)}
+.field-full{margin-bottom:12px}
+.submit-btn{
+  width:100%;padding:15px;background:var(--gold);border:none;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#000;
+  cursor:pointer;margin-top:8px;transition:opacity .2s
+}
+.submit-btn:hover{opacity:.9}
+.submit-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* ── FOOTER ──────────────────────── */
+footer{
+  padding:32px 28px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px
+}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.08em;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-link:hover{color:var(--white)}
+.footer-note{font-size:12px;color:var(--muted)}
+
+/* change annotations */
+.change-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.3);
+  border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--hi-vis);
+  vertical-align:middle;margin-left:8px
+}
+
+/* ── SITE SCALE-DOWN WHEN WIDGET OPEN ── */
+#siteWrap{
+  transition:transform .4s cubic-bezier(.32,.72,0,1), filter .4s ease;
+  transform-origin:center top;
+}
+#siteWrap.shrunk{
+  transform:scale(0.88) translateY(-24px);
+  filter:brightness(0.45);
+  pointer-events:none;
+  border-radius:24px;
+  overflow:hidden;
+}
+
+/* ── WIDGET POPUP OVERLAY ─────────── */
+#widgetOverlay{
+  position:fixed;inset:0;z-index:900;
+  display:flex;align-items:flex-end;justify-content:center;
+  pointer-events:none;opacity:0;
+  transition:opacity .35s ease;
+}
+#widgetOverlay.open{opacity:1;pointer-events:all;}
+
+/* The phone-frame wrapper */
+#widgetFrame{
+  width:100%;max-width:430px;
+  height:92vh;
+  background:#0a0a0f;
+  border-radius:28px 28px 0 0;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 -12px 60px rgba(0,0,0,0.7);
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(.32,.72,0,1);
+  position:relative;
+}
+#widgetOverlay.open #widgetFrame{transform:translateY(0);}
+
+/* Drag handle + close bar */
+.widget-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px 8px;
+  background:rgba(10,10,15,0.95);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  flex-shrink:0;
+}
+.widget-handle{
+  width:40px;height:4px;background:rgba(255,255,255,0.2);
+  border-radius:2px;
+}
+.widget-close{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.08);border:none;
+  border-radius:20px;padding:5px 12px;
+  color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:background .2s;
+}
+.widget-close:hover{background:rgba(255,255,255,0.14);}
+
+/* the iTabs slider inside */
+#widgetInner{flex:1;overflow:hidden;position:relative;}
+
+/* ── "SEE IT IN ACTION" trigger ────── */
+.demo-trigger-strip{
+  background:linear-gradient(135deg,rgba(200,160,84,0.12),rgba(200,160,84,0.04));
+  border:1px solid rgba(200,160,84,0.25);
+  border-radius:14px;padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  cursor:pointer;transition:all .25s;margin-bottom:20px;
+}
+.demo-trigger-strip:hover{border-color:var(--gold);background:rgba(200,160,84,0.15);}
+.demo-trigger-left{}
+.demo-trigger-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.demo-trigger-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.02em;margin-bottom:4px;}
+.demo-trigger-sub{font-size:13px;color:var(--muted);}
+.demo-trigger-btn{
+  flex-shrink:0;padding:12px 22px;
+  background:var(--gold);border:none;border-radius:8px;
+  color:#000;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;
+  cursor:pointer;white-space:nowrap;transition:opacity .2s;
+}
+.demo-trigger-btn:hover{opacity:.88;}
+
+@media(max-width:680px){
+  .demo-grid{grid-template-columns:1fr 1fr}
+  .demo-card.showcase{grid-column:span 2}
+  .tradies-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .hero-stats{gap:20px}
+  nav{padding:12px 16px}
+  .nav-links .nav-link:not(.nav-cta){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- WIDGET POPUP -->
+<div id="widgetOverlay">
+  <div id="widgetFrame">
+    <div class="widget-topbar">
+      <div class="widget-handle"></div>
+      <button class="widget-close" onclick="closeWidget()">✕ Close preview</button>
+    </div>
+    <div id="widgetInner"></div>
+  </div>
+</div>
+
+<!-- SITE WRAP (scales down when widget opens) -->
+<div id="siteWrap">
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">iQ</div>
+    <div class="nav-logo-text">iTabs</div>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link active" href="#">Estimators</a>
+    <a class="nav-link" href="#">For Tradies <span class="change-tag">new</span></a>
+    <a class="nav-link" href="#">Demo</a>
+    <a class="nav-link" href="#">About</a>
+    <a class="nav-link" href="#">Story</a>
+    <a class="nav-cta" href="#">Get Your Widget →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge"><div class="hero-badge-dot"></div>📍 Perth, WA — 2025/26 pricing</div>
+  <h1 class="hero-headline">
+    Send complete<br>job details.<br><em>Get quoted faster.</em>
+  </h1>
+  <p class="hero-sub">
+    Tap through your options, send detailed specs to any tradie. Takes about 60 seconds. No sign-up, no app.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#">Try an Estimator →</a>
+    <a class="btn-secondary" href="#">Get your own widget</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-val">6</div><div class="stat-label">Trades live</div></div>
+    <div><div class="stat-val">60s</div><div class="stat-label">To a full spec</div></div>
+    <div><div class="stat-val">Free</div><div class="stat-label">For homeowners</div></div>
+  </div>
+</section>
+
+<!-- DEMO / ESTIMATORS STRIP -->
+<section class="demo-strip">
+  <div class="demo-inner">
+    <div class="demo-header">
+      <div>
+        <div class="section-label">Choose a trade</div>
+        <h2 class="demo-title">Six trades.<br><em>Live now.</em></h2>
+      </div>
+      <div class="demo-sub">Each estimator takes 60 seconds and sends a detailed spec to your tradie.</div>
+    </div>
+
+    <!-- LIVE DEMO TRIGGER -->
+    <div class="demo-trigger-strip" onclick="openWidget()">
+      <div class="demo-trigger-left">
+        <div class="demo-trigger-eyebrow">⭐ Live demo — tap to launch</div>
+        <div class="demo-trigger-title">See the full iTabs widget →</div>
+        <div class="demo-trigger-sub">Perth Limestone Co · Slider + photos + quote estimator · This is what your branded widget looks like</div>
+      </div>
+      <button class="demo-trigger-btn">Launch widget ↗</button>
+    </div>
+
+    <div class="demo-grid">
+
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">🏗️</div>
+        <div class="demo-card-name">Fencing</div>
+        <div class="demo-card-desc">Colorbond, timber, aluminium & pool fencing.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">🧱</div>
+        <div class="demo-card-name">Paving</div>
+        <div class="demo-card-desc">Brick, concrete, natural stone & exposed aggregate.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">🌿</div>
+        <div class="demo-card-name">Landscaping</div>
+        <div class="demo-card-desc">Turf, reticulation, retaining walls & garden lighting.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">⚡</div>
+        <div class="demo-card-name">Electrical</div>
+        <div class="demo-card-desc">Lighting, power points, fans & switchboards.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">🔧</div>
+        <div class="demo-card-name">Plumbing</div>
+        <div class="demo-card-desc">Taps, hot water, drains & gas fitting.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+      <a class="demo-card" href="#">
+        <div class="demo-card-icon">🎨</div>
+        <div class="demo-card-name">Painting</div>
+        <div class="demo-card-desc">Interior & exterior, per-room with prep options.</div>
+        <div class="demo-card-badge">Live</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOR TRADIES -->
+<section style="padding:80px 0;background:var(--black)">
+  <div class="tradies-section" style="padding:0 28px">
+    <div class="tradies-grid">
+      <div class="tradies-left">
+        <div class="tradies-tag">🔨 For Tradies <span class="change-tag">new section</span></div>
+        <h2 class="tradies-headline">Your own<br>branded<br><em>widget.</em></h2>
+        <p class="tradies-body">
+          Stop getting "how much for a fence?" calls. Get a branded quote estimator on your website — customers arrive knowing what they want, what it costs, and ready to book.
+        </p>
+        <div class="offer-box">
+          <div class="offer-title">What you get</div>
+          <div class="offer-item"><span class="offer-check">✓</span><span class="offer-text">Branded estimator widget for your trade — your colours, your name, your phone</span></div>
+          <div class="offer-item"><span class="offer-check">✓</span><span class="offer-text">Slider intro + real job photos + popup quote estimator</span></div>
+          <div class="offer-item"><span class="offer-check">✓</span><span class="offer-text">Leads emailed directly to you — name, phone, full job spec, ballpark price</span></div>
+          <div class="offer-item"><span class="offer-check">✓</span><span class="offer-text">Deploy to your site or we host it — your choice</span></div>
+          <div class="offer-item"><span class="offer-check">✓</span><span class="offer-text">Built in 24–48 hours once we have your details</span></div>
+          <div class="offer-price">
+            <div class="price-val">$297</div>
+            <div class="price-desc">One-time setup<br><span style="color:var(--gold)">Free updates</span> for 3 months</div>
+          </div>
+        </div>
+        <a class="btn-primary" href="#enquiry">Get your widget →</a>
+      </div>
+
+      <div class="tradies-right">
+        <div class="preview-label">Live preview — Perth Limestone Co</div>
+        <div class="preview-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-hero">
+              <div class="phone-tag">01 / Perth Limestone Co</div>
+              <div class="phone-headline">Built to last. <span>Limestone done right.</span></div>
+              <div class="phone-img-hint">📷 3 photos — tap to view</div>
+            </div>
+            <div class="phone-body">
+              <div class="phone-text">We supply and install limestone walls, paving, edging and steps across Perth metro.</div>
+              <div class="phone-ibtn"><span style="background:#f59e0b;border-radius:50%;width:10px;height:10px;display:inline-block;margin-right:2px"></span>Why limestone?</div>
+              <div class="phone-cta">🪨 Get a Quote →</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">Swipe cards · Tap photos · Get an instant estimate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENQUIRY FORM -->
+<section class="enquiry-section" id="enquiry">
+  <div class="enquiry-inner">
+    <div class="section-label">Get started <span class="change-tag">new section</span></div>
+    <h2 class="enquiry-headline">Get your widget</h2>
+    <p class="enquiry-sub">Tell us about your trade and we'll build your branded quote widget in 24–48 hours.</p>
+    <div class="enquiry-form">
+      <div class="form-row">
+        <div>
+          <label class="field-label">Your name</label>
+          <input class="field-input" type="text" placeholder="e.g. Dave Smith">
+        </div>
+        <div>
+          <label class="field-label">Business name</label>
+          <input class="field-input" type="text" placeholder="e.g. Smith Fencing Perth">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label class="field-label">Phone</label>
+          <input class="field-input" type="tel" placeholder="0400 000 000">
+        </div>
+        <div>
+          <label class="field-label">Trade</label>
+          <select class="field-input">
+            <option value="">Select your trade…</option>
+            <option>Fencing</option>
+            <option>Limestone / Paving</option>
+            <option>Landscaping</option>
+            <option>Electrical</option>
+            <option>Plumbing</option>
+            <option>Painting</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-full">
+        <label class="field-label">Suburb / area you service</label>
+        <input class="field-input" type="text" placeholder="e.g. Northern suburbs, Perth metro">
+      </div>
+      <div class="field-full">
+        <label class="field-label">Website (optional)</label>
+        <input class="field-input" type="text" placeholder="e.g. smithfencing.com.au">
+      </div>
+      <button class="submit-btn">📩 Send My Enquiry</button>
+      <div class="submit-note">We'll be in touch within 24 hours. No spam, no hard sell.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">iTabs</div>
+  <div class="footer-links">
+    <a class="footer-link" href="#">Estimators</a>
+    <a class="footer-link" href="#">For Tradies</a>
+    <a class="footer-link" href="#">Demo</a>
+    <a class="footer-link" href="#">About</a>
+    <a class="footer-link" href="#">Story</a>
+    <a class="footer-link" href="#">GitHub</a>
+  </div>
+  <div class="footer-note">Built in Perth 🇦🇺</div>
+</footer>
+
+</div><!-- /siteWrap -->
+
+<script>
+// ═══════════════════════════════════════════
+// WIDGET POPUP CONTROLLER
+// ═══════════════════════════════════════════
+function openWidget() {
+  document.getElementById('siteWrap').classList.add('shrunk');
+  document.getElementById('widgetOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!window._widgetBuilt) { buildWidget(); window._widgetBuilt = true; }
+}
+function closeWidget() {
+  document.getElementById('siteWrap').classList.remove('shrunk');
+  document.getElementById('widgetOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════════
+// FULL ITABS SLIDER + QUOTE INSIDE THE POPUP
+// ═══════════════════════════════════════════
+function buildWidget() {
+  const inner = document.getElementById('widgetInner');
+  inner.style.cssText = 'flex:1;overflow:hidden;position:relative;background:#0a0a0f;';
+
+  const cards = [
+    { tag:'01 / Perth Limestone Co', tagCol:'#d6d3d1', headline:'Built to last. <em>Limestone done right.</em>', emCol:'#fcd34d', bg:'linear-gradient(160deg,#44403c,#1c1917)', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', imgCount:3, summary:'We supply and install limestone walls, paving, edging and steps across Perth metro. Family-run, engineering-compliant.', iButtons:[{l:'Why limestone?',t:'Why It Matters',c:'Limestone is naturally coastal-friendly, lasts 50+ years, and looks great from day one. No render, no paint, no fuss.'}] },
+    { tag:'02 / What We Do', tagCol:'#fcd34d', headline:'Walls, paving, edging <em>& steps.</em>', emCol:'#fcd34d', bg:'linear-gradient(160deg,#78350f,#431407)', img:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80', imgCount:3, summary:'Every limestone project handled end-to-end — from site inspection and engineering to laying, sealing and clean-up.', iButtons:[{l:'Walls',t:'Definition',c:'Retaining, boundary and feature walls. We work to engineering specs and arrange council compliance.'},{l:'Paving',t:'Definition',c:'Alfresco areas, pool surrounds, driveways and pathways. Sealed to a premium standard.'},{l:'Steps',t:'Definition',c:'Entry steps, garden steps and feature staircases — all made to measure.'}] },
+    { tag:'03 / Why Limestone', tagCol:'#67e8f9', headline:'Looks great. <em>Outlasts everything.</em>', emCol:'#67e8f9', bg:'linear-gradient(160deg,#164e63,#0c4a6e)', img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', imgCount:2, summary:'Limestone outperforms timber sleepers, concrete blocks and most alternatives — especially in Perth\'s sandy coastal conditions.', analogy:{t:'Quick comparison',b:'Timber sleepers last 15–25 years. Concrete needs rendering. Limestone goes in natural and still looks great in 50 years.'}, iButtons:[{l:'Coastal performance',t:'Context',c:'Within 2km of the coast? We use marine-grade mortar and 7MPa blocks designed for Perth\'s salt-air environment.'}] },
+    { tag:'04 / How It Works', tagCol:'#6ee7b7', headline:'From enquiry to <em>finished job.</em>', emCol:'#6ee7b7', bg:'linear-gradient(160deg,#14532d,#052e16)', img:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80', imgCount:2, summary:'Simple 3-step process: ballpark estimate online, free site visit to confirm scope, then we get the job done.', iButtons:[{l:'Free site visit',t:'Context',c:'Every job starts with a free site visit. We check access, soil, drainage and engineering before quoting — no surprises.'},{l:'Permits',t:'Context',c:'Walls over 500mm typically need a building permit in WA. We handle all of this — included in your quote.'}] },
+    { tag:'05 / Get a Quote', tagCol:'#e5c58a', headline:'Know your <em>ballpark price</em> in 60 seconds.', emCol:'#e5c58a', bg:'linear-gradient(160deg,#7c6a52,#3d3228)', img:'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?w=800&q=80', imgCount:2, summary:'Answer 5 quick questions and get an instant estimate. No sign-up, no spam — just a number.', iButtons:[], cta:true }
+  ];
+
+  const styles = `
+    <style>
+    .w-wrap{height:100%;display:flex;flex-direction:column;font-family:'Inter',-apple-system,sans-serif;color:#fff;background:#0a0a0f;}
+    .w-prog{display:flex;gap:4px;padding:10px 14px 6px;background:linear-gradient(to bottom,rgba(0,0,0,0.8),transparent);position:absolute;top:0;left:0;right:0;z-index:10;}
+    .w-seg{flex:1;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;transition:background .2s;}
+    .w-seg.v{background:rgba(255,255,255,0.55);}
+    .w-seg.a{background:#c8a054;}
+    .w-cards{flex:1;position:relative;overflow:hidden;}
+    .w-card{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;transform:translateX(100%);transition:all .3s ease;pointer-events:none;}
+    .w-card.active{opacity:1;transform:translateX(0);pointer-events:all;}
+    .w-card.prev{opacity:0;transform:translateX(-100%);}
+    .w-hero{min-height:40%;display:flex;flex-direction:column;justify-content:flex-end;padding:44px 18px 16px;position:relative;overflow:hidden;cursor:pointer;}
+    .w-hbg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s;}
+    .w-hero:active .w-hbg{transform:scale(1.03);}
+    .w-hovl{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.5) 55%,rgba(0,0,0,0.8) 100%);}
+    .w-tag{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1;}
+    .w-hl{font-size:clamp(18px,4.5vw,24px);font-weight:700;line-height:1.2;position:relative;z-index:1;}
+    .w-hl em{font-style:normal;}
+    .w-phint{position:absolute;bottom:12px;right:12px;z-index:2;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:3px 9px;font-size:10px;color:rgba(255,255,255,0.75);}
+    .w-body{flex:1;background:#12121a;padding:16px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;border-top:1px solid rgba(255,255,255,0.06);}
+    .w-body::-webkit-scrollbar{display:none;}
+    .w-sum{font-size:14px;color:#9090b0;line-height:1.6;}
+    .w-analogy{background:#1e1e2e;border-left:3px solid #06b6d4;border-radius:8px;padding:10px 12px;}
+    .w-at{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#06b6d4;margin-bottom:4px;}
+    .w-ab{font-size:12px;color:#9090b0;line-height:1.5;}
+    .w-ibs{display:flex;flex-wrap:wrap;gap:7px;}
+    .w-ib{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:20px;font-size:11px;font-weight:600;color:#f59e0b;cursor:pointer;}
+    .w-ib:active{background:rgba(245,158,11,0.25);}
+    .w-idot{width:14px;height:14px;background:#f59e0b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#000;flex-shrink:0;}
+    .w-cta{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#c8a054,#a07838);border:none;border-radius:11px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;text-align:center;}
+    .w-cta:active{opacity:.85;}
+    .w-ctanote{font-size:11px;color:#9090b0;text-align:center;}
+    .w-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 18px 16px;background:#12121a;border-top:1px solid rgba(255,255,255,0.06);}
+    .w-nbtn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .w-nbtn:disabled{opacity:.2;cursor:default;}
+    .w-nbtn:not(:disabled):active{background:rgba(255,255,255,0.15);}
+    .w-cnt{font-size:11px;color:#9090b0;font-weight:500;}
+    /* info modal */
+    .w-info{position:absolute;inset:0;background:rgba(0,0,0,0.7);z-index:50;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .w-info.open{opacity:1;pointer-events:all;}
+    .w-isheet{width:100%;background:#1e1e2e;border-radius:18px 18px 0 0;padding:18px;transform:translateY(100%);transition:transform .3s ease;}
+    .w-info.open .w-isheet{transform:translateY(0);}
+    .w-ihdl{width:32px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 14px;}
+    .w-iterm{font-size:16px;font-weight:700;margin-bottom:3px;}
+    .w-itype{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f59e0b;margin-bottom:10px;}
+    .w-icont{font-size:13px;color:#9090b0;line-height:1.7;}
+    .w-icls{margin-top:16px;width:100%;padding:11px;background:rgba(255,255,255,0.08);border:none;border-radius:9px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+    /* lightbox */
+    .w-lb{position:absolute;inset:0;background:#000;z-index:60;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .w-lb.open{opacity:1;pointer-events:all;}
+    .w-lbtop{display:flex;justify-content:flex-end;padding:10px 14px;position:absolute;top:0;right:0;z-index:5;}
+    .w-lbcls{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .w-lbimgs{flex:1;position:relative;}
+    .w-lbimg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .35s;}
+    .w-lbimg.active{opacity:1;}
+    .w-lbbot{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);}
+    .w-lbcap{font-size:12px;color:rgba(255,255,255,0.7);text-align:center;margin-bottom:8px;}
+    .w-lbdots{display:flex;justify-content:center;gap:5px;}
+    .w-lbdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background .2s;}
+    .w-lbdot.active{background:#c8a054;}
+    .w-lbnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .w-lbnav.p{left:10px;} .w-lbnav.n{right:10px;}
+    .w-lbnav:disabled{opacity:.2;}
+    /* quote popup inside widget */
+    .w-qovl{position:absolute;inset:0;background:rgba(0,0,0,0.85);z-index:80;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .w-qovl.open{opacity:1;pointer-events:all;}
+    .w-qsheet{width:100%;max-height:90%;background:#F4EFE6;border-radius:18px 18px 0 0;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);overflow:hidden;}
+    .w-qovl.open .w-qsheet{transform:translateY(0);}
+    .w-qtop{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#2E2A24;flex-shrink:0;}
+    .w-qtitle{font-size:0.95rem;color:#FEFCF8;font-weight:600;}
+    .w-qcls{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .w-qbody{flex:1;overflow-y:auto;padding:12px 14px 60px;}
+    .w-qbody::-webkit-scrollbar{display:none;}
+    .w-qstep{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.07);margin-bottom:8px;overflow:hidden;border:1px solid #e8e4dd;}
+    .w-qhdr{display:flex;align-items:center;padding:11px 13px;gap:8px;cursor:pointer;}
+    .w-qnum{width:25px;height:25px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;flex-shrink:0;transition:all .2s;}
+    .w-qstep.done .w-qnum,.w-qstep.open .w-qnum{background:#7C6A52;color:white;}
+    .w-qstitle{font-weight:600;font-size:0.83rem;color:#333;}
+    .w-qsval{margin-left:auto;font-size:0.7rem;color:#888;white-space:nowrap;}
+    .w-qbdy{display:none;padding:0 13px 12px;}
+    .w-qstep.open .w-qbdy{display:block;}
+    .w-qopts{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+    .w-qopts.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .w-qopt{display:flex;align-items:flex-start;gap:7px;padding:9px 10px;border:2px solid #e8e4dd;border-radius:8px;cursor:pointer;transition:all .2s;}
+    .w-qopt.sel{border-color:#7C6A52;background:rgba(124,106,82,0.06);}
+    .w-qr{width:15px;height:15px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+    .w-qopt.sel .w-qr{border-color:#7C6A52;}
+    .w-qopt.sel .w-qr::after{content:'';width:7px;height:7px;background:#7C6A52;border-radius:50%;display:block;}
+    .w-qoi{font-size:1rem;flex-shrink:0;}
+    .w-qon{font-weight:600;font-size:0.8rem;color:#333;}
+    .w-qop{font-size:0.68rem;font-weight:700;color:#7C6A52;margin-top:2px;}
+    .w-qod{font-size:0.68rem;color:#888;margin-top:1px;}
+    .w-qslr{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+    .w-qslr input[type=range]{flex:1;accent-color:#7C6A52;}
+    .w-qslv{font-weight:700;font-size:0.95rem;color:#7C6A52;min-width:52px;text-align:right;}
+    .w-qtogs{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+    .w-qtog{display:flex;align-items:center;gap:8px;padding:9px 10px;border:2px solid #e8e4dd;border-radius:8px;cursor:pointer;transition:all .2s;}
+    .w-qtog.on{border-color:#7C6A52;background:rgba(124,106,82,0.06);}
+    .w-qtogi{font-size:1rem;flex-shrink:0;}
+    .w-qtogi2{flex:1;}
+    .w-qtogl{font-weight:600;font-size:0.8rem;color:#333;}
+    .w-qtogc{font-size:0.68rem;color:#888;}
+    .w-qsw{width:36px;height:21px;background:#ddd;border-radius:11px;position:relative;flex-shrink:0;transition:background .2s;}
+    .w-qtog.on .w-qsw{background:#7C6A52;}
+    .w-qkn{position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;}
+    .w-qtog.on .w-qkn{transform:translateX(15px);}
+    .w-qbtn{width:100%;padding:11px;border:none;border-radius:8px;background:#7C6A52;color:white;font-weight:700;font-size:0.85rem;cursor:pointer;margin-top:4px;}
+    .w-qest{background:#fff;border-radius:10px;border:1px solid #e8e4dd;padding:14px;margin-bottom:8px;text-align:center;}
+    .w-qelbl{font-size:0.68rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+    .w-qerange{font-size:1.7rem;font-weight:800;color:#2E2A24;line-height:1.1;}
+    .w-qerange span{color:#7C6A52;}
+    .w-qenote{font-size:0.68rem;color:#aaa;margin-top:4px;}
+    .w-qbd{background:#fff;border-radius:10px;border:1px solid #e8e4dd;overflow:hidden;margin-bottom:8px;}
+    .w-qbdtitle{font-size:0.65rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;border-bottom:1px solid #f0ece6;}
+    .w-qbdrow{display:flex;justify-content:space-between;padding:6px 12px;border-bottom:1px solid #f8f5f0;font-size:0.75rem;}
+    .w-qbdrow:last-child{border-bottom:none;}
+    .w-qbdk{color:#666;} .w-qbdv{font-weight:700;color:#2E2A24;}
+    .w-qlead{background:#fff;border-radius:10px;border:2px dashed #C2A67D;padding:14px;margin-bottom:8px;}
+    .w-qlead h3{font-size:0.95rem;margin-bottom:3px;color:#2E2A24;font-weight:700;}
+    .w-qlead p{font-size:0.73rem;color:#888;margin-bottom:10px;}
+    .w-qinput{width:100%;padding:9px 11px;border:1px solid #ddd;border-radius:7px;font-size:0.83rem;background:#FEFCF8;margin-bottom:7px;color:#333;font-family:inherit;}
+    .w-qsub{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,#7C6A52,#5a4e3c);color:white;font-weight:700;font-size:0.88rem;cursor:pointer;}
+    .w-qsucc{text-align:center;padding:24px 14px;}
+    .w-qsucci{font-size:2.5rem;margin-bottom:10px;}
+    .w-qsuccm{font-size:1rem;font-weight:700;color:#2E2A24;margin-bottom:5px;}
+    .w-qsuccs{font-size:0.78rem;color:#888;line-height:1.6;}
+    .w-qdis{font-size:0.65rem;color:#aaa;text-align:center;margin-top:4px;line-height:1.5;}
+    </style>
+  `;
+
+  let lbCardIdx = 0, lbPhotoIdx = 0;
+  const imgSets = [
+    [{url:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',cap:'Feature limestone retaining wall'},{url:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80',cap:'Premium residential stonework'},{url:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',cap:'Finished garden project'}],
+    [{url:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80',cap:'Alfresco limestone paving'},{url:'https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=800&q=80',cap:'Garden edging and borders'},{url:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80',cap:'Landscaped entry steps'}],
+    [{url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',cap:'Natural limestone texture'},{url:'https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=800&q=80',cap:'Reconstituted limestone — uniform finish'}],
+    [{url:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',cap:'Site inspection'},{url:'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80',cap:'Professional installation'}],
+    [{url:'https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?w=800&q=80',cap:'Completed project'},{url:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80',cap:'Feature wall and paving'}]
+  ];
+
+  const bases = {walls:{low:120,high:220,unit:'m²',label:'Limestone Walls'},paving:{low:85,high:160,unit:'m²',label:'Limestone Paving'},edging:{low:40,high:75,unit:'m',label:'Garden Edging'},steps:{low:250,high:500,unit:'steps',label:'Limestone Steps'}};
+  const supplyM={install:1.0,supply:0.45,unsure:1.0};
+  const condM={easy:1.0,moderate:1.12,hard:1.22,unknown:1.0};
+  const extCfg={removal:{type:'per',lo:15,hi:30,label:'Material removal'},sealer:{type:'per',lo:10,hi:20,label:'Sealer coating'},engineer:{type:'fix',lo:500,hi:1500,label:'Engineer cert'},delivery:{type:'fix',lo:150,hi:400,label:'Long distance delivery'}};
+  const Q={svc:null,qty:20,supply:null,cond:null,extras:new Set(),step:1};
+  function fmt(n){return '$'+Math.round(n).toLocaleString('en-AU');}
+  function calcQ(){
+    const b=bases[Q.svc||'paving'],sm=supplyM[Q.supply]||1,cm=condM[Q.cond]||1;
+    let lo=b.low*Q.qty*sm*cm,hi=b.high*Q.qty*sm*cm;
+    const rows=[{n:b.label+' ('+Q.qty+' '+b.unit+')',lo:b.low*Q.qty,hi:b.high*Q.qty}];
+    if(sm!==1)rows.push({n:'Supply only adjustment',lo:(sm-1)*b.low*Q.qty,hi:(sm-1)*b.high*Q.qty});
+    if(cm!==1)rows.push({n:'Site conditions',lo:(cm-1)*b.low*Q.qty*sm,hi:(cm-1)*b.high*Q.qty*sm});
+    Q.extras.forEach(eid=>{const ex=extCfg[eid];let eLo=0,eHi=0;if(ex.type==='per'){eLo=ex.lo*Q.qty;eHi=ex.hi*Q.qty;}if(ex.type==='fix'){eLo=ex.lo;eHi=ex.hi;}lo+=eLo;hi+=eHi;rows.push({n:ex.label,lo:eLo,hi:eHi});});
+    lo=Math.round(Math.max(lo,500)/50)*50;hi=Math.round(Math.max(hi,500)/50)*50;
+    return{lo,hi,rows,range:fmt(lo)+' – '+fmt(hi)};
+  }
+
+  inner.innerHTML = styles + `
+  <div class="w-wrap">
+    <div style="flex:1;position:relative;overflow:hidden;">
+      <div class="w-prog" id="wProg"></div>
+      <div class="w-cards" id="wCards"></div>
+
+      <!-- info modal -->
+      <div class="w-info" id="wInfo" onclick="if(event.target===this)this.classList.remove('open')">
+        <div class="w-isheet">
+          <div class="w-ihdl"></div>
+          <div class="w-iterm" id="wInfoTerm"></div>
+          <div class="w-itype" id="wInfoType"></div>
+          <div class="w-icont" id="wInfoCont"></div>
+          <button class="w-icls" onclick="document.getElementById('wInfo').classList.remove('open')">Close</button>
+        </div>
+      </div>
+
+      <!-- lightbox -->
+      <div class="w-lb" id="wLb">
+        <div class="w-lbtop"><button class="w-lbcls" onclick="document.getElementById('wLb').classList.remove('open')">✕</button></div>
+        <div class="w-lbimgs" id="wLbImgs"></div>
+        <button class="w-lbnav p" id="wLbP" onclick="wLbNav(-1)">‹</button>
+        <button class="w-lbnav n" id="wLbN" onclick="wLbNav(1)">›</button>
+        <div class="w-lbbot"><div class="w-lbcap" id="wLbCap"></div><div class="w-lbdots" id="wLbDots"></div></div>
+      </div>
+
+      <!-- quote popup -->
+      <div class="w-qovl" id="wQovl" onclick="if(event.target===this)this.classList.remove('open')">
+        <div class="w-qsheet">
+          <div class="w-qtop"><span class="w-qtitle">Perth Limestone Co — Quick Estimate</span><button class="w-qcls" onclick="document.getElementById('wQovl').classList.remove('open')">✕</button></div>
+          <div class="w-qbody" id="wQbody"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-nav">
+      <button class="w-nbtn" id="wPrev" onclick="wNav(-1)">←</button>
+      <span class="w-cnt" id="wCnt">1 / 5</span>
+      <button class="w-nbtn" id="wNext" onclick="wNav(1)">→</button>
+    </div>
+  </div>`;
+
+  // Build progress + cards
+  let wCur = 0;
+  const prog = inner.querySelector('#wProg');
+  const cardsEl = inner.querySelector('#wCards');
+  cards.forEach((c,i)=>{
+    const seg=document.createElement('div');
+    seg.className='w-seg'+(i===0?' a':'');
+    prog.appendChild(seg);
+    const el=document.createElement('div');
+    el.className='w-card'+(i===0?' active':'');
+    const imgs=imgSets[i]||[];
+    const ibHTML=c.iButtons&&c.iButtons.length?`<div class="w-ibs">${c.iButtons.map(b=>`<button class="w-ib" data-t="${encodeURIComponent(b.t)}" data-c="${encodeURIComponent(b.c)}" data-l="${b.l}"><span class="w-idot">i</span>${b.l}</button>`).join('')}</div>`:'';
+    const anHTML=c.analogy?`<div class="w-analogy"><div class="w-at">${c.analogy.t}</div><div class="w-ab">${c.analogy.b}</div></div>`:'';
+    const ctaHTML=c.cta?`<button class="w-cta" id="wOpenQ">🪨 Get a Quote →</button><p class="w-ctanote">Free · No sign-up · 60 seconds</p>`:'';
+    el.innerHTML=`<div class="w-hero" data-ci="${i}"><div class="w-hbg" style="${imgs[0]?'background-image:url('+imgs[0].url+')':''}"></div><div class="w-hovl"></div><div class="w-tag" style="color:${c.tagCol}">${c.tag}</div><h2 class="w-hl" style="">${c.headline.replace(/<em>/g,`<em style="color:${c.emCol}">`)}</h2>${imgs.length?`<div class="w-phint">📷 ${imgs.length} photo${imgs.length>1?'s':''} — tap</div>`:''}</div><div class="w-body">${`<p class="w-sum">${c.summary}</p>`}${anHTML}${ibHTML}${ctaHTML}</div>`;
+    el.querySelector('.w-hero').addEventListener('click',()=>wOpenLb(i));
+    el.querySelectorAll('.w-ib').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();const ti=document.getElementById('wInfo');document.getElementById('wInfoTerm').textContent=btn.dataset.l;document.getElementById('wInfoType').textContent=decodeURIComponent(btn.dataset.t);document.getElementById('wInfoCont').textContent=decodeURIComponent(btn.dataset.c);ti.classList.add('open');}));
+    const qb=el.querySelector('#wOpenQ');
+    if(qb)qb.addEventListener('click',e=>{e.stopPropagation();Q.svc=null;Q.qty=20;Q.supply=null;Q.cond=null;Q.extras.clear();Q.step=1;wRenderQ();inner.querySelector('#wQovl').classList.add('open');});
+    cardsEl.appendChild(el);
+  });
+
+  function wNav(d){const nx=wCur+d;if(nx>=0&&nx<cards.length){cardsEl.querySelectorAll('.w-card').forEach((c,i)=>{c.classList.remove('active','prev');if(i===nx)c.classList.add('active');else if(i<nx)c.classList.add('prev');});prog.querySelectorAll('.w-seg').forEach((s,i)=>{s.classList.remove('a','v');if(i===nx)s.classList.add('a');else if(i<nx)s.classList.add('v');});wCur=nx;inner.querySelector('#wCnt').textContent=(nx+1)+' / '+cards.length;inner.querySelector('#wPrev').disabled=nx===0;inner.querySelector('#wNext').disabled=nx===cards.length-1;}}
+  inner.querySelector('#wPrev').disabled=true;
+  inner.querySelector('#wNext').disabled=false;
+
+  // Swipe
+  let sx=0;
+  cardsEl.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
+  cardsEl.addEventListener('touchend',e=>{if(Math.abs(sx-e.changedTouches[0].clientX)>50)wNav(sx>e.changedTouches[0].clientX?1:-1);});
+  window.wNav=wNav;
+
+  // Lightbox
+  function wOpenLb(ci){const imgs=imgSets[ci];if(!imgs||!imgs.length)return;lbCardIdx=ci;lbPhotoIdx=0;const lb=inner.querySelector('#wLb');const lbImgs=inner.querySelector('#wLbImgs');lbImgs.innerHTML='';imgs.forEach((img,i)=>{const d=document.createElement('div');d.className='w-lbimg'+(i===0?' active':'');d.style.backgroundImage='url('+img.url+')';lbImgs.appendChild(d);});const dots=inner.querySelector('#wLbDots');dots.innerHTML='';imgs.forEach((_,i)=>{const dot=document.createElement('div');dot.className='w-lbdot'+(i===0?' active':'');dot.onclick=()=>wLbGo(i);dots.appendChild(dot);});inner.querySelector('#wLbCap').textContent=imgs[0].cap||'';wLbUpdNav();lb.classList.add('open');}
+  function wLbNav(d){wLbGo(lbPhotoIdx+d);}
+  function wLbGo(idx){const imgs=imgSets[lbCardIdx];if(idx<0||idx>=imgs.length)return;inner.querySelectorAll('.w-lbimg').forEach((el,i)=>el.classList.toggle('active',i===idx));inner.querySelectorAll('.w-lbdot').forEach((el,i)=>el.classList.toggle('active',i===idx));inner.querySelector('#wLbCap').textContent=imgs[idx].cap||'';lbPhotoIdx=idx;wLbUpdNav();}
+  function wLbUpdNav(){const imgs=imgSets[lbCardIdx];inner.querySelector('#wLbP').disabled=lbPhotoIdx===0;inner.querySelector('#wLbN').disabled=lbPhotoIdx===imgs.length-1;const show=imgs.length>1;inner.querySelector('#wLbP').style.display=show?'flex':'none';inner.querySelector('#wLbN').style.display=show?'flex':'none';inner.querySelector('#wLbDots').style.display=show?'flex':'none';}
+  window.wLbNav=wLbNav;
+  let lbsx=0;
+  inner.querySelector('#wLbImgs').addEventListener('touchstart',e=>{lbsx=e.touches[0].clientX;},{passive:true});
+  inner.querySelector('#wLbImgs').addEventListener('touchend',e=>{if(Math.abs(lbsx-e.changedTouches[0].clientX)>40)wLbNav(lbsx>e.changedTouches[0].clientX?1:-1);});
+
+  // Quote render
+  function wRenderQ(){
+    const svcOpts=[{v:'walls',i:'🪨',n:'Limestone Walls',p:'$120–$220/m²'},{v:'paving',i:'🏡',n:'Limestone Paving',p:'$85–$160/m²'},{v:'edging',i:'🌿',n:'Garden Edging',p:'$40–$75/m'},{v:'steps',i:'🪜',n:'Limestone Steps',p:'$250–$500/step'}];
+    const supOpts=[{v:'install',i:'✅',n:'Supply & Install',d:'We handle everything'},{v:'supply',i:'📦',n:'Supply Only',d:'Materials delivered'},{v:'unsure',i:'🤷',n:'Not sure',d:'We can advise'}];
+    const condOpts=[{v:'easy',i:'✅',n:'Easy',d:'Flat, clear access'},{v:'moderate',i:'⚠️',n:'Moderate',d:'Slope or tight access'},{v:'hard',i:'🔧',n:'Difficult',d:'Steep or poor access'},{v:'unknown',i:'🤷',n:'Not sure',d:'Need a site visit'}];
+    const extList=[{e:'removal',i:'🗑️',n:'Remove existing material',c:'+$15–$30/m²'},{e:'sealer',i:'💧',n:'Sealer / waterproof coating',c:'+$10–$20/m²'},{e:'engineer',i:'📋',n:'Engineer cert (walls)',c:'+$500–$1,500'},{e:'delivery',i:'🚛',n:'Long distance delivery',c:'+$150–$400'}];
+    const svcLabel=Q.svc?bases[Q.svc].label:'';
+    const supLabel=Q.supply?supOpts.find(o=>o.v===Q.supply)?.n:'';
+    const condLabel=Q.cond?condOpts.find(o=>o.v===Q.cond)?.n:'';
+    const sizeUnit=Q.svc?bases[Q.svc].unit:'m²';
+    let h='';
+    h+=`<div class="w-qstep ${Q.step===1?'open':'done'}"><div class="w-qhdr" data-g="1"><div class="w-qnum">1</div><div class="w-qstitle">What type of work?</div><div class="w-qsval">${svcLabel}</div></div><div class="w-qbdy"><div class="w-qopts">${svcOpts.map(o=>`<div class="w-qopt${Q.svc===o.v?' sel':''}" data-svc="${o.v}"><div class="w-qr"></div><span class="w-qoi">${o.i}</span><div><div class="w-qon">${o.n}</div><div class="w-qop">${o.p}</div></div></div>`).join('')}</div></div></div>`;
+    if(Q.step>=2)h+=`<div class="w-qstep ${Q.step===2?'open':'done'}"><div class="w-qhdr" data-g="2"><div class="w-qnum">2</div><div class="w-qstitle">Project size</div><div class="w-qsval">${Q.step>2?Q.qty+' '+sizeUnit:''}</div></div><div class="w-qbdy"><div class="w-qslr"><input type="range" id="wQsl" min="5" max="100" step="5" value="${Q.qty}"><div class="w-qslv"><span id="wQslV">${Q.qty}</span> ${sizeUnit}</div></div><button class="w-qbtn" id="wQn2">Next →</button></div></div>`;
+    if(Q.step>=3)h+=`<div class="w-qstep ${Q.step===3?'open':'done'}"><div class="w-qhdr" data-g="3"><div class="w-qnum">3</div><div class="w-qstitle">Supply or install?</div><div class="w-qsval">${supLabel}</div></div><div class="w-qbdy"><div class="w-qopts g2">${supOpts.map(o=>`<div class="w-qopt${Q.supply===o.v?' sel':''}" data-sup="${o.v}"><div class="w-qr"></div><div><div class="w-qoi">${o.i}</div><div class="w-qon">${o.n}</div><div class="w-qod">${o.d}</div></div></div>`).join('')}</div></div></div>`;
+    if(Q.step>=4)h+=`<div class="w-qstep ${Q.step===4?'open':'done'}"><div class="w-qhdr" data-g="4"><div class="w-qnum">4</div><div class="w-qstitle">Site conditions</div><div class="w-qsval">${condLabel}</div></div><div class="w-qbdy"><div class="w-qopts g2">${condOpts.map(o=>`<div class="w-qopt${Q.cond===o.v?' sel':''}" data-cond="${o.v}"><div class="w-qr"></div><div><div class="w-qoi">${o.i}</div><div class="w-qon">${o.n}</div><div class="w-qod">${o.d}</div></div></div>`).join('')}</div></div></div>`;
+    if(Q.step>=5)h+=`<div class="w-qstep ${Q.step===5?'open':'done'}"><div class="w-qhdr" data-g="5"><div class="w-qnum">5</div><div class="w-qstitle">Extras</div><div class="w-qsval">${Q.extras.size?Q.extras.size+' added':'Optional'}</div></div><div class="w-qbdy"><div class="w-qtogs">${extList.map(e=>`<div class="w-qtog${Q.extras.has(e.e)?' on':''}" data-eid="${e.e}"><span class="w-qtogi">${e.i}</span><div class="w-qtogi2"><div class="w-qtogl">${e.n}</div><div class="w-qtogc">${e.c}</div></div><div class="w-qsw"><div class="w-qkn"></div></div></div>`).join('')}</div><button class="w-qbtn" id="wQge">See My Estimate →</button></div></div>`;
+    if(Q.step>=6){const r=calcQ();h+=`<div class="w-qest"><div class="w-qelbl">Your ballpark estimate</div><div class="w-qerange"><span>${fmt(r.lo)}</span> – <span>${fmt(r.hi)}</span></div><div class="w-qenote">Supply & install · Perth metro · incl. GST</div></div><div class="w-qbd"><div class="w-qbdtitle">Breakdown</div>${r.rows.map(row=>`<div class="w-qbdrow"><span class="w-qbdk">${row.n}</span><span class="w-qbdv">${fmt(row.lo)} – ${fmt(row.hi)}</span></div>`).join('')}</div><div class="w-qlead" id="wQlg"><h3>Want a confirmed quote?</h3><p>Leave your details — we'll reply within 24 hours.</p><input class="w-qinput" id="wQn" type="text" placeholder="Your name *"><input class="w-qinput" id="wQp" type="tel" placeholder="Phone number *"><input class="w-qinput" id="wQe" type="email" placeholder="Email (optional)"><button class="w-qsub" id="wQsub">📩 Send My Quote Request</button></div><p class="w-qdis">Estimates are approximate 2025/26 Perth prices for guidance only.</p>`;}
+    const qb=inner.querySelector('#wQbody');
+    qb.innerHTML=h;qb.scrollTop=0;
+    qb.querySelectorAll('.w-qhdr').forEach(hd=>hd.addEventListener('click',()=>{const g=parseInt(hd.dataset.g);if(g<Q.step){Q.step=g;wRenderQ();}}));
+    qb.querySelectorAll('[data-svc]').forEach(o=>o.addEventListener('click',()=>{Q.svc=o.dataset.svc;Q.step=2;wRenderQ();}));
+    const sl=qb.querySelector('#wQsl');if(sl)sl.addEventListener('input',()=>{Q.qty=parseInt(sl.value);const v=qb.querySelector('#wQslV');if(v)v.textContent=sl.value;});
+    const n2=qb.querySelector('#wQn2');if(n2)n2.addEventListener('click',()=>{Q.step=3;wRenderQ();});
+    qb.querySelectorAll('[data-sup]').forEach(o=>o.addEventListener('click',()=>{Q.supply=o.dataset.sup;Q.step=4;wRenderQ();}));
+    qb.querySelectorAll('[data-cond]').forEach(o=>o.addEventListener('click',()=>{Q.cond=o.dataset.cond;Q.step=5;wRenderQ();}));
+    qb.querySelectorAll('.w-qtog').forEach(t=>t.addEventListener('click',()=>{const e=t.dataset.eid;if(Q.extras.has(e)){Q.extras.delete(e);t.classList.remove('on');}else{Q.extras.add(e);t.classList.add('on');};}));
+    const ge=qb.querySelector('#wQge');if(ge)ge.addEventListener('click',()=>{Q.step=6;wRenderQ();});
+    const sub=qb.querySelector('#wQsub');
+    if(sub)sub.addEventListener('click',()=>{const nm=qb.querySelector('#wQn')?.value.trim(),ph=qb.querySelector('#wQp')?.value.trim();if(!nm||!ph){alert('Please enter your name and phone number.');return;}const r=calcQ();const ea=[];Q.extras.forEach(e=>ea.push(extCfg[e].label));const msg=['--- CUSTOMER ---','Name: '+nm,'Phone: '+ph,'Email: '+(qb.querySelector('#wQe')?.value||'Not provided'),'','--- PROJECT ---','Service: '+(Q.svc?bases[Q.svc].label:'Not selected'),'Quantity: '+Q.qty+' '+(Q.svc?bases[Q.svc].unit:'m²'),'Supply: '+({install:'Supply & Install',supply:'Supply Only',unsure:'Not sure'}[Q.supply]||'-'),'Conditions: '+({easy:'Easy',moderate:'Moderate',hard:'Difficult',unknown:'Not sure'}[Q.cond]||'-'),'Extras: '+(ea.join(', ')||'None'),'','--- ESTIMATE ---',r.range].join('\n');fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'99a11c15-5c61-4765-99c5-673adec64b16',subject:'New Limestone Enquiry — '+nm,from_name:nm,to:'responses@itabs.ai',message:msg})}).catch(e=>console.error(e));inner.querySelector('#wQbody').innerHTML=`<div class="w-qsucc"><div class="w-qsucci">✅</div><div class="w-qsuccm">Quote request sent!</div><div class="w-qsuccs">We'll be in touch within 24 hours.<br><br><strong>Perth Limestone Co</strong><br><a href="tel:0400000000" style="color:#7C6A52;font-weight:700;text-decoration:none">0400 000 000</a></div></div>`;});
+  }
+  window.wRenderQ = wRenderQ;
+}
+
+function openWidget() {
+  document.getElementById('siteWrap').classList.add('shrunk');
+  document.getElementById('widgetOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!window._widgetBuilt) { buildWidget(); window._widgetBuilt = true; }
+}
+function closeWidget() {
+  document.getElementById('siteWrap').classList.remove('shrunk');
+  document.getElementById('widgetOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+
+</body>
+</html>
