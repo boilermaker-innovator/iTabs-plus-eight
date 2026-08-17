@@ -1,491 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iTabs — Send Complete Job Details in 60 Seconds</title>
-<meta name="description" content="Send complete job details to any tradie in 60 seconds. Fencing, electrical, plumbing, paving, landscaping and painting in Perth. Free, no sign-up.">
-<link rel="canonical" href="https://itabs.ai/">
-
-<!-- Open Graph (WhatsApp, Facebook, LinkedIn previews) -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://itabs.ai/">
-<meta property="og:title" content="iTabs — Send Complete Job Details in 60 Seconds">
-<meta property="og:description" content="Send complete job details to any tradie in 60 seconds. Fast quotes, no back-and-forth. Fencing, electrical, plumbing, paving, landscaping & painting.">
-<meta property="og:image" content="https://itabs.ai/og-image.png">
-<meta property="og:locale" content="en_AU">
-
-<!-- Twitter/X -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="iTabs — Send Complete Job Details in 60 Seconds">
-<meta name="twitter:description" content="Send complete job details to any tradie in 60 seconds. Fast quotes, no back-and-forth.">
-<meta name="twitter:image" content="https://itabs.ai/og-image.png">
-
-<!-- Favicon -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23f59e0b'/><text x='50' y='68' font-size='55' font-weight='bold' font-style='italic' text-anchor='middle' fill='%230c1117' font-family='serif'>i</text></svg>">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- To change the demo menu, edit the TWO lunches-down-under-cafe.val.run URLs further down (iframe src + "Open the full menu" link). Nothing else to touch. -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iTabs — QR ordering menus for small food venues</title>
+<meta name="description" content="Free QR ordering menus for small food venues. No app. No monthly fee. Orders land on your phone." />
 <style>
-:root {
-  --bg-main: #0c1117;
-  --bg-card: #151c25;
-  --bg-hover: #1a2332;
-  --border: #222d3a;
-  --text-primary: #e8ecf1;
-  --text-secondary: #8896a7;
-  --text-muted: #5a6a7d;
-  --accent-amber: #f59e0b;
-  --accent-amber-glow: rgba(245, 158, 11, 0.15);
-  --accent-green: #22c55e;
-  --radius: 14px;
-}
+  :root {
+    --bg-main: #0d0d0d;
+    --bg-card: #161616;
+    --text-primary: #ffffff;
+    --text-muted: #9a9a9a;
+    --accent: #f5c400;
+    --wa: #25D366;
+    --border: rgba(255,255,255,0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-main); color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 600px; margin: 0 auto; padding: 0 22px 60px; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+  /* header */
+  .top { display: flex; align-items: center; gap: 8px; padding: 22px 0 8px; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+  .logo .i { color: var(--accent); }
 
-body {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  background: var(--bg-main);
-  color: var(--text-primary);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+  /* hero */
+  .hero { padding: 40px 0 28px; }
+  .hero h1 { font-size: 34px; line-height: 1.12; letter-spacing: -1px; font-weight: 800; }
+  .hero h1 .hl { color: var(--accent); }
+  .hero p { margin-top: 14px; font-size: 17px; line-height: 1.5; color: var(--text-muted); }
 
-/* ═══ HEADER ═══ */
-.itabs-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: rgba(12, 17, 23, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-}
+  /* phone / live menu embed */
+  .demo { margin: 8px 0 34px; }
+  .demo-label { text-align: center; font-size: 13px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+  .phone { max-width: 340px; margin: 0 auto; background: #000; border-radius: 34px;
+    padding: 10px; border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
+  .phone-screen { border-radius: 26px; overflow: hidden; background: var(--bg-card);
+    aspect-ratio: 9 / 17; }
+  .phone-screen iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .demo-open { display: block; text-align: center; margin: 16px auto 0; font-size: 15px;
+    color: var(--accent); text-decoration: none; font-weight: 600; }
+  .demo-open:hover { text-decoration: underline; }
 
-.itabs-header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  /* hooks */
+  .hooks { display: flex; flex-direction: column; gap: 2px; margin: 8px 0 36px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .hook { display: flex; align-items: center; gap: 14px; padding: 18px 18px; }
+  .hook + .hook { border-top: 1px solid var(--border); }
+  .hook .tick { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(245,196,0,0.14); color: var(--accent); display: flex;
+    align-items: center; justify-content: center; font-weight: 800; font-size: 15px; }
+  .hook .txt { font-size: 16px; font-weight: 600; }
+  .hook .txt small { display: block; font-weight: 400; font-size: 13.5px;
+    color: var(--text-muted); margin-top: 2px; }
 
-.itabs-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: var(--text-primary);
-}
+  /* CTA */
+  .cta-block { text-align: center; }
+  .cta-lead { font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 6px; }
+  .cta-sub { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+  .wa-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; max-width: 400px; padding: 17px 22px; background: var(--wa); color: #fff;
+    font-size: 17px; font-weight: 700; border: none; border-radius: 14px; text-decoration: none;
+    box-shadow: 0 8px 24px rgba(37,211,102,0.30); }
+  .wa-btn:active { transform: translateY(1px); }
+  .wa-btn svg { width: 22px; height: 22px; }
 
-.itabs-logo-badge {
-  width: 38px;
-  height: 38px;
-  background: var(--accent-amber);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 17px;
-  color: var(--bg-main);
-  letter-spacing: -0.5px;
-  flex-shrink: 0;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.itabs-logo:hover .itabs-logo-badge {
-  transform: scale(1.06);
-  box-shadow: 0 0 20px var(--accent-amber-glow);
-}
-
-.itabs-logo-text {
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.3px;
-}
-
-.itabs-logo-sub {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.3px;
-}
-
-.itabs-nav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.itabs-nav a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.itabs-nav a:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.itabs-nav a.active {
-  color: var(--accent-amber);
-}
-
-.itabs-nav .nav-cta {
-  color: var(--bg-main);
-  background: var(--accent-amber);
-  margin-left: 8px;
-  font-weight: 700;
-}
-
-.itabs-nav .nav-cta:hover {
-  background: #d97706;
-  color: var(--bg-main);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px var(--accent-amber-glow);
-}
-
-.itabs-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  color: var(--text-secondary);
-}
-
-.itabs-menu-btn svg {
-  width: 24px;
-  height: 24px;
-}
-
-.itabs-mobile-nav {
-  display: none;
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: rgba(12, 17, 23, 0.96);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 20px 16px;
-  z-index: 999;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.itabs-mobile-nav.open {
-  display: flex;
-}
-
-.itabs-mobile-nav a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 12px 14px;
-  border-radius: 10px;
-  transition: all 0.2s;
-}
-
-.itabs-mobile-nav a:hover,
-.itabs-mobile-nav a.active {
-  color: var(--accent-amber);
-  background: var(--accent-amber-glow);
-}
-
-.itabs-mobile-nav .nav-cta {
-  color: var(--bg-main);
-  background: var(--accent-amber);
-  text-align: center;
-  margin-top: 8px;
-  font-weight: 700;
-}
-
-@media (max-width: 640px) {
-  .itabs-nav { display: none; }
-  .itabs-menu-btn { display: block; }
-  .itabs-logo-sub { display: none; }
-}
-
-/* ═══ PAGE CONTENT ═══ */
-.container {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 20px 16px 40px;
-  padding-top: 80px;
-}
-
-.header {
-  text-align: center;
-  padding: 20px 0 30px;
-}
-
-.header-logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin-bottom: 6px;
-  letter-spacing: -0.5px;
-  display: none;
-}
-
-.header p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-top: 8px;
-}
-
-.header .tagline {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.3;
-  margin-bottom: 4px;
-}
-
-.header .tagline .highlight {
-  color: var(--accent-amber);
-}
-
-.header .badge {
-  display: inline-block;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 14px;
-}
-
-.section-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-/* ═══ TRADE CARDS ═══ */
-.trade-grid {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.trade-card {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 16px;
-  text-decoration: none;
-  color: var(--text-primary);
-  transition: all 0.2s;
-}
-.trade-card:hover {
-  border-color: var(--accent-amber);
-  background: var(--bg-hover);
-  transform: translateY(-1px);
-}
-
-.trade-icon {
-  width: 48px; height: 48px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-  border-radius: 12px;
-  flex-shrink: 0;
-}
-
-.trade-info { flex: 1; }
-.trade-name { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
-.trade-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; }
-
-.trade-arrow {
-  color: var(--text-muted);
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-.trade-card:hover .trade-arrow { transform: translateX(3px); color: var(--accent-amber); }
-
-.trade-tag {
-  display: inline-block;
-  font-size: 0.65rem;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--accent-green);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-
-/* ═══ BOTTOM INFO ═══ */
-.info-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.info-box h3 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.info-box p {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.info-box a {
-  color: var(--accent-amber);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer {
-  text-align: center;
-  padding: 20px 0 10px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-.footer a { color: var(--accent-amber); text-decoration: none; font-weight: 600; }
+  /* footer */
+  footer { text-align: center; margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
+  footer .i { color: var(--accent); }
 </style>
 </head>
 <body>
+  <div class="wrap">
 
-<!-- ═══ HEADER ═══ -->
-<header class="itabs-header">
-  <div class="itabs-header-inner">
-    <a href="https://itabs.ai" class="itabs-logo">
-      <div class="itabs-logo-badge">iQ</div>
-      <div>
-        <div class="itabs-logo-text">iTabs</div>
-        <div class="itabs-logo-sub">Perth Trade Estimators</div>
+    <div class="top">
+      <div class="logo"><span class="i">i</span>Tabs</div>
+    </div>
+
+    <section class="hero">
+      <h1>QR ordering menus for <span class="hl">small food venues.</span></h1>
+      <p>Your customers scan, order, and it lands on your phone. Built for you, free.</p>
+    </section>
+
+    <section class="demo">
+      <div class="demo-label">A real menu — try it</div>
+      <div class="phone">
+        <div class="phone-screen">
+          <iframe src="https://lunches-down-under-cafe.val.run" title="Live iTabs menu demo" loading="lazy"></iframe>
+        </div>
       </div>
-    </a>
-    <nav class="itabs-nav">
-      <a href="https://itabs.ai" class="active">Estimators</a>
-      <a href="https://itabs.ai/about.html">About</a>
-      <a href="https://itabs.ai/story.html">Story</a>
-    </nav>
-    <button class="itabs-menu-btn" onclick="document.getElementById('mobileNav').classList.toggle('open')" aria-label="Menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-  </div>
-</header>
-<div class="itabs-mobile-nav" id="mobileNav">
-  <a href="https://itabs.ai" class="active">Estimators</a>
-  <a href="https://itabs.ai/about.html">About</a>
-  <a href="https://itabs.ai/story.html">Story</a>
-</div>
-<!-- ═══ END HEADER ═══ -->
+      <a class="demo-open" href="https://lunches-down-under-cafe.val.run" target="_blank" rel="noopener">Open the full menu →</a>
+    </section>
 
-<div class="container">
-
-  <div class="header">
-    <div class="tagline">Send complete job details.<br><span class="highlight">Get quoted faster.</span></div>
-    <p>Tap through your options, send detailed specs to any tradie. Takes about 60 seconds.</p>
-    <span class="badge">📍 Perth, WA — 2025/26 pricing</span>
-  </div>
-
-  <div class="section-label">Choose a trade</div>
-
-  <div class="trade-grid">
-
-    <a href="fencing.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(245,158,11,0.12);">🏗️</div>
-      <div class="trade-info">
-        <div class="trade-name">Fencing <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Colorbond, timber, aluminium & pool fencing. Per-metre pricing with extras.</div>
+    <section class="hooks">
+      <div class="hook">
+        <div class="tick">✓</div>
+        <div class="txt">No app<small>Customers just scan and order — nothing to download.</small></div>
       </div>
-      <div class="trade-arrow">›</div>
-    </a>
-
-    <a href="paving.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(234,88,12,0.12);">🧱</div>
-      <div class="trade-info">
-        <div class="trade-name">Paving <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Brick, concrete, natural stone & exposed aggregate. Per-m² with area slider.</div>
+      <div class="hook">
+        <div class="tick">✓</div>
+        <div class="txt">No monthly fee<small>Your menu is free. Keep it as long as you like.</small></div>
       </div>
-      <div class="trade-arrow">›</div>
-    </a>
-
-    <a href="landscaping.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(34,197,94,0.12);">🌿</div>
-      <div class="trade-info">
-        <div class="trade-name">Landscaping <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Turf, reticulation, retaining walls & garden lighting. Whole-job pricing.</div>
+      <div class="hook">
+        <div class="tick">✓</div>
+        <div class="txt">Orders land on your phone<small>Straight to you — no new device, no new screen.</small></div>
       </div>
-      <div class="trade-arrow">›</div>
-    </a>
+    </section>
 
-    <a href="electrical.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(234,179,8,0.12);">⚡</div>
-      <div class="trade-info">
-        <div class="trade-name">Electrical <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Lighting, power points, fans, switchboards & rewiring. Per-item pricing.</div>
-      </div>
-      <div class="trade-arrow">›</div>
-    </a>
+    <section class="cta-block">
+      <div class="cta-lead">Want one for your venue?</div>
+      <div class="cta-sub">Send us a photo of your menu, plus the number you want orders sent to. We'll build it.</div>
+      <a class="wa-btn" href="https://wa.me/61421508007?text=Hi%20iTabs!%20I'd%20like%20a%20free%20QR%20ordering%20menu%20for%20my%20venue.%0A%0AI'm%20attaching%20a%20photo%20of%20my%20menu%2C%20and%20I'd%20like%20customer%20orders%20sent%20to%20this%20number%3A%20" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.7-1-2.3-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.2-1.3A10 10 0 1 0 12 2m0 18.3a8.3 8.3 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.3 8.3 0 1 1 12 20.3"/></svg>
+        Send my menu on WhatsApp
+      </a>
+    </section>
 
-    <a href="plumbing.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(59,130,246,0.12);">🔧</div>
-      <div class="trade-info">
-        <div class="trade-name">Plumbing <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Taps, toilets, hot water, drains & gas fitting. Includes emergency urgency pricing.</div>
-      </div>
-      <div class="trade-arrow">›</div>
-    </a>
-
-    <a href="painting.html" class="trade-card">
-      <div class="trade-icon" style="background:rgba(168,85,247,0.12);">🎨</div>
-      <div class="trade-info">
-        <div class="trade-name">Painting <span class="trade-tag">Live</span></div>
-        <div class="trade-desc">Interior & exterior, per-room pricing with paint quality and prep options.</div>
-      </div>
-      <div class="trade-arrow">›</div>
-    </a>
+    <footer>
+      Powered by <span class="i">i</span>Tabs · itabs.ai
+    </footer>
 
   </div>
-
-  <div class="info-box">
-    <h3>💡 How it works</h3>
-    <p>Tap through the options for your trade job. Each choice builds an itemised spec — the exact details a tradie needs to quote you. Send the same spec to multiple tradies and compare quotes that actually match. Tap the <strong style="color:var(--accent-amber);">ⓘ</strong> buttons inside each estimator for tips and local info.</p>
-  </div>
-
-  <div class="info-box">
-    <h3>🔧 For tradies & developers</h3>
-    <p>iTabs is open source. One universal engine powers every estimator — you just write a config. Want one for your business? Visit <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">GitHub</a> or <a href="https://itabs.ai/about.html">learn more</a>.</p>
-  </div>
-
-  <div class="footer">
-    Built in Perth 🇦🇺 · <a href="https://itabs.ai/about.html">About</a> · <a href="https://github.com/boilermaker-innovator/iTabs-plus-eight">Open Source</a>
-  </div>
-
-</div>
-
 </body>
 </html>
