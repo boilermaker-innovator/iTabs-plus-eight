@@ -34,16 +34,21 @@
   .hero p { margin-top: 14px; font-size: 17px; line-height: 1.5; color: var(--text-muted); }
 
   /* phone / live menu embed */
-  .demo { margin: 8px 0 34px; }
-  .demo-label { text-align: center; font-size: 13px; color: var(--text-muted);
+  .demo { position: relative; margin: 8px 0 34px; padding: 10px 0 4px; }
+  .demo::before { content: ""; position: absolute; left: 50%; top: 46%;
+    transform: translate(-50%, -50%); width: 380px; height: 420px;
+    background: radial-gradient(ellipse at center, rgba(245,196,0,0.16) 0%, rgba(245,196,0,0.05) 40%, transparent 70%);
+    filter: blur(8px); z-index: 0; pointer-events: none; }
+  .demo-label { position: relative; z-index: 1; text-align: center; font-size: 13px; color: var(--text-muted);
     text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
-  .phone { max-width: 340px; margin: 0 auto; background: #000; border-radius: 34px;
-    padding: 10px; border: 1px solid var(--border);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.55); }
+  .phone { position: relative; z-index: 1; max-width: 340px; margin: 0 auto;
+    background: #2a2a2a; border-radius: 40px; padding: 12px;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.08); }
   .phone-screen { border-radius: 26px; overflow: hidden; background: var(--bg-card);
     aspect-ratio: 9 / 17; }
   .phone-screen iframe { width: 100%; height: 100%; border: 0; display: block; }
-  .demo-open { display: block; text-align: center; margin: 16px auto 0; font-size: 15px;
+  .demo-open { position: relative; z-index: 1; display: block; text-align: center; margin: 16px auto 0; font-size: 15px;
     color: var(--accent); text-decoration: none; font-weight: 600; }
   .demo-open:hover { text-decoration: underline; }
 
