@@ -64,6 +64,18 @@
   .hook .txt small { display: block; font-weight: 400; font-size: 13.5px;
     color: var(--text-muted); margin-top: 2px; }
 
+  /* order with AI */
+  .ai-order { margin: 0 0 36px; padding: 22px 20px; background: var(--bg-card);
+    border: 1px solid rgba(245,196,0,0.35); border-radius: 16px; }
+  .ai-badge { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #0d0d0d; background: var(--accent); padding: 3px 9px; border-radius: 999px; }
+  .ai-title { margin-top: 12px; font-size: 22px; font-weight: 800; line-height: 1.25; letter-spacing: -0.4px; }
+  .ai-title .hl { color: var(--accent); }
+  .ai-sub { margin-top: 8px; font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+  .ai-prompt { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); font-size: 14.5px; line-height: 1.45; font-style: italic; }
+  .ai-order .demo-open { margin-top: 14px; text-align: left; }
+
   /* CTA */
   .cta-block { text-align: center; }
   .cta-lead { font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 6px; }
@@ -116,6 +128,14 @@
         <div class="tick">✓</div>
         <div class="txt">Orders land on your phone<small>Straight to you — no new device, no new screen.</small></div>
       </div>
+    </section>
+
+    <section class="ai-order" aria-label="Order with AI">
+      <div class="ai-badge">New</div>
+      <div class="ai-title">Your customers can order <span class="hl">through their AI.</span></div>
+      <p class="ai-sub">iTabs menus work with ChatGPT, Grok and Gemini. Ask the AI on your phone to order a coffee from our demo stall, and it lands on the stall's order screen.</p>
+      <div class="ai-prompt">"Read alert4.itabs.co and order me a large flat white with vanilla syrup."</div>
+      <a class="demo-open" href="https://alert4.itabs.co/" target="_blank" rel="noopener">Try the AI-ready demo menu → alert4.itabs.co</a>
     </section>
 
     <section class="cta-block">
