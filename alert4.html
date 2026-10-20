@@ -112,7 +112,8 @@
     <p>1. Pick drinks, sizes and extras from the menu above. Small = 12oz, large = 16oz.</p>
     <p>2. Read the order and total back to the customer and get a clear yes.</p>
     <p>3. Build an order link. It must have <b>no spaces</b>: write names in lower case with - instead of spaces (flat-white, caramel-syrup, long-black-americano).</p>
-    <p><code>https://alert4.itabs.co/order?name=Sam&amp;drink=latte&amp;size=16oz&amp;addons=caramel-syrup&amp;note=pick-up-sunday-9am</code></p>
+    <p><code>https://itabs.co/order?venue=alert4&amp;name=Sam&amp;drink=latte&amp;size=16oz&amp;addons=caramel-syrup&amp;note=pick-up-sunday-9am</code></p>
+    <p class="note">Always start the link with https://itabs.co/order?venue=alert4 and give it to the customer as a plain link to tap (not a search link). It opens Alert4's confirm page.</p>
     <p>4. Opening the link shows the order and total with a Send button. It does not place the order, so it's safe to open to check it. Give the customer the link to tap and send.</p>
     <p>5. If you can place orders yourself, add <code>&amp;confirm=yes</code> after the customer says yes. The page then says "ORDER PLACED" with an order number. Opening the same link again won't make a second order.</p>
     <p>More than one drink: add <code>&amp;d=name|size|extra,extra|qty</code> for each, e.g. <code>&amp;d=hot-tea</code> or <code>&amp;d=mocha|12oz|extra-shot|2</code>.</p>
