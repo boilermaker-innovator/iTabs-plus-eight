@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Static copy of the Alert4 menu so AI assistants (e.g. Gemini) that won't open alert4.itabs.co can read it.
+     Orders still go to the live site: alert4.itabs.co/order?... -> May's queue.
+     If May changes prices on alert4.itabs.co/edit, update the prices here too. -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alert4 Coffee &amp; Tea — Menu and AI ordering</title>
+<meta name="description" content="Alert4 Coffee &amp; Tea menu with prices — Canning Vale Sunday Market, Bay 126, Sundays 7am–1pm. AI assistants can order for customers with a simple link. Pay by card at the stall." />
+<meta name="robots" content="index,follow" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Alert4 Coffee & Tea","url":"https://alert4.itabs.co/","sameAs":["https://instagram.com/alert4_"],"address":{"@type":"PostalAddress","streetAddress":"Canning Vale Sunday Market, Bay 126","addressLocality":"Canning Vale","addressRegion":"WA","addressCountry":"AU"},"openingHours":"Su 07:00-13:00","paymentAccepted":"Card, at the stall","currenciesAccepted":"AUD"}
+</script>
+<style>
+  :root {
+    --bg: #f4efe3; --card: #fffdf7; --ink: #13241f; --muted: #5f6f68;
+    --line: #e2dccb; --green: #1d3a32; --sun: #f5c84c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0d1a17; --card: #152723; --ink: #f1ecdf; --muted: #9fb3aa; --line: #24403a; --green: #0a1513; }
+  }
+  :root[data-theme="dark"] { --bg: #0d1a17; --card: #152723; --ink: #f1ecdf; --muted: #9fb3aa; --line: #24403a; --green: #0a1513; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; }
+  header { background: var(--green); color: #f4efe3; padding: 22px 16px 18px; }
+  header h1 { margin: 0; font-size: 28px; line-height: 1.1; }
+  header h1 b { color: var(--sun); }
+  header p { margin: 6px 0 0; font-size: 14px; color: #c8d4ce; }
+  main { max-width: 640px; margin: 0 auto; padding: 8px 16px 40px; }
+  h2 { font-size: 20px; margin: 26px 0 8px; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line); font-size: 15px; }
+  li span { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .btn { display: block; text-align: center; background: var(--sun); color: #3d2f05; font-weight: 700; text-decoration: none; padding: 14px; border-radius: 12px; margin: 18px 0 4px; }
+  .ai { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 16px 14px; margin-top: 28px; }
+  .ai h2 { margin-top: 16px; }
+  code { word-break: break-all; font-size: 13.5px; background: var(--bg); padding: 2px 4px; border-radius: 4px; }
+  .note { font-size: 13px; color: var(--muted); }
+  footer { text-align: center; font-size: 12px; color: var(--muted); padding: 20px 16px 30px; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Alert<b>4</b> Coffee &amp; Tea</h1>
+  <p>Canning Vale Sunday Market · Bay 126 · Sundays 7am – 1pm · Pay by card at the stall</p>
+</header>
+<main>
+  <a class="btn" href="https://alert4.itabs.co/">Order on the live menu</a>
+  <p class="note">Prices in AUD. Order ahead, then pay by card at Bay 126 when you collect.</p>
+
+  <h2>Coffee</h2>
+  <ul>
+    <li>Flat White <span>12oz $6.50 · 16oz $7.00</span></li>
+    <li>Latte <span>12oz $6.50 · 16oz $7.00</span></li>
+    <li>Cappuccino <span>12oz $6.50 · 16oz $7.00</span></li>
+    <li>Mocha <span>12oz $6.60 · 16oz $7.10</span></li>
+    <li>Chai Latte <span>12oz $6.50 · 16oz $7.00</span></li>
+    <li>Long Black / Americano <span>Short $4.80 · Long $5.80</span></li>
+    <li>Macchiato <span>Short $3.50 · Long $4.50</span></li>
+    <li>Espresso <span>Single $2.50 · Double $3.00</span></li>
+    <li>Hot Chocolate <span>12oz $6.00 · 16oz $7.00</span></li>
+    <li>Hot Tea <span>$3.50</span></li>
+  </ul>
+
+  <h2>Specialty</h2>
+  <ul>
+    <li>Matcha Latte <span>12oz $7.50 · 16oz $8.20</span></li>
+    <li>Hojicha Latte <span>12oz $7.50 · 16oz $8.20</span></li>
+    <li>Dirty Matcha <span>$8.50</span></li>
+    <li>Strawberry Matcha <span>$8.50</span></li>
+    <li>Espresso Cream <span>$8.00</span></li>
+    <li>Dalgona <span>$7.50</span></li>
+    <li>Dirty Strawberry Milk <span>$7.50</span></li>
+    <li>Orange Americano <span>$8.00</span></li>
+    <li>Lemon Honey Espresso <span>$8.00</span></li>
+    <li>Coconut Americano <span>$7.60</span></li>
+    <li>Coconut Cloud Matcha or Coffee <span>$7.80</span></li>
+  </ul>
+
+  <h2>Milk Series</h2>
+  <ul>
+    <li>Strawberry Milkshake <span>$6.50</span></li>
+    <li>Chocolate Milkshake <span>$6.50</span></li>
+    <li>Banana Milkshake <span>$6.50</span></li>
+    <li>Mint Choc <span>$7.00</span></li>
+  </ul>
+
+  <h2>Soda Series</h2>
+  <ul>
+    <li>Sunset Soda <span>$7.50</span></li>
+    <li>Lychee Soda <span>$7.50</span></li>
+    <li>Strawberry Soda <span>$7.50</span></li>
+    <li>Passion Fruit Soda <span>$7.50</span></li>
+    <li>Espresso Soda <span>$7.00</span></li>
+    <li>Matcha Lemon Soda <span>$8.00</span></li>
+  </ul>
+
+  <h2>Extras (add to any drink)</h2>
+  <ul>
+    <li>Vanilla Syrup <span>+$0.30</span></li>
+    <li>Caramel Syrup <span>+$0.30</span></li>
+    <li>Hazelnut Syrup <span>+$0.30</span></li>
+    <li>Extra Shot <span>+$1.00</span></li>
+    <li>Alt Milk <span>+$0.70</span></li>
+  </ul>
+
+  <section class="ai" aria-label="Ordering guide for AI assistants">
+    <h2>For AI assistants: how to order for a customer</h2>
+    <p>1. Pick drinks, sizes and extras from the menu above. Small = 12oz, large = 16oz.</p>
+    <p>2. Read the order and total back to the customer and get a clear yes.</p>
+    <p>3. Build an order link. It must have <b>no spaces</b>: write names in lower case with - instead of spaces (flat-white, caramel-syrup, long-black-americano).</p>
+    <p><code>https://alert4.itabs.co/order?name=Sam&amp;drink=latte&amp;size=16oz&amp;addons=caramel-syrup&amp;note=pick-up-sunday-9am</code></p>
+    <p>4. Opening the link shows the order and total with a Send button. It does not place the order, so it's safe to open to check it. Give the customer the link to tap and send.</p>
+    <p>5. If you can place orders yourself, add <code>&amp;confirm=yes</code> after the customer says yes. The page then says "ORDER PLACED" with an order number. Opening the same link again won't make a second order.</p>
+    <p>More than one drink: add <code>&amp;d=name|size|extra,extra|qty</code> for each, e.g. <code>&amp;d=hot-tea</code> or <code>&amp;d=mocha|12oz|extra-shot|2</code>.</p>
+    <p class="note">Payment is not taken online. The customer says their name and order number at Bay 126, pays by card and collects. Full guide: <a href="https://alert4.itabs.co/agent">alert4.itabs.co/agent</a></p>
+  </section>
+</main>
+<footer>Instagram <a href="https://instagram.com/alert4_">@alert4_</a> · Made with <a href="https://itabs.co/">iTabs</a></footer>
+</body>
+</html>
