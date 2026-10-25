@@ -10,10 +10,13 @@
 - Menus are readable by AI assistants (ChatGPT, Gemini, Claude, Grok), so people can find the shop and order through AI
 
 ## Who it's for
-Small, independent food shops: drive-thru coffee, cafes, market stalls, food courts, hospital and workplace cafes.
+Starting with small drive-thru coffee shops. Also suits other small, independent food shops: drive-thru coffee, cafes, market stalls, food courts, hospital and workplace cafes.
 
 ## Price
 First month free, then $29 a month per shop. No commission on orders. No lock-in contract, cancel anytime.
+
+## Payment
+Customers pay at the window as they do now. Online payment can be added using the shop's own card account (normal card fees apply; iTabs takes no commission).
 
 ## Try it
 - Demo: https://try.itabs.co
