@@ -1,0 +1,26 @@
+# iTabs
+
+> iTabs makes order-ahead menu pages for small cafes, drive-thrus, food stalls and lunch bars in Australia. Customers scan a QR code or tap a link, order on their phone with no app, and the shop's team sees the order straight away. iTabs charges no commission.
+
+## What it does
+- Each shop gets its own order-ahead page, e.g. shopname.itabs.co
+- Customers pick items, add their name (and car, for drive-thrus) and send the order
+- Staff see new orders on a staff screen with a sound alert, and can print tickets
+- Owners change prices and mark items sold out themselves
+- Menus are readable by AI assistants (ChatGPT, Gemini, Claude, Grok), so people can find the shop and order through AI
+
+## Who it's for
+Small, independent food shops: drive-thru coffee, cafes, market stalls, food courts, hospital and workplace cafes.
+
+## Price
+First month free, then $29 a month per shop. No commission on orders. No lock-in contract, cancel anytime.
+
+## Try it
+- Demo: https://try.itabs.co
+- AI ordering demo: https://alert4.itabs.co
+
+## Contact
+Jon, founder, based in Perth, Western Australia
+Phone / WhatsApp: 0421 508 009
+Email: jgwynne7@gmail.com
+Website: https://itabs.co
