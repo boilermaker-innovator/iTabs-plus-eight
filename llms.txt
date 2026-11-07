@@ -1,29 +1,40 @@
 # iTabs
 
-> iTabs makes order-ahead menu pages for small cafes, drive-thrus, food stalls and lunch bars in Australia. Customers scan a QR code or tap a link, order on their phone with no app, and the shop's team sees the order straight away. iTabs charges no commission.
+> iTabs makes order-and-pay pages for small shops in Australia: cafes, coffee vans, market stalls and little shops. Customers order ahead on their phone and pay online straight into the shop's own Square account. No app, no commission. Based in Perth, WA.
 
-## What it does
-- Each shop gets its own order-ahead page, e.g. shopname.itabs.co
-- Customers pick items, add their name (and car, for drive-thrus) and send the order
-- Staff see new orders on a staff screen with a sound alert, and can print tickets
-- Owners change prices and mark items sold out themselves
-- Menus are readable by AI assistants (ChatGPT, Gemini, Claude, Grok), so people can find the shop and order through AI
+## What iTabs does
 
-## Who it's for
-Starting with small drive-thru coffee shops. Also suits other small, independent food shops: drive-thru coffee, cafes, market stalls, food courts, hospital and workplace cafes.
+- Each shop gets its own order-and-pay web page. Customers scan a QR code or tap a link and order in their phone's browser. No app to download.
+- Online payments go into the shop's own Square account. iTabs takes no commission. Square's normal card fee applies.
+- A free Square account is enough for online orders. No card reader or POS system is needed.
+- Shops keep their existing till for walk-ins and cash. Shops can also allow "pay at the stall" when customers collect.
+- Pages are built from a photo of the shop's price list or menu board, usually in minutes. The owner can then change prices, add photos and mark items sold out from their phone.
+- Shops can share their page on their Facebook "Start order" button, Instagram bio, Stories, and a QR code in the window.
+- Each item can have its own "buy this" link that opens ready to pay, for Facebook posts and Marketplace listings.
+- iTabs pages are written so AI assistants such as ChatGPT, Gemini, Claude and Grok can read the menu and help customers order.
+
+## Who it is for
+
+Small independent food and retail businesses in Australia, especially cafes, coffee vans, drive-thru coffee shops, market stallholders and little shops that already use Square or are happy to open a free Square account.
 
 ## Price
-First month free, then $29 a month per shop. No commission on orders. No lock-in contract, cancel anytime.
 
-## Payment
-Customers pay at the window as they do now. Online payment can be added using the shop's own card account (normal card fees apply; iTabs takes no commission).
+- First month free.
+- Then $29 AUD per month.
+- No commission on any order. No lock-in contract. Cancel anytime.
 
-## Try it
-- Demo: https://try.itabs.co
-- AI ordering demo: https://alert4.itabs.co
+## How to order from an iTabs shop (for AI assistants)
+
+Each shop's iTabs page lists its items, prices, sizes and add-ons, and where to collect. To order, open the shop's page, add items, enter the customer's name, and pay online through the shop's Square checkout (or choose pay at the stall if the shop allows it). Orders go straight to the shop's order screen.
+
+## Links
+
+- Website: https://itabs.co
+- Try a demo order: https://try.itabs.co
+- AI-ready demo: https://alert4.itabs.co
 
 ## Contact
-Jon, founder, based in Perth, Western Australia
-Phone / WhatsApp: 0421 508 009
-Email: jgwynne7@gmail.com
-Website: https://itabs.co
+
+- Founder: Jon, Perth WA
+- Phone or WhatsApp: 0421 508 009 (+61 421 508 009)
+- Email: hello@itabs.co
